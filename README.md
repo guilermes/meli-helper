@@ -137,7 +137,7 @@ Gerenciador de pacotes npm (incluso no Node.js)<br>
 ### Passo a Passo de Instalação
 🔹 1. Clonar o repositório
 ```
-git clone https://github.com/meli-helper.git
+git clone https://github.com/guilermes/meli-helper.git
 cd meli-helper
 ```
 🔹 2. Configurar Variáveis de Ambiente
