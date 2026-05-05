@@ -51,6 +51,7 @@ O sistema permite:
   ### 📦 Cálculo de Peso
   A cubagem é calculada utilizando a fórmula padrão dos Correios e transportadoras parceiras:
   $$\text{Peso Cúbico} = \frac{\text{Largura (cm)} \times \text{Altura (cm)} \times \text{Comprimento (cm)}}{6000}$$
+  
   O sistema realiza a validação de segurança utilizando o maior peso para tarifação:
   $$\text{Peso Utilizado} = \max(\text{Peso Real}, \text{Peso Cúbico})$$
 
