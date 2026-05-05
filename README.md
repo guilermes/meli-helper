@@ -50,9 +50,11 @@ O sistema permite:
 
   ### 📦 Cálculo de Peso
   A cubagem é calculada utilizando a fórmula padrão dos Correios e transportadoras parceiras:
+  
   $$\text{Peso Cúbico} = \frac{\text{Largura (cm)} \times \text{Altura (cm)} \times \text{Comprimento (cm)}}{6000}$$
   
   O sistema realiza a validação de segurança utilizando o maior peso para tarifação:
+  
   $$\text{Peso Utilizado} = \max(\text{Peso Real}, \text{Peso Cúbico})$$
 
   ### 🚚 Cálculo de Frete
@@ -61,15 +63,17 @@ O sistema permite:
   - Faixa de peso calculada.
   
   ### 💰 Cálculo de Lucro
+  
   $$\text{Lucro} = \text{Preço} - \text{Custo} - \text{Frete} - \text{Comissão} - \text{Impostos} - \text{Custo Operacional}$$
   
   ### 📊 Margem
+  
   $$\text{Margem (\%)} = \left( \frac{\text{Lucro}}{\text{Preço}} \right) \times 100$$
   
   ### 🔐 Autenticação
   O sistema utiliza o padrão de mercado JWT (JSON Web Token) e o método Bearer Token para proteger as rotas da API e garantir a privacidade dos dados de cada vendedor. Fluxo de Autenticação:
 ```
-  sequenceDiagram
+  authFlow
     Autenticação ->> Usuário: Realiza login com e-mail/senha
     Usuário ->> API: Valida credenciais e gera JWT
     API ->> Usuário: Retorna Token JWT
@@ -82,9 +86,9 @@ HTTPAuthorization: Bearer SEU_TOKEN_JWT
 ```
 
 ## Documentação do Projeto
-[Acessar Workspace no Confluence]()
-[Acompanhar Quadro no Jira]()
-[Visualizar Documento de Requisitos]()
+[Acessar Workspace no Confluence]()<br>
+[Acompanhar Quadro no Jira]()<br>
+[Visualizar Documento de Requisitos]()<br>
 
 ### Sprints
 | Nº Sprint | Objetivo Principal | Data Início | Data Término | Status |
@@ -95,12 +99,12 @@ HTTPAuthorization: Bearer SEU_TOKEN_JWT
 | 4 | Criação do Frontend (Bootstrap), integração com API e Testes. | 16/04/2026 | 05/05/2026 | Em Andamento |
 
 ### Tecnologias Utilizadas
-**Linguagem:** JavaScript (ES Modules)
-**Frontend:** HTML5, CSS3, Bootstrap 5
-**Backend:** Node.js, Express
-**Banco de Dados:** PostgreSQL (Prisma ORM)
-**Documentação da API:** Swagger UI
-**Gestão & Versionamento:** Git, GitHub, Jira, Confluence
+**Linguagem:** JavaScript (ES Modules)<br>
+**Frontend:** HTML5, CSS3, Bootstrap 5<br>
+**Backend:** Node.js, Express<br>
+**Banco de Dados:** PostgreSQL (Prisma ORM)<br>
+**Documentação da API:** Swagger UI<br>
+**Gestão & Versionamento:** Git, GitHub, Jira, Confluence<br>
 
 ### Funcionalidades
 - ✅ Cadastro de novos usuários
@@ -126,14 +130,14 @@ HTTPAuthorization: Bearer SEU_TOKEN_JWT
 ## Como Executar o Projeto
 
 ### Pré-requisitos
-Node.js (versão 18.x ou superior recomendada)
-PostgreSQL 
-Gerenciador de pacotes npm (incluso no Node.js)
+Node.js (versão 18.x ou superior recomendada)<br>
+PostgreSQL<br>
+Gerenciador de pacotes npm (incluso no Node.js)<br>
 
 ### Passo a Passo de Instalação
 🔹 1. Clonar o repositório
 ```
-Bashgit clone https://github.com/seu-repo/meli-helper.git
+git clone https://github.com/meli-helper.git
 cd meli-helper
 ```
 🔹 2. Configurar Variáveis de Ambiente
@@ -166,9 +170,9 @@ node server.js
 Abra o seu navegador e acesse: [http://localhost:3000](http://localhost:3000)
 
 ## 👨‍💻 Equipe
-Daniel Fernando — Fullstack Developer & DB Specialist
-Guilherme Nobrega — Fullstack Developer & Software Architect
-Wesley Fernando — Quality Assurance (QA) & Test Engineer
+Daniel Fernando — Fullstack Developer & DB Specialist<br>
+Guilherme Nobrega — Fullstack Developer & Software Architect<br>
+Wesley Fernando — Quality Assurance (QA) & Test Engineer<br>
 
 ## 📚 Considerações Finais
 O desenvolvimento do Meli Helper consolida na prática conceitos cruciais de Engenharia de Software voltados ao mercado de trabalho, tais como:
