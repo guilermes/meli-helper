@@ -87,7 +87,7 @@ HTTPAuthorization: Bearer SEU_TOKEN_JWT
 
 ## Documentação do Projeto
 [Acessar Workspace no Confluence]()<br>
-[Acompanhar Quadro no Jira]()<br>
+[Acompanhar Quadro no Jira](https://gabrielpozza335-1775085903755.atlassian.net/jira/software/projects/MH/boards/102/backlog?atlOrigin=eyJpIjoiMDNkODFlNDY3N2E0NGI1MmJiMGViNGE0YmE5OGUxYTMiLCJwIjoiaiJ9)<br>
 [Visualizar Documento de Requisitos]()<br>
 
 ### Sprints
