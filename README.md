@@ -100,7 +100,7 @@ HTTPAuthorization: Bearer SEU_TOKEN_JWT
 
 ### Tecnologias Utilizadas
 **Linguagem:** JavaScript (ES Modules)<br>
-**Frontend:** HTML5, CSS3, Bootstrap 5<br>
+**Frontend:** React/Bootstrap<br>
 **Backend:** Node.js, Express<br>
 **Banco de Dados:** PostgreSQL (Prisma ORM)<br>
 **Documentação da API:** Swagger UI<br>
