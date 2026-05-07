@@ -172,7 +172,6 @@ Abra o seu navegador e acesse: [http://localhost:3000](http://localhost:3000)
 ## 👨‍💻 Equipe
 Daniel Fernando — Fullstack Developer & DB Specialist<br>
 Guilherme Nobrega — Fullstack Developer & Software Architect<br>
-Wesley Fernando — Quality Assurance (QA) & Test Engineer<br>
 
 ## 📚 Considerações Finais
 O desenvolvimento do Meli Helper consolida na prática conceitos cruciais de Engenharia de Software voltados ao mercado de trabalho, tais como:
