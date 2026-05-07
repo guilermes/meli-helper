@@ -60,19 +60,37 @@ router.get("/:id", auth, controller.getById)
  *         application/json:
  *           schema:
  *             type: object
+ *             required:
+ *               - nome
+ *               - precoVenda
  *             properties:
  *               idMercadoLivre:
  *                 type: string
+ *                 example: MLB123456
  *               nome:
  *                 type: string
+ *                 example: Fone Bluetooth
  *               marca:
  *                 type: string
+ *                 example: JBL
  *               custo:
  *                 type: number
+ *                 example: 50
  *               precoVenda:
  *                 type: number
- *               frete:
+ *                 example: 120
+ *               largura:
  *                 type: number
+ *                 example: 20
+ *               altura:
+ *                 type: number
+ *                 example: 10
+ *               comprimento:
+ *                 type: number
+ *                 example: 15
+ *               peso:
+ *                 type: number
+ *                 example: 0.8
  *     responses:
  *       201:
  *         description: Anúncio criado com sucesso
@@ -102,14 +120,28 @@ router.post("/", auth, controller.create)
  *             properties:
  *               nome:
  *                 type: string
+ *                 example: Produto Atualizado
  *               marca:
  *                 type: string
+ *                 example: Samsung
  *               custo:
  *                 type: number
+ *                 example: 60
  *               precoVenda:
  *                 type: number
- *               frete:
+ *                 example: 150
+ *               largura:
  *                 type: number
+ *                 example: 25
+ *               altura:
+ *                 type: number
+ *                 example: 12
+ *               comprimento:
+ *                 type: number
+ *                 example: 18
+ *               peso:
+ *                 type: number
+ *                 example: 1.2
  *     responses:
  *       200:
  *         description: Anúncio atualizado
