@@ -24,5 +24,5 @@
     // 🔐 salva token
     localStorage.setItem("token", data.token)
 
-    window.location.href = "lista.html"
+    window.location.href = "../pages/lista.html"
   })
