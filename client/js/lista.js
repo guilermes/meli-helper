@@ -201,5 +201,5 @@ async function excluirAnuncio(id) {
 // 🔹 Logout
 function logout() {
   localStorage.removeItem("token")
-  window.location.href = "index.html"
+  window.location.href = "../page/index.html"
 }

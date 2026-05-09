@@ -1,6 +1,6 @@
 // 🔒 Verifica se está logado
 if (!localStorage.getItem("token")) {
-  window.location.href = "index.html"
+  window.location.href = "../pages/index.html"
 }
 
 // 🔑 Headers com JWT
@@ -36,7 +36,7 @@ function mostrarMensagem(texto, cor = "green") {
 // 🔹 Logout automático
 function logout() {
   localStorage.removeItem("token")
-  window.location.href = "index.html"
+  window.location.href = "../pages/index.html"
 }
 
 // 🔹 Capturar formulário
