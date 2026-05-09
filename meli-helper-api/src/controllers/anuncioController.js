@@ -67,7 +67,7 @@ exports.create = async (req, res) => {
         marca,
         custo: toNumber(custo),
         precoVenda: toNumber(precoVenda),
-        frete: toNumber(frete),
+        frete: toNumber(frete) || 0,
         largura: toNumber(largura),
         altura: toNumber(altura),
         comprimento: toNumber(comprimento),

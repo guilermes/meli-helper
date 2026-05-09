@@ -21,7 +21,7 @@ model Anuncio {
   marca            String
   custo            Float
   precoVenda       Float
-  frete            Float
+  frete            Float?
   largura        Float?
   altura         Float?
   comprimento    Float?
