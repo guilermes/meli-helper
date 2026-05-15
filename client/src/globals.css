@@ -1,4 +1,8 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
+/* Seus outros estilos globais antigos continuam aqui embaixo... */
 
 /* ==========================================================================
    1. VARIÁVEIS DE COR E CONFIGURAÇÕES DE TEMA
