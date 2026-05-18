@@ -2,32 +2,23 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Seus outros estilos globais antigos continuam aqui embaixo... */
-
-/* ==========================================================================
-   1. VARIÁVEIS DE COR E CONFIGURAÇÕES DE TEMA
-   ========================================================================== */
 :root {
-  /* Cores padrão (Exemplo de um tema Dark elegante) */
+
   --bg-primary: #121214;
   --bg-secondary: #202024;
   
   --text-primary: #e1e1e6;
   --text-secondary: #a8a8b3;
   
-  --accent: #00b37e; /* Um verde ou azul de destaque */
+  --accent: #00b37e; 
   --accent-hover: #00875f;
   
   --border: #323238;
   
-  /* Fontes e transições */
   --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
   --transition-fast: 0.2s ease-in-out;
 }
 
-/* ==========================================================================
-   2. RESET CSS MODERNIZADO
-   ========================================================================== */
 *, *::before, *::after {
   box-sizing: border-box;
   margin: 0;
@@ -36,7 +27,6 @@
 
 html {
   font-size: 16px;
-  /* Melhora a renderização da fonte no navegador */
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
@@ -47,13 +37,15 @@ body {
   font-family: var(--font-sans);
   min-height: 100vh;
   line-height: 1.6;
+
+  display: flex;
+  flex-wrap: nowrap;
+
 }
 
-/* ==========================================================================
-   3. RESETS DE ELEMENTOS ESPECÍFICOS
-   ========================================================================== */
+
 input, button, textarea, select {
-  font: inherit; /* Faz os inputs herdarem a fonte do body automaticamente */
+  font: inherit; 
   color: inherit;
   background: transparent;
   border: none;
@@ -71,4 +63,57 @@ a {
 img, svg {
   display: block;
   max-width: 100%;
+}
+
+/* Navbar styling*/
+.navbar {
+  background-color: #323238;
+  border-bottom: 1px solid var(--border);
+  min-width: 99vw;
+  min-height: 10vh;
+
+  display: flex;
+  flex: nowrap;
+}
+
+.navbar-brand {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: var(--accent);
+  padding: 1rem;
+}
+
+.navbar-nav {
+  display: flex;
+  align-items: center;
+  margin-left: 30vw;
+  list-style: none;
+  padding: 5px;
+}
+
+.nav-item {
+  margin-left: 2rem;
+}
+
+.nav-item:hover {
+  color: var(--accent-hover);
+  cursor: pointer;
+  font-size: 1.1rem;
+  transition: var(--transition-fast);
+}
+
+
+/* Footer styling */
+Footer {
+  position: fixed;
+  bottom: 0;
+
+  background-color: #323238;
+  border-top: 1px solid var(--border);
+  min-width: 99vw;
+  min-height: 10vh;
+  
+  text-align: center;
+  padding: 1rem;
+
 }
