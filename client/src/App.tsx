@@ -8,11 +8,11 @@ import { BrowserRouter } from 'react-router-dom';
 export default function App() {
   return (
     <>
-      <NavBar />
       <BrowserRouter>
+        <NavBar />
         <AppRoutes />
+        <Footer />
       </BrowserRouter>
-      <Footer />
     </>
   );
 }
