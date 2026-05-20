@@ -2,9 +2,9 @@
 import { useState, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Container, Title, Text, Button, Group } from '@mantine/core';
-import ProductTable from '../components/ProductTable';
-import { ProductEditModal } from '../components/ProductEditModal';
-import { Product } from './ProductTable'; // Ajuste o import conforme seu projeto
+import ProductTable from '../components/Table';
+import { ProductEditModal } from '../components/EditModal';
+import { Product } from '../components/Table'; // Ajuste o import conforme seu projeto
 
 export default function ProductList() {
   const [produtos, setProdutos] = useState<Product[]>([]);
@@ -78,7 +78,7 @@ export default function ProductList() {
           marca: produtoAtualizado.marca,
           custo: Number(produtoAtualizado.custo),
           precoVenda: Number(produtoAtualizado.precoVenda),
-          frete: Number(produtoAtualizado.freteCalculado), // Seu backend espera 'frete' no body
+          freteCalculado: Number(produtoAtualizado.freteCalculado), // Seu backend espera 'frete' no body
           largura: Number(produtoAtualizado.largura),
           altura: Number(produtoAtualizado.altura),
           comprimento: Number(produtoAtualizado.comprimento),

@@ -37,7 +37,7 @@ export default function Login() {
 
     } catch (err: any) {
       setErro(err.message);
-    } finaly {
+    } finally {
       setLoading(false);
     }
   };

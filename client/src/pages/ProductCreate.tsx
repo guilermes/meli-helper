@@ -14,7 +14,7 @@ export default function ProductCreate() {
   const [formData, setFormData] = useState<ProductFormData>({
     id: '', idMercadoLivre: '', nome: '', marca: '',
     largura: 0, altura: 0, comprimento: 0, peso: 0, pesoUsado: 0,
-    custo: 0, preco: 0, frete: 0,
+    custo: 0, precoVenda: 0, freteCalculado: 0,
   });
 
   const [loading, setLoading] = useState(false);
@@ -38,7 +38,7 @@ export default function ProductCreate() {
       setFormData({
         id: '', idMercadoLivre: '', nome: '', marca: '',
         largura: 0, altura: 0, comprimento: 0, peso: 0, pesoUsado: 0,
-        custo: 0, preco: 0, frete: 0,
+        custo: 0, precoVenda: 0, freteCalculado: 0,
       });
     }, 1500);
   };

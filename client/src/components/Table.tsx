@@ -42,8 +42,8 @@ export default function ProductTable({ produtos, onEditar, onExcluir }: ProductT
         <Table.Td>{prod.peso}kg</Table.Td>
         <Table.Td>{prod.pesoUsado}kg</Table.Td>
         <Table.Td>R$ {prod.custo.toFixed(2)}</Table.Td>
-        <Table.Td className="text-teal-400 font-medium">R$ {prod.preco.toFixed(2)}</Table.Td>
-        <Table.Td className="text-slate-400">R$ {prod.frete.toFixed(2)}</Table.Td>
+        <Table.Td className="text-teal-400 font-medium">R$ {prod.precoVenda.toFixed(2)}</Table.Td>
+        <Table.Td className="text-slate-400">R$ {prod.freteCalculado.toFixed(2)}</Table.Td>
         <Table.Td className="text-green-400 font-bold">R$ {prod.lucro.toFixed(2)}</Table.Td>
         <Table.Td>
           <Badge color={corMargem} variant="light">
