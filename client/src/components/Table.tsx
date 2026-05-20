@@ -12,8 +12,8 @@ export interface Product {
   peso: number;
   pesoUsado: number;
   custo: number;
-  preco: number;
-  frete: number;
+  precoVenda: number;
+  freteCalculado: number;
   lucro: number;
   margemPorcentagem: number;
 }
