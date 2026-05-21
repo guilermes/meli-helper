@@ -2,24 +2,30 @@
 @tailwind components;
 @tailwind utilities;
 
-/* 1. SUAS VARIÁVEIS DE COR DO TEMA ESCURO */
+/* VARIÁVEIS DE COR DO TEMA - SOFT LIGHT (Gentil para os olhos) */
 :root {
-  --bg-primary: #121214;
-  --bg-secondary: #202024;
+  /* Fundo principal ligeiramente acinzentado/quente para quebrar o brilho do branco */
+  --bg-primary: #f8fafc;       /* Slate 50 - Extremamente suave */
   
-  --text-primary: #e1e1e6;
-  --text-secondary: #a8a8b3;
+  /* Fundo secundário para Cards, Navbar e Sidebar (Branco puro para dar contraste sutil sobre o fundo) */
+  --bg-secondary: #ffffff;     
   
-  --accent: #00b37e; 
-  --accent-hover: #00875f;
+  /* Textos em tons de grafite escuro em vez de preto puro (evita contraste agressivo) */
+  --text-primary: #1e293b;     /* Slate 800 - Leitura perfeita e confortável */
+  --text-secondary: #64748b;   /* Slate 500 - Para textos secundários e legendas */
   
-  --border: #323238;
+  /* Cor de Destaque / Ações Principais (Um azul corporativo suave e moderno) */
+  --accent: #0f766e;           /* Teal 700 - Elegante, profissional e ótimo contraste no claro */
+  --accent-hover: #115e59;     /* Teal 800 */
+  
+  /* Bordas finas e discretas para separar os elementos sem poluir visualmente */
+  --border: #e2e8f0;           /* Slate 200 - Divisória muito suave */
   
   --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
   --transition-fast: 0.2s ease-in-out;
 }
 
-/* 2. RESET E CORREÇÕES DE RENDERIZAÇÃO */
+/* RESET E CORREÇÕES DE RENDERIZAÇÃO */
 *, *::before, *::after {
   box-sizing: border-box;
   margin: 0;
@@ -30,20 +36,32 @@ html {
   font-size: 16px;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  scroll-behavior: smooth;
 }
 
-/* 3. AQUI ESTÁ O SEGREDO DO LAYOUT DO SEU APP */
 body {
   background-color: var(--bg-primary);
   color: var(--text-primary);
   font-family: var(--font-sans);
   min-height: 100vh;
   line-height: 1.6;
-
-  /* Modificado para flex-column: isso garante que o NavBar fique no topo, 
-     o conteúdo no meio e o Footer colado lá embaixo na tela! */
   display: flex;
   flex-direction: column;
+}
+
+/* CUSTOMIZAÇÃO DA SCROLLBAR (Tema Claro Elegante) */
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  background: var(--bg-primary);
+}
+::-webkit-scrollbar-thumb {
+  background: #cbd5e1; /* Slate 300 */
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8; /* Slate 400 */
 }
 
 /* Reseta estilos de links globais para não conflitar com o Mantine */
@@ -56,12 +74,3 @@ img, svg {
   display: block;
   max-width: 100%;
 }
-
-/* 
-  DICA DE OURO: Note que os blocos ".navbar", ".navbar-brand", ".navbar-nav" 
-  e "Footer" foram totalmente removidos daqui! 
-  
-  Como esses estilos agora são gerenciados internamente pelos componentes do 
-  Mantine (usando Group, Container, Button, etc.), deixar aquelas classes antigas 
-  aqui causaria bugs de espaçamento e larguras quebradas (como o antigo 'min-width: 99vw').
-*/

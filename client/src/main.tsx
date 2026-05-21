@@ -15,7 +15,6 @@ const theme = createTheme({
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
-    {/* 1. O MantineProvider PRECISA ser o pai mais externo de todos */}
     <MantineProvider theme={theme}>
       <App />
     </MantineProvider>

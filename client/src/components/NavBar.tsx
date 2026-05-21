@@ -1,60 +1,40 @@
 // src/components/NavBar.tsx
-import { Group, Button, Text, Container } from '@mantine/core';
-import { Link, useLocation } from 'react-router-dom';
+import { Group, Text, Container, Box } from '@mantine/core';
+import { Link } from 'react-router-dom';
 
-export default function NavBar(){
-  // O useLocation nos diz em qual rota o usuário está neste momento (ex: "/" ou "/config")
-  const location = useLocation();
-
+export default function NavBar() {
   return (
-    <header className="bg-slate-950 border-b border-slate-800 p-4">
-      {/* Container para manter o menu alinhado com as margens do resto da página */}
-      <Container size="lg" className="flex justify-between items-center">
-        
-        {/* BRAND / LOGO: Direciona para a Home */}
-        <Text 
-          component={Link} 
-          to="/" 
-          className="text-white font-bold text-xl tracking-wide cursor-pointer hover:text-teal-400 transition-colors"
-        >
-          Meli Helper
-        </Text>
+    <Box 
+      component="nav" 
+      style={{ 
+        backgroundColor: '#090d16', 
+        borderBottom: '1px solid #1e293b' 
+      }}
+      h={60}>
 
-        {/* LISTA DE LINKS: Organizados horizontalmente usando o Group do Mantine */}
-        <Group gap="sm">
-          {/* Link para a Home */}
-          <Button 
+      <Container size="lg" h="100%">
+        <Group justify="space-between" h="100%">
+          <Text 
             component={Link} 
             to="/" 
-            variant="subtle"
-            // Se a URL do navegador for exatamente "/", destaca o botão
-            color={location.pathname === '/' ? 'white' : 'gray'}
+            fw={800} 
+            c="white" 
+            size="lg" 
+            className="no-underline tracking-tight"
           >
-            Home
-          </Button>
-
-          {/* Link para as Configurações */}
-          <Button 
-            component={Link} 
-            to="/config" 
-            variant="subtle"
-            color={location.pathname === '/config' ? 'white' : 'gray'}
-          >
-            Config
-          </Button>
-
-          {/* Link para o Login (Botão com visual de destaque) */}
-          <Button 
-            component={Link} 
-            to="/login" 
-            variant={location.pathname === '/login' ? 'filled' : 'light'} 
-            color="teal"
-          >
-            Login
-          </Button>
+            Meli <span className="text-teal-400">Helper</span>
+          </Text>
+          
+          <Group gap="md">
+            <Link to="/produtos" className="text-sm font-medium text-gray-900 hover:text-white no-underline transition-colors">
+              Anúncios
+            </Link>
+            <Link to="/login" className="text-sm font-medium text-gray-900 hover:text-white no-underline transition-colors">
+              Acessar
+            </Link>
+          </Group>
         </Group>
-
       </Container>
-    </header>
+    </Box>
   );
 }

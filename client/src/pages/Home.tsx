@@ -22,7 +22,6 @@ export default function Home() {
   return (
     <Container size="lg" py="xl" mt={30} className="flex-grow">
       
-      {/* SEÇÃO HERO / BOAS-VINDAS */}
       <Paper 
         p="xl" 
         radius="md" 
