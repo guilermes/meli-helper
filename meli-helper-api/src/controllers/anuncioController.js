@@ -1,9 +1,16 @@
 const { calcularValores } = require("../services/anuncioService")
 const prisma = require("../database/prismaClient")
 
-// 🔹 Função auxiliar para converter números
+////////////////////////////////////////////////////////////
+
+// 🔹 Função auxiliar
 function toNumber(valor) {
-  if (valor === undefined || valor === null || valor === "") {
+
+  if (
+    valor === undefined ||
+    valor === null ||
+    valor === ""
+  ) {
     return null
   }
 
@@ -12,33 +19,46 @@ function toNumber(valor) {
 
 ////////////////////////////////////////////////////////////
 
-// GET (listar anúncios com pesquisa + paginação)
+// 🔹 LISTAR ANÚNCIOS
 exports.getAll = async (req, res) => {
 
   try {
 
-    // 🔍 QUERY PARAMS
+    ////////////////////////////////////////////////////////////
+
+    const userId = req.user.id
+
     const search = req.query.search || ""
 
-    const page = Number(req.query.page) || 1
-    const limit = Number(req.query.limit) || 10
+    const page =
+      Number(req.query.page) || 1
 
-    // 🔥 PAGINAÇÃO
-    const skip = (page - 1) * limit
+    const limit =
+      Number(req.query.limit) || 10
 
-    // 🔥 FILTRO
+    const skip =
+      (page - 1) * limit
+
+    ////////////////////////////////////////////////////////////
+
     const where = {
+
+      userId,
+
       OR: [
+
         {
           nome: {
             contains: search
           }
         },
+
         {
           marca: {
             contains: search
           }
         },
+
         {
           idMercadoLivre: {
             contains: search
@@ -47,52 +67,66 @@ exports.getAll = async (req, res) => {
       ]
     }
 
-    // 🔥 TOTAL DE REGISTROS
-    const total = await prisma.anuncio.count({
-      where
-    })
+    ////////////////////////////////////////////////////////////
 
-    // 🔥 BUSCA PAGINADA
-    const anuncios = await prisma.anuncio.findMany({
+    const total =
+      await prisma.anuncio.count({
+        where
+      })
 
-      where,
+    ////////////////////////////////////////////////////////////
 
-      skip,
-      take: limit,
+    const anuncios =
+      await prisma.anuncio.findMany({
 
-      orderBy: {
-        id: "desc"
-      }
-    })
+        where,
 
-    // 🔥 CALCULAR MARGENS
+        skip,
+        take: limit,
+
+        orderBy: {
+          id: "desc"
+        }
+      })
+
+    ////////////////////////////////////////////////////////////
+
     const resultado = await Promise.all(
 
       anuncios.map(async (a) => {
 
-        const calculado = await calcularValores(a)
+        const calculado =
+          await calcularValores(
+            a,
+            userId
+          )
 
         return {
+
           ...a,
           ...calculado,
 
-          // 🔥 FORÇA FRETE DO MICROSERVIÇO
-          frete: calculado.freteCalculado
+          frete:
+            calculado.freteCalculado
         }
       })
     )
 
-    // 🔥 RETORNO PADRONIZADO
+    ////////////////////////////////////////////////////////////
+
     res.json({
 
       data: resultado,
 
       pagination: {
+
         total,
+
         page,
         limit,
 
-        totalPages: Math.ceil(total / limit)
+        totalPages:
+          Math.ceil(total / limit)
       }
     })
 
@@ -109,30 +143,55 @@ exports.getAll = async (req, res) => {
 
 ////////////////////////////////////////////////////////////
 
-// GET por ID
+// 🔹 BUSCAR POR ID
 exports.getById = async (req, res) => {
 
   try {
 
-    const anuncio = await prisma.anuncio.findUnique({
-      where: {
-        id: Number(req.params.id)
-      }
-    })
+    ////////////////////////////////////////////////////////////
+
+    const userId = req.user.id
+
+    const id =
+      Number(req.params.id)
+
+    ////////////////////////////////////////////////////////////
+
+    const anuncio =
+      await prisma.anuncio.findFirst({
+
+        where: {
+          id,
+          userId
+        }
+      })
+
+    ////////////////////////////////////////////////////////////
 
     if (!anuncio) {
+
       return res.status(404).json({
         erro: "Anúncio não encontrado"
       })
     }
 
-    const calculado = await calcularValores(anuncio)
+    ////////////////////////////////////////////////////////////
+
+    const calculado =
+      await calcularValores(
+        anuncio,
+        userId
+      )
+
+    ////////////////////////////////////////////////////////////
 
     res.json({
+
       ...anuncio,
       ...calculado,
 
-      frete: calculado.freteCalculado
+      frete:
+        calculado.freteCalculado
     })
 
   }
@@ -148,45 +207,108 @@ exports.getById = async (req, res) => {
 
 ////////////////////////////////////////////////////////////
 
-// POST (criar)
+// 🔹 CRIAR ANÚNCIO
 exports.create = async (req, res) => {
 
   try {
 
+    ////////////////////////////////////////////////////////////
+
+    const userId = req.user.id
+
     const {
+
       idMercadoLivre,
+
       nome,
       marca,
+
       custo,
       precoVenda,
       frete,
+
       largura,
       altura,
       comprimento,
       peso
+
     } = req.body
 
-    const novo = await prisma.anuncio.create({
+    ////////////////////////////////////////////////////////////
+    // 🔥 VALIDAÇÕES
 
-      data: {
-        idMercadoLivre: idMercadoLivre || null,
+    if (!nome || nome.trim() === "") {
 
-        nome,
-        marca,
+      return res.status(400).json({
+        erro: "Nome obrigatório"
+      })
+    }
 
-        custo: toNumber(custo),
-        precoVenda: toNumber(precoVenda),
+    if (!marca || marca.trim() === "") {
 
-        frete: toNumber(frete) || 0,
+      return res.status(400).json({
+        erro: "Marca obrigatória"
+      })
+    }
 
-        largura: toNumber(largura),
-        altura: toNumber(altura),
-        comprimento: toNumber(comprimento),
-        peso: toNumber(peso)
-      }
+    if (Number(custo) <= 0) {
+
+      return res.status(400).json({
+        erro: "Custo inválido"
+      })
+    }
+
+    if (Number(precoVenda) <= 0) {
+
+      return res.status(400).json({
+        erro: "Preço inválido"
+      })
+    }
+
+    ////////////////////////////////////////////////////////////
+
+    const novo =
+      await prisma.anuncio.create({
+
+        data: {
+
+          userId,
+
+          idMercadoLivre:
+            idMercadoLivre || null,
+
+          nome,
+          marca,
+
+          custo:
+            toNumber(custo),
+
+          precoVenda:
+            toNumber(precoVenda),
+
+          frete:
+            toNumber(frete) || 0,
+
+          largura:
+            toNumber(largura),
+
+          altura:
+            toNumber(altura),
+
+          comprimento:
+            toNumber(comprimento),
+
+          peso:
+            toNumber(peso)
+        }
+      })
+
+    ////////////////////////////////////////////////////////////
+
+    res.status(201).json({
+      mensagem: "Anúncio criado",
+      data: novo
     })
-
-    res.status(201).json(novo)
 
   }
   catch (error) {
@@ -201,63 +323,143 @@ exports.create = async (req, res) => {
 
 ////////////////////////////////////////////////////////////
 
-// PUT (atualizar)
+// 🔹 ATUALIZAR
 exports.update = async (req, res) => {
 
   try {
 
-    const id = Number(req.params.id)
+    ////////////////////////////////////////////////////////////
 
-    const atualizado = await prisma.anuncio.update({
+    const userId = req.user.id
 
-      where: {
-        id
-      },
+    const id =
+      Number(req.params.id)
 
-      data: {
+    ////////////////////////////////////////////////////////////
 
-        idMercadoLivre: req.body.idMercadoLivre || null,
+    const anuncio =
+      await prisma.anuncio.findFirst({
 
-        nome: req.body.nome,
-        marca: req.body.marca,
+        where: {
+          id,
+          userId
+        }
+      })
 
-        custo: toNumber(req.body.custo),
-        precoVenda: toNumber(req.body.precoVenda),
+    ////////////////////////////////////////////////////////////
 
-        frete: toNumber(req.body.frete),
+    if (!anuncio) {
 
-        largura: toNumber(req.body.largura),
-        altura: toNumber(req.body.altura),
-        comprimento: toNumber(req.body.comprimento),
-        peso: toNumber(req.body.peso)
-      }
+      return res.status(404).json({
+        erro: "Anúncio não encontrado"
+      })
+    }
+
+    ////////////////////////////////////////////////////////////
+
+    const atualizado =
+      await prisma.anuncio.update({
+
+        where: {
+          id
+        },
+
+        data: {
+
+          idMercadoLivre:
+            req.body.idMercadoLivre || null,
+
+          nome:
+            req.body.nome,
+
+          marca:
+            req.body.marca,
+
+          custo:
+            toNumber(req.body.custo),
+
+          precoVenda:
+            toNumber(req.body.precoVenda),
+
+          frete:
+            toNumber(req.body.frete),
+
+          largura:
+            toNumber(req.body.largura),
+
+          altura:
+            toNumber(req.body.altura),
+
+          comprimento:
+            toNumber(req.body.comprimento),
+
+          peso:
+            toNumber(req.body.peso)
+        }
+      })
+
+    ////////////////////////////////////////////////////////////
+
+    res.json({
+      mensagem: "Anúncio atualizado",
+      data: atualizado
     })
-
-    res.json(atualizado)
 
   }
   catch (error) {
 
     console.error(error)
 
-    res.status(404).json({
-      erro: "Anúncio não encontrado"
+    res.status(500).json({
+      erro: "Erro ao atualizar anúncio"
     })
   }
 }
 
 ////////////////////////////////////////////////////////////
 
-// DELETE
+// 🔹 DELETE
 exports.delete = async (req, res) => {
 
   try {
 
+    ////////////////////////////////////////////////////////////
+
+    const userId = req.user.id
+
+    const id =
+      Number(req.params.id)
+
+    ////////////////////////////////////////////////////////////
+
+    const anuncio =
+      await prisma.anuncio.findFirst({
+
+        where: {
+          id,
+          userId
+        }
+      })
+
+    ////////////////////////////////////////////////////////////
+
+    if (!anuncio) {
+
+      return res.status(404).json({
+        erro: "Anúncio não encontrado"
+      })
+    }
+
+    ////////////////////////////////////////////////////////////
+
     await prisma.anuncio.delete({
+
       where: {
-        id: Number(req.params.id)
+        id
       }
     })
+
+    ////////////////////////////////////////////////////////////
 
     res.json({
       mensagem: "Anúncio removido"
@@ -268,8 +470,8 @@ exports.delete = async (req, res) => {
 
     console.error(error)
 
-    res.status(404).json({
-      erro: "Anúncio não encontrado"
+    res.status(500).json({
+      erro: "Erro ao remover anúncio"
     })
   }
 }

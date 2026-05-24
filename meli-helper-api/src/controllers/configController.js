@@ -1,20 +1,39 @@
-const { setConfiguracao, getConfiguracao } = require("../services/anuncioService")
+const {
+  setConfiguracao,
+  getConfiguracao
+} = require("../services/anuncioService")
 
-// GET config
+////////////////////////////////////////////////////////////
+
+// GET
 exports.get = async (req, res) => {
-  const config = await getConfiguracao()
+
+  const config =
+    await getConfiguracao(req.user.id)
+
   res.json(config)
 }
 
-// POST config
-exports.set = async (req, res) => {
-  const { comissao, imposto, custoOperacional } = req.body
+////////////////////////////////////////////////////////////
 
-  const config = await setConfiguracao({
-    comissao,
+// POST
+exports.set = async (req, res) => {
+
+  const {
     imposto,
     custoOperacional
-  })
+  } = req.body
+
+  const config =
+    await setConfiguracao(
+
+      req.user.id,
+
+      {
+        imposto,
+        custoOperacional
+      }
+    )
 
   res.json(config)
 }

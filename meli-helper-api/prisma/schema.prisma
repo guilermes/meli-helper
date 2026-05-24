@@ -9,28 +9,56 @@ datasource db {
 }
 
 model User {
-  id    Int    @id @default(autoincrement())
-  email String @unique
-  senha String
+
+  id            Int      @id @default(autoincrement())
+
+  nome          String
+  nomeLoja      String
+
+  email         String   @unique
+  senha         String
+
+  nicho         String?
+  nivelSeller   String?
+
+  createdAt     DateTime @default(now())
+
+  anuncios      Anuncio[]
+  configuracao  Configuracao?
 }
 
 model Anuncio {
+
   id               Int     @id @default(autoincrement())
+
   idMercadoLivre   String?
+
   nome             String
   marca            String
+
   custo            Float
   precoVenda       Float
+
   frete            Float?
-  largura        Float?
-  altura         Float?
-  comprimento    Float?
-  peso           Float?
+
+  largura          Float?
+  altura           Float?
+  comprimento      Float?
+  peso             Float?
+
+  userId           Int
+
+  user             User @relation(fields: [userId], references: [id])
 }
 
 model Configuracao {
-  id                Int     @id @default(autoincrement())
-  comissao          Float
-  imposto           Float
-  custoOperacional  Float
+
+  id                 Int      @id @default(autoincrement())
+
+  imposto            Float
+  custoOperacional   Float
+
+  userId             Int      @unique
+
+  user               User @relation(fields: [userId], references: [id])
 }

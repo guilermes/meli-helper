@@ -1,11 +1,14 @@
-// 🔒 Auth
-if (!localStorage.getItem("token")) {
+// 🔒 AUTH
+const token =
+  localStorage.getItem("token")
+
+if (!token) {
   window.location.href = "index.html"
 }
 
 ////////////////////////////////////////////////////////////
 
-// 🔑 Headers
+// 🔑 HEADERS
 function getHeaders() {
 
   return {
@@ -13,97 +16,138 @@ function getHeaders() {
     "Content-Type": "application/json",
 
     Authorization:
-      "Bearer " + localStorage.getItem("token")
+      "Bearer " + token
   }
 }
 
 ////////////////////////////////////////////////////////////
 
-// 🔹 Buscar anúncios
+// 🔹 GET ANÚNCIOS
 async function getAnuncios() {
 
-  const res = await fetch(
-    "http://localhost:3000/anuncios?page=1&limit=999",
-    {
-      headers: getHeaders()
+  try {
+
+    const response =
+      await fetch(
+        "http://localhost:3000/anuncios?page=1&limit=999",
+        {
+          headers: getHeaders()
+        }
+      )
+
+    if (response.status === 401) {
+
+      logout()
+
+      return []
     }
-  )
 
-  if (res.status === 401) {
+    const data =
+      await response.json()
 
-    logout()
+    return data.data || []
+
+  }
+  catch (error) {
+
+    console.error(error)
 
     return []
   }
-
-  const data = await res.json()
-
-  return data.data
 }
 
 ////////////////////////////////////////////////////////////
 
-// 🔹 Carregar dashboard
+// 🔥 DASHBOARD
 async function carregarDashboard() {
 
-  const anuncios = await getAnuncios()
+  const anuncios =
+    await getAnuncios()
 
   ////////////////////////////////////////////////////////////
+  // TOTAL
 
-  // KPI TOTAL
   document.getElementById("kpiTotal").innerText =
     anuncios.length
 
   ////////////////////////////////////////////////////////////
+  // MÉDIAS
 
-  // KPI MÉDIA
-  let somaMargem = 0
-
-  anuncios.forEach(a => {
-
-    somaMargem += Number(a.margemLiquida || 0)
-  })
-
-  const media =
+  const mediaClassico =
     anuncios.length > 0
-      ? somaMargem / anuncios.length
+      ? anuncios.reduce(
+          (acc, item) =>
+            acc +
+            Number(item.margemClassico || 0),
+          0
+        ) / anuncios.length
       : 0
 
-  document.getElementById("kpiMargem").innerText =
-    `${media.toFixed(2)}%`
+  const mediaPremium =
+    anuncios.length > 0
+      ? anuncios.reduce(
+          (acc, item) =>
+            acc +
+            Number(item.margemPremium || 0),
+          0
+        ) / anuncios.length
+      : 0
+
+  ////////////////////////////////////////////////////////////
+  // RUINS / BONS
+
+  const ruinsPremium =
+    anuncios.filter(
+      a => Number(a.margemPremium || 0) < 10
+    ).length
+
+  const bonsPremium =
+    anuncios.filter(
+      a => Number(a.margemPremium || 0) >= 18
+    ).length
 
   ////////////////////////////////////////////////////////////
 
-  // KPI RUINS
-  const ruins =
-    anuncios.filter(a =>
-      a.margemLiquida < 10
-    )
+  document.getElementById("kpiMediaClassico").innerText =
+    `${mediaClassico.toFixed(2)}%`
+
+  document.getElementById("kpiMediaPremium").innerText =
+    `${mediaPremium.toFixed(2)}%`
 
   document.getElementById("kpiRuins").innerText =
-    ruins.length
-
-  ////////////////////////////////////////////////////////////
-
-  // KPI BONS
-  const bons =
-    anuncios.filter(a =>
-      a.margemLiquida >= 18
-    )
+    ruinsPremium
 
   document.getElementById("kpiBons").innerText =
-    bons.length
+    bonsPremium
+
+  ////////////////////////////////////////////////////////////
+  // FRETE MÉDIO
+
+  const freteTotal =
+    anuncios.length > 0
+      ? anuncios.reduce(
+          (acc, item) =>
+            acc +
+            Number(item.frete || 0),
+          0
+        ) / anuncios.length
+      : 0
+
+  document.getElementById("kpiFrete").innerText =
+    `R$ ${freteTotal.toFixed(2)}`
 
   ////////////////////////////////////////////////////////////
 
   gerarAlertas(anuncios)
 
   gerarRanking(anuncios)
+
+  gerarInsights(anuncios)
 }
 
 ////////////////////////////////////////////////////////////
 
-// 🔥 ALERTAS INTELIGENTES
+// 🔥 ALERTAS
 function gerarAlertas(anuncios) {
 
   const container =
@@ -113,21 +157,23 @@ function gerarAlertas(anuncios) {
 
   ////////////////////////////////////////////////////////////
 
-  const margemRuim =
-    anuncios.filter(a =>
-      a.margemLiquida < 10
+  const ruinsPremium =
+    anuncios.filter(
+      a => Number(a.margemPremium || 0) < 10
     )
 
-  if (margemRuim.length > 0) {
+  if (ruinsPremium.length > 0) {
 
     container.innerHTML += `
       <div class="alert alert-danger">
 
+        <i class="bi bi-exclamation-triangle-fill me-2"></i>
+
         <strong>
-          ${margemRuim.length} produtos
+          ${ruinsPremium.length} produtos
         </strong>
 
-        estão com margem abaixo de 10%.
+        possuem margem premium abaixo de 10%.
 
       </div>
     `
@@ -136,8 +182,10 @@ function gerarAlertas(anuncios) {
   ////////////////////////////////////////////////////////////
 
   const freteAlto =
-    anuncios.filter(a =>
-      a.frete > a.precoVenda * 0.25
+    anuncios.filter(
+      a =>
+        Number(a.frete || 0) >
+        Number(a.precoVenda || 0) * 0.25
     )
 
   if (freteAlto.length > 0) {
@@ -145,11 +193,13 @@ function gerarAlertas(anuncios) {
     container.innerHTML += `
       <div class="alert alert-warning">
 
+        <i class="bi bi-truck me-2"></i>
+
         <strong>
           ${freteAlto.length} produtos
         </strong>
 
-        possuem frete muito alto.
+        possuem frete acima de 25% do preço de venda.
 
       </div>
     `
@@ -157,23 +207,26 @@ function gerarAlertas(anuncios) {
 
   ////////////////////////////////////////////////////////////
 
-  const semDimensao =
-    anuncios.filter(a =>
-      !a.largura ||
-      !a.altura ||
-      !a.comprimento
+  const semMedidas =
+    anuncios.filter(
+      a =>
+        !a.largura ||
+        !a.altura ||
+        !a.comprimento
     )
 
-  if (semDimensao.length > 0) {
+  if (semMedidas.length > 0) {
 
     container.innerHTML += `
       <div class="alert alert-info">
 
+        <i class="bi bi-box-seam me-2"></i>
+
         <strong>
-          ${semDimensao.length} produtos
+          ${semMedidas.length} produtos
         </strong>
 
-        estão sem dimensões cadastradas.
+        estão sem dimensões completas.
 
       </div>
     `
@@ -185,6 +238,8 @@ function gerarAlertas(anuncios) {
 
     container.innerHTML = `
       <div class="alert alert-success">
+
+        <i class="bi bi-check-circle-fill me-2"></i>
 
         Nenhum alerta encontrado.
 
@@ -199,12 +254,14 @@ function gerarAlertas(anuncios) {
 function gerarRanking(anuncios) {
 
   const ranking =
-    anuncios.sort(
+    [...anuncios].sort(
       (a, b) =>
-        b.margemLiquida - a.margemLiquida
+        Number(b.margemPremium || 0) -
+        Number(a.margemPremium || 0)
     )
 
-  const top5 = ranking.slice(0, 5)
+  const top5 =
+    ranking.slice(0, 5)
 
   const tbody =
     document.getElementById("rankingBody")
@@ -225,9 +282,7 @@ function gerarRanking(anuncios) {
         </td>
 
         <td class="text-success fw-bold">
-
-          ${Number(a.margemLiquida).toFixed(2)}%
-
+          ${Number(a.margemPremium || 0).toFixed(2)}%
         </td>
 
       </tr>
@@ -237,7 +292,190 @@ function gerarRanking(anuncios) {
 
 ////////////////////////////////////////////////////////////
 
-// 🔹 Logout
+// 💡 INSIGHTS
+function gerarInsights(anuncios) {
+
+  const insights =
+    document.getElementById("insightsContainer")
+
+  insights.innerHTML = ""
+
+  ////////////////////////////////////////////////////////////
+
+  const ticketMedio =
+    anuncios.length > 0
+      ? anuncios.reduce(
+          (acc, item) =>
+            acc +
+            Number(item.precoVenda || 0),
+          0
+        ) / anuncios.length
+      : 0
+
+  insights.innerHTML += `
+    <li class="list-group-item">
+
+      <i class="bi bi-cash-stack text-success me-2"></i>
+
+      Ticket médio dos produtos:
+      <strong>
+        R$ ${ticketMedio.toFixed(2)}
+      </strong>
+
+    </li>
+  `
+
+  ////////////////////////////////////////////////////////////
+
+  const maisPesado =
+    [...anuncios].sort(
+      (a, b) =>
+        Number(b.pesoUtilizado || 0) -
+        Number(a.pesoUtilizado || 0)
+    )[0]
+
+  if (maisPesado) {
+
+    insights.innerHTML += `
+      <li class="list-group-item">
+
+        <i class="bi bi-box2-heart text-warning me-2"></i>
+
+        Produto mais pesado:
+        <strong>
+          ${maisPesado.nome}
+        </strong>
+
+        (${Number(maisPesado.pesoUtilizado || 0).toFixed(2)}kg)
+
+      </li>
+    `
+  }
+
+  ////////////////////////////////////////////////////////////
+
+  const melhor =
+    [...anuncios].sort(
+      (a, b) =>
+        Number(b.margemPremium || 0) -
+        Number(a.margemPremium || 0)
+    )[0]
+
+  if (melhor) {
+
+    insights.innerHTML += `
+      <li class="list-group-item">
+
+        <i class="bi bi-trophy-fill text-primary me-2"></i>
+
+        Melhor margem premium:
+        <strong>
+          ${melhor.nome}
+        </strong>
+
+        (${Number(melhor.margemPremium || 0).toFixed(2)}%)
+
+      </li>
+    `
+  }
+}
+
+////////////////////////////////////////////////////////////
+
+// 🚚 CALCULADORA DE FRETE
+async function calcularFreteRapido() {
+
+  const resultadoEl =
+    document.getElementById("resultadoFrete")
+
+  try {
+
+    const precoVenda =
+      Number(document.getElementById("calcPreco").value || 0)
+
+    const largura =
+      Number(document.getElementById("calcLargura").value || 0)
+
+    const altura =
+      Number(document.getElementById("calcAltura").value || 0)
+
+    const comprimento =
+      Number(document.getElementById("calcComprimento").value || 0)
+
+    const peso =
+      Number(document.getElementById("calcPeso").value || 0)
+
+    // Validação básica
+    if (!precoVenda || !peso || !largura || !altura || !comprimento) {
+
+      resultadoEl.innerHTML = `
+        <div class="alert alert-warning mb-0">
+          <i class="bi bi-exclamation-circle me-2"></i>
+          Preencha todos os campos antes de calcular.
+        </div>
+      `
+
+      return
+    }
+
+    resultadoEl.innerHTML = `
+      <div class="alert alert-secondary mb-0">
+        <i class="bi bi-hourglass-split me-2"></i>
+        Calculando...
+      </div>
+    `
+
+    const body = {
+      precoVenda,
+      largura,
+      altura,
+      comprimento,
+      peso
+    }
+
+    // ✅ Chama a API (porta 3000) que faz proxy para o frete-service (porta 4000)
+    // Evita CORS pois browser → API → microserviço (server to server)
+    const response =
+      await fetch(
+        "http://localhost:3000/anuncios/calcular-frete",
+        {
+          method: "POST",
+          headers: getHeaders(),
+          body: JSON.stringify(body)
+        }
+      )
+
+    if (!response.ok) {
+
+      throw new Error(`HTTP ${response.status}`)
+    }
+
+    const data =
+      await response.json()
+
+    resultadoEl.innerHTML = `
+      <div class="alert alert-success mb-0">
+        <strong>Frete estimado:</strong>
+        R$ ${Number(data.frete || 0).toFixed(2)}
+      </div>
+    `
+  }
+  catch (error) {
+
+    console.error(error)
+
+    resultadoEl.innerHTML = `
+      <div class="alert alert-danger mb-0">
+        <i class="bi bi-wifi-off me-2"></i>
+        Erro ao calcular frete. Verifique se a API está rodando.
+      </div>
+    `
+  }
+}
+
+////////////////////////////////////////////////////////////
+
+// 🔒 LOGOUT
 function logout() {
 
   localStorage.removeItem("token")
@@ -247,5 +485,5 @@ function logout() {
 
 ////////////////////////////////////////////////////////////
 
-// 🔥 INIT
+// 🚀 INIT
 carregarDashboard()

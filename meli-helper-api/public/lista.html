@@ -1,8 +1,12 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
+
   <meta charset="UTF-8">
-  <title>Lista</title>
+
+  <title>
+    Lista de Produtos
+  </title>
 
   <!-- Bootstrap -->
   <link
@@ -15,169 +19,143 @@
     href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css"
     rel="stylesheet"
   >
+
 </head>
 
 <body class="bg-light">
 
-  <!-- NAVBAR -->
-  <nav class="navbar navbar-dark bg-dark px-4 shadow-sm">
+<!-- NAVBAR -->
+<nav class="navbar navbar-dark bg-dark px-4 shadow-sm">
 
-    <span class="navbar-brand fw-bold">
-      <i class="bi bi-shop me-2"></i>
-      Meli Helper
-    </span>
+  <a
+    href="dashboard.html"
+    class="navbar-brand fw-bold d-flex align-items-center"
+  >
+    <i class="bi bi-shop me-2"></i>
+    Meli Helper
+  </a>
+
+  <div class="d-flex gap-2 flex-wrap">
+
+    <a
+      href="dashboard.html"
+      class="btn btn-outline-light btn-sm"
+    >
+      <i class="bi bi-speedometer2"></i>
+      Dashboard
+    </a>
+
+    <a
+      href="lista.html"
+      class="btn btn-outline-light btn-sm"
+    >
+      <i class="bi bi-list-ul"></i>
+      Produtos
+    </a>
+
+    <a
+      href="cadastro.html"
+      class="btn btn-outline-light btn-sm"
+    >
+      <i class="bi bi-plus-circle"></i>
+      Cadastro
+    </a>
+
+    <a
+      href="config.html"
+      class="btn btn-outline-light btn-sm"
+    >
+      <i class="bi bi-gear"></i>
+      Config
+    </a>
+
+    <a
+      href="http://localhost:3000/docs"
+      target="_blank"
+      class="btn btn-outline-info btn-sm"
+    >
+      <i class="bi bi-file-earmark-code"></i>
+      API
+    </a>
+
+    <button
+      onclick="logout()"
+      class="btn btn-danger btn-sm"
+    >
+      <i class="bi bi-box-arrow-right"></i>
+      Sair
+    </button>
+
+  </div>
+
+</nav>
+
+<!-- CONTAINER -->
+<div class="container-fluid px-4 mt-4">
+
+  <!-- TOPO -->
+  <div class="d-flex justify-content-between align-items-center mb-4">
+
+    <div>
+
+      <h3 class="fw-bold mb-0">
+        Lista de Produtos
+      </h3>
+
+      <small class="text-muted">
+        Gestão de anúncios Mercado Livre
+      </small>
+
+    </div>
 
     <div class="d-flex gap-2">
 
-      <a href="cadastro.html" class="btn btn-outline-light btn-sm">
-        <i class="bi bi-plus-circle"></i>
-        Cadastro
-      </a>
+      <input
+        type="text"
+        id="pesquisa"
+        class="form-control"
+        placeholder="Pesquisar..."
+        style="width: 300px;"
+      >
 
-      <a href="config.html" class="btn btn-outline-light btn-sm">
-        <i class="bi bi-gear"></i>
-        Config
-      </a>
-
-      <button onclick="logout()" class="btn btn-danger btn-sm">
-        <i class="bi bi-box-arrow-right"></i>
-        Sair
+      <button
+        onclick="buscarAnuncios()"
+        class="btn btn-primary"
+      >
+        <i class="bi bi-search"></i>
       </button>
 
     </div>
 
-  </nav>
+  </div>
 
-  <!-- CONTAINER -->
-  <div class="container mt-4">
+  <!-- KPIS -->
+  <div class="row g-3 mb-4">
 
-    <!-- HEADER -->
-    <div class="d-flex justify-content-between align-items-center mb-4">
+    <div class="col-lg-2 col-md-4">
 
-      <div>
+      <div class="card border-0 shadow-sm h-100">
 
-        <h3 class="mb-0 fw-semibold">
-          Lista de Anúncios
-        </h3>
+        <div class="card-body">
 
-        <small class="text-muted">
-          Gerencie seus produtos cadastrados
-        </small>
+          <div class="d-flex justify-content-between">
 
-      </div>
+            <div>
 
-      <div class="d-flex gap-2">
+              <small class="text-muted">
+                Produtos
+              </small>
 
-        <!-- 🔍 PESQUISA -->
-        <input
-          type="text"
-          id="pesquisa"
-          class="form-control"
-          placeholder="Pesquisar nome, marca ou SKU..."
-          style="width: 280px;"
-        >
+              <h3
+                id="kpiTotal"
+                class="fw-bold mb-0"
+              >
+                0
+              </h3>
 
-        <button onclick="buscarAnuncios()" class="btn btn-primary">
-          <i class="bi bi-arrow-clockwise"></i>
-          Atualizar
-        </button>
+            </div>
 
-      </div>
-
-    </div>
-
-    <!-- KPI CARDS -->
-    <div class="row mb-4">
-
-      <!-- TOTAL -->
-      <div class="col-md-3">
-
-        <div class="card border-0 shadow-sm h-100">
-
-          <div class="card-body">
-
-            <small class="text-muted">
-              Total de Produtos
-            </small>
-
-            <h3
-              id="kpiTotal"
-              class="fw-bold mb-0"
-            >
-              0
-            </h3>
-
-          </div>
-
-        </div>
-
-      </div>
-
-      <!-- MARGEM MÉDIA -->
-      <div class="col-md-3">
-
-        <div class="card border-0 shadow-sm h-100">
-
-          <div class="card-body">
-
-            <small class="text-muted">
-              Margem Média
-            </small>
-
-            <h3
-              id="kpiMargem"
-              class="fw-bold text-primary mb-0"
-            >
-              0%
-            </h3>
-
-          </div>
-
-        </div>
-
-      </div>
-
-      <!-- PRODUTOS RUINS -->
-      <div class="col-md-3">
-
-        <div class="card border-0 shadow-sm h-100">
-
-          <div class="card-body">
-
-            <small class="text-muted">
-              Margem Baixa
-            </small>
-
-            <h3
-              id="kpiRuins"
-              class="fw-bold text-danger mb-0"
-            >
-              0
-            </h3>
-
-          </div>
-
-        </div>
-
-      </div>
-
-      <!-- PRODUTOS BONS -->
-      <div class="col-md-3">
-
-        <div class="card border-0 shadow-sm h-100">
-
-          <div class="card-body">
-
-            <small class="text-muted">
-              Produtos Saudáveis
-            </small>
-
-            <h3
-              id="kpiBons"
-              class="fw-bold text-success mb-0"
-            >
-              0
-            </h3>
+            <i class="bi bi-box-seam fs-1 text-primary"></i>
 
           </div>
 
@@ -187,72 +165,164 @@
 
     </div>
 
-    <!-- TABELA -->
-    <div class="card shadow-sm border-0">
+    <div class="col-lg-2 col-md-4">
 
-      <div class="table-responsive">
+      <div class="card border-0 shadow-sm h-100">
 
-        <table
-          class="table table-hover align-middle mb-0"
-          id="tabela"
-        >
+        <div class="card-body">
 
-          <thead class="table-dark text-center">
+          <div class="d-flex justify-content-between">
 
-            <tr>
+            <div>
 
-              <th>ID</th>
-              <th>Nome</th>
-              <th>Marca</th>
+              <small class="text-muted">
+                Média Clássico
+              </small>
 
-              <th>L</th>
-              <th>A</th>
-              <th>C</th>
+              <h3
+                id="kpiMediaClassico"
+                class="fw-bold text-success mb-0"
+              >
+                0%
+              </h3>
 
-              <th>Peso</th>
-              <th>Peso Usado</th>
+            </div>
 
-              <th>Custo</th>
-              <th>Preço</th>
-              <th>Frete</th>
+            <i class="bi bi-graph-up-arrow fs-1 text-success"></i>
 
-              <th>Lucro</th>
-              <th>%</th>
+          </div>
 
-              <th>Ações</th>
-
-            </tr>
-
-          </thead>
-
-          <tbody class="text-center"></tbody>
-
-        </table>
+        </div>
 
       </div>
 
-      <!-- PAGINAÇÃO -->
-      <div class="d-flex justify-content-between align-items-center p-3 border-top">
+    </div>
 
-        <small id="infoPaginacao" class="text-muted">
-          Página 1
-        </small>
+    <div class="col-lg-2 col-md-4">
 
-        <div class="d-flex gap-2">
+      <div class="card border-0 shadow-sm h-100">
 
-          <button
-            id="btnAnterior"
-            class="btn btn-outline-secondary btn-sm"
-          >
-            Anterior
-          </button>
+        <div class="card-body">
 
-          <button
-            id="btnProximo"
-            class="btn btn-outline-secondary btn-sm"
-          >
-            Próximo
-          </button>
+          <div class="d-flex justify-content-between">
+
+            <div>
+
+              <small class="text-muted">
+                Média Premium
+              </small>
+
+              <h3
+                id="kpiMediaPremium"
+                class="fw-bold text-primary mb-0"
+              >
+                0%
+              </h3>
+
+            </div>
+
+            <i class="bi bi-stars fs-1 text-primary"></i>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+    <div class="col-lg-2 col-md-4">
+
+      <div class="card border-0 shadow-sm h-100">
+
+        <div class="card-body">
+
+          <div class="d-flex justify-content-between">
+
+            <div>
+
+              <small class="text-muted">
+                Média Geral
+              </small>
+
+              <h3
+                id="kpiMediaGeral"
+                class="fw-bold text-dark mb-0"
+              >
+                0%
+              </h3>
+
+            </div>
+
+            <i class="bi bi-pie-chart fs-1 text-dark"></i>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+    <div class="col-lg-2 col-md-4">
+
+      <div class="card border-0 shadow-sm h-100">
+
+        <div class="card-body">
+
+          <div class="d-flex justify-content-between">
+
+            <div>
+
+              <small class="text-muted">
+                Ruins Clássico
+              </small>
+
+              <h3
+                id="kpiRuinsClassico"
+                class="fw-bold text-danger mb-0"
+              >
+                0
+              </h3>
+
+            </div>
+
+            <i class="bi bi-exclamation-triangle fs-1 text-danger"></i>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+    <div class="col-lg-2 col-md-4">
+
+      <div class="card border-0 shadow-sm h-100">
+
+        <div class="card-body">
+
+          <div class="d-flex justify-content-between">
+
+            <div>
+
+              <small class="text-muted">
+                Ruins Premium
+              </small>
+
+              <h3
+                id="kpiRuinsPremium"
+                class="fw-bold text-warning mb-0"
+              >
+                0
+              </h3>
+
+            </div>
+
+            <i class="bi bi-x-octagon fs-1 text-warning"></i>
+
+          </div>
 
         </div>
 
@@ -262,64 +332,179 @@
 
   </div>
 
-  <!-- MODAL -->
-  <div class="modal fade" id="modal" tabindex="-1">
+  <!-- TABELA -->
+  <div class="card border-0 shadow-sm">
 
-    <div class="modal-dialog modal-lg">
+    <div class="table-responsive">
 
-      <div class="modal-content border-0 shadow">
+      <table
+        class="table table-hover align-middle mb-0"
+        id="tabela"
+      >
 
-        <!-- HEADER -->
-        <div class="modal-header bg-dark text-white">
+        <thead class="table-dark text-center align-middle">
 
-          <h5 class="modal-title">
+          <tr>
+
+            <th rowspan="2">ID</th>
+            <th rowspan="2">Produto</th>
+            <th rowspan="2">Marca</th>
+
+            <th rowspan="2">L</th>
+            <th rowspan="2">A</th>
+            <th rowspan="2">C</th>
+
+            <th rowspan="2">Peso</th>
+            <th rowspan="2">Peso Usado</th>
+
+            <th rowspan="2">Custo</th>
+            <th rowspan="2">Preço</th>
+            <th rowspan="2">Frete</th>
+
+            <th colspan="2" class="bg-success">
+              Clássico
+            </th>
+
+            <th colspan="2" class="bg-primary">
+              Premium
+            </th>
+
+            <th rowspan="2">
+              Ações
+            </th>
+
+          </tr>
+
+          <tr>
+
+            <th class="bg-success">
+              Lucro
+            </th>
+
+            <th class="bg-success">
+              %
+            </th>
+
+            <th class="bg-primary">
+              Lucro
+            </th>
+
+            <th class="bg-primary">
+              %
+            </th>
+
+          </tr>
+
+        </thead>
+
+        <tbody class="text-center"></tbody>
+
+      </table>
+
+    </div>
+
+    <!-- PAGINAÇÃO -->
+    <div class="d-flex justify-content-between align-items-center p-3 border-top">
+
+      <small
+        id="infoPaginacao"
+        class="text-muted"
+      >
+        Página 1
+      </small>
+
+      <div class="d-flex gap-2">
+
+        <button
+          id="btnAnterior"
+          class="btn btn-outline-secondary btn-sm"
+        >
+          Anterior
+        </button>
+
+        <button
+          id="btnProximo"
+          class="btn btn-outline-secondary btn-sm"
+        >
+          Próximo
+        </button>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
+
+<!-- MODAL -->
+<div class="modal fade" id="modal" tabindex="-1">
+
+  <div class="modal-dialog modal-xl modal-dialog-centered">
+
+    <div class="modal-content border-0 shadow-lg rounded-4 overflow-hidden">
+
+      <!-- HEADER -->
+      <div class="modal-header bg-dark text-white border-0 py-3 px-4">
+
+        <div>
+
+          <h4 class="modal-title fw-bold mb-0">
             <i class="bi bi-pencil-square me-2"></i>
-            Editar Anúncio
-          </h5>
+            Editar Produto
+          </h4>
 
-          <button
-            type="button"
-            class="btn-close btn-close-white"
-            onclick="fecharModal()"
-          ></button>
+          <small class="text-light opacity-75">
+            Atualize informações, medidas e custos
+          </small>
 
         </div>
 
-        <!-- BODY -->
-        <div class="modal-body">
+        <button
+          type="button"
+          class="btn-close btn-close-white"
+          onclick="fecharModal()"
+        ></button>
 
-          <!-- INFO -->
-          <div class="mb-4">
+      </div>
 
-            <h6 class="text-primary mb-3">
-              <i class="bi bi-info-circle"></i>
-              Informações
-            </h6>
+      <!-- BODY -->
+      <div class="modal-body p-4 bg-light">
+
+        <!-- INFORMAÇÕES -->
+        <div class="card border-0 shadow-sm rounded-4 mb-4">
+
+          <div class="card-body p-4">
+
+            <h5 class="fw-bold text-primary mb-4">
+              <i class="bi bi-info-circle me-2"></i>
+              Informações do Produto
+            </h5>
 
             <div class="row g-3">
 
               <div class="col-md-6">
 
-                <label class="form-label">
+                <label class="form-label fw-semibold">
                   Nome
                 </label>
 
                 <input
                   id="edit-nome"
-                  class="form-control"
+                  class="form-control form-control-lg"
                 >
 
               </div>
 
               <div class="col-md-6">
 
-                <label class="form-label">
+                <label class="form-label fw-semibold">
                   Marca
                 </label>
 
                 <input
                   id="edit-marca"
-                  class="form-control"
+                  class="form-control form-control-lg"
                 >
 
               </div>
@@ -328,65 +513,101 @@
 
           </div>
 
-          <!-- DIMENSÕES -->
-          <div class="mb-4">
+        </div>
 
-            <h6 class="text-warning mb-3">
-              <i class="bi bi-box"></i>
-              Dimensões
-            </h6>
+        <!-- DIMENSÕES -->
+        <div class="card border-0 shadow-sm rounded-4 mb-4">
+
+          <div class="card-body p-4">
+
+            <h5 class="fw-bold text-warning mb-4">
+              <i class="bi bi-box-seam me-2"></i>
+              Dimensões e Peso
+            </h5>
 
             <div class="row g-3">
 
               <div class="col-md-3">
 
-                <label class="form-label">
-                  Largura (cm)
+                <label class="form-label fw-semibold">
+                  Largura
                 </label>
 
-                <input
-                  id="edit-largura"
-                  class="form-control"
-                >
+                <div class="input-group">
+
+                  <input
+                    id="edit-largura"
+                    class="form-control form-control-lg"
+                  >
+
+                  <span class="input-group-text">
+                    cm
+                  </span>
+
+                </div>
 
               </div>
 
               <div class="col-md-3">
 
-                <label class="form-label">
-                  Altura (cm)
+                <label class="form-label fw-semibold">
+                  Altura
                 </label>
 
-                <input
-                  id="edit-altura"
-                  class="form-control"
-                >
+                <div class="input-group">
+
+                  <input
+                    id="edit-altura"
+                    class="form-control form-control-lg"
+                  >
+
+                  <span class="input-group-text">
+                    cm
+                  </span>
+
+                </div>
 
               </div>
 
               <div class="col-md-3">
 
-                <label class="form-label">
-                  Comprimento (cm)
+                <label class="form-label fw-semibold">
+                  Comprimento
                 </label>
 
-                <input
-                  id="edit-comprimento"
-                  class="form-control"
-                >
+                <div class="input-group">
+
+                  <input
+                    id="edit-comprimento"
+                    class="form-control form-control-lg"
+                  >
+
+                  <span class="input-group-text">
+                    cm
+                  </span>
+
+                </div>
 
               </div>
 
               <div class="col-md-3">
 
-                <label class="form-label">
-                  Peso (kg)
+                <label class="form-label fw-semibold">
+                  Peso
                 </label>
 
-                <input
-                  id="edit-peso"
-                  class="form-control"
-                >
+                <div class="input-group">
+
+                  <input
+                    id="edit-peso"
+                    class="form-control form-control-lg"
+                  >
+
+                  <span class="input-group-text">
+                    kg
+                  </span>
+
+                </div>
 
               </div>
 
@@ -394,19 +615,23 @@
 
           </div>
 
-          <!-- VALORES -->
-          <div>
+        </div>
 
-            <h6 class="text-success mb-3">
-              <i class="bi bi-cash-stack"></i>
-              Valores
-            </h6>
+        <!-- VALORES -->
+        <div class="card border-0 shadow-sm rounded-4">
+
+          <div class="card-body p-4">
+
+            <h5 class="fw-bold text-success mb-4">
+              <i class="bi bi-cash-stack me-2"></i>
+              Valores Financeiros
+            </h5>
 
             <div class="row g-3">
 
               <div class="col-md-4">
 
-                <label class="form-label">
+                <label class="form-label fw-semibold">
                   Custo
                 </label>
 
@@ -418,7 +643,7 @@
 
                   <input
                     id="edit-custo"
-                    class="form-control"
+                    class="form-control form-control-lg"
                   >
 
                 </div>
@@ -427,7 +652,7 @@
 
               <div class="col-md-4">
 
-                <label class="form-label">
+                <label class="form-label fw-semibold">
                   Preço de Venda
                 </label>
 
@@ -439,7 +664,7 @@
 
                   <input
                     id="edit-preco"
-                    class="form-control"
+                    class="form-control form-control-lg"
                   >
 
                 </div>
@@ -448,7 +673,7 @@
 
               <div class="col-md-4">
 
-                <label class="form-label">
+                <label class="form-label fw-semibold">
                   Frete
                 </label>
 
@@ -460,7 +685,7 @@
 
                   <input
                     id="edit-frete"
-                    class="form-control"
+                    class="form-control form-control-lg"
                   >
 
                 </div>
@@ -473,25 +698,25 @@
 
         </div>
 
-        <!-- FOOTER -->
-        <div class="modal-footer">
+      </div>
 
-          <button
-            class="btn btn-outline-secondary"
-            onclick="fecharModal()"
-          >
-            Cancelar
-          </button>
+      <!-- FOOTER -->
+      <div class="modal-footer bg-white border-0 p-4">
 
-          <button
-            class="btn btn-success"
-            onclick="salvarModal()"
-          >
-            <i class="bi bi-check-lg"></i>
-            Salvar Alterações
-          </button>
+        <button
+          class="btn btn-light border px-4 py-2"
+          onclick="fecharModal()"
+        >
+          Cancelar
+        </button>
 
-        </div>
+        <button
+          class="btn btn-success px-4 py-2 fw-semibold"
+          onclick="salvarModal()"
+        >
+          <i class="bi bi-check-lg me-2"></i>
+          Salvar Alterações
+        </button>
 
       </div>
 
@@ -499,11 +724,12 @@
 
   </div>
 
-  <!-- Bootstrap JS -->
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</div>
 
-  <script src="js/api.js"></script>
-  <script src="js/lista.js"></script>
+<!-- Bootstrap -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+<script src="js/lista.js"></script>
 
 </body>
 </html>
