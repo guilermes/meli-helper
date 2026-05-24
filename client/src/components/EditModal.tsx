@@ -124,7 +124,7 @@ export function ProductEditModal({ opened, onClose, product, onSave }: ProductEd
       label="Preço Venda"
       prefix="R$ "
       decimalScale={2}
-      value={editedProduct.precoVenda} {/* 🌟 Atualizado */}
+      value={editedProduct.precoVenda}
       onChange={(val) => handleChange('precoVenda', typeof val === 'number' ? val : 0)}
     />
   </Grid.Col>
@@ -133,7 +133,7 @@ export function ProductEditModal({ opened, onClose, product, onSave }: ProductEd
       label="Frete"
       prefix="R$ "
       decimalScale={2}
-      value={editedProduct.freteCalculado} {/* 🌟 Atualizado */}
+      value={editedProduct.freteCalculado}
       onChange={(val) => handleChange('freteCalculado', typeof val === 'number' ? val : 0)}
     />
   </Grid.Col>
