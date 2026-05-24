@@ -5,7 +5,7 @@
 /* VARIÁVEIS DE COR DO TEMA - SOFT LIGHT (Gentil para os olhos) */
 :root {
   /* Fundo principal ligeiramente acinzentado/quente para quebrar o brilho do branco */
-  --bg-primary: #f8fafc;       /* Slate 50 - Extremamente suave */
+  --bg-primary: #a1a1a1;       /* Slate 50 - Extremamente suave */
   
   /* Fundo secundário para Cards, Navbar e Sidebar (Branco puro para dar contraste sutil sobre o fundo) */
   --bg-secondary: #ffffff;     
