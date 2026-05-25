@@ -227,7 +227,11 @@ exports.login = async (req, res) => {
     })
   }
 
-  catch (error) {
+  const token = jwt.sign(
+    { id: user.id, email: user.email },
+    SECRET,
+    { expiresIn: "1h" }
+  )
 
     console.error(error)
 
