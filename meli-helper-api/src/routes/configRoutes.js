@@ -1,6 +1,13 @@
 const express = require("express")
 const router = express.Router()
-const controller = require("../controllers/configController")
+
+const controller =
+  require("../controllers/configController")
+
+const authMiddleware =
+  require("../middlewares/authMiddleware")
+
+////////////////////////////////////////////////////////////
 
 /**
  * @swagger
@@ -9,11 +16,13 @@ const controller = require("../controllers/configController")
  *   description: Regras de precificação do sistema
  */
 
+////////////////////////////////////////////////////////////
+
 /**
  * @swagger
  * /config:
  *   get:
- *     summary: Retorna a configuração atual de precificação
+ *     summary: Retorna a configuração do usuário logado
  *     tags: [Configuração]
  *     security:
  *       - bearerAuth: []
@@ -25,46 +34,73 @@ const controller = require("../controllers/configController")
  *             schema:
  *               type: object
  *               properties:
- *                 comissao:
- *                   type: number
- *                   example: 12
  *                 imposto:
  *                   type: number
  *                   example: 8
+ *
  *                 custoOperacional:
  *                   type: number
  *                   example: 5
+ *
+ *                 userId:
+ *                   type: integer
+ *                   example: 1
+ *
+ *       401:
+ *         description: Token inválido ou não enviado
  */
-router.get("/", controller.get)
+
+// 🔒 ROTA PROTEGIDA
+router.get(
+  "/",
+  authMiddleware,
+  controller.get
+)
+
+////////////////////////////////////////////////////////////
 
 /**
  * @swagger
  * /config:
  *   post:
- *     summary: Define ou atualiza a configuração de precificação
+ *     summary: Salva a configuração do usuário logado
  *     tags: [Configuração]
  *     security:
  *       - bearerAuth: []
+ *
  *     requestBody:
  *       required: true
+ *
  *       content:
  *         application/json:
  *           schema:
  *             type: object
+ *
  *             properties:
- *               comissao:
- *                 type: number
- *                 example: 12
+ *
  *               imposto:
  *                 type: number
  *                 example: 8
+ *
  *               custoOperacional:
  *                 type: number
  *                 example: 5
+ *
  *     responses:
  *       200:
- *         description: Configuração salva com sucesso
+ *         description: Configuração salva
+ *
+ *       401:
+ *         description: Token inválido ou não enviado
  */
-router.post("/", controller.set)
+
+// 🔒 ROTA PROTEGIDA
+router.post(
+  "/",
+  authMiddleware,
+  controller.set
+)
+
+////////////////////////////////////////////////////////////
 
 module.exports = router

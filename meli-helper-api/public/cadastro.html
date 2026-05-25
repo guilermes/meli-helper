@@ -13,24 +13,79 @@
 
 <body class="bg-light">
 
-  <!-- NAVBAR -->
-  <nav class="navbar navbar-dark bg-dark px-4 shadow-sm">
-    <span class="navbar-brand fw-bold">
-      <i class="bi bi-shop me-2"></i>Meli Helper
-    </span>
+  <!-- NAVBAR PADRÃO -->
+<nav class="navbar navbar-dark bg-dark px-4 shadow-sm">
 
-    <div class="d-flex gap-2">
-      <a href="lista.html" class="btn btn-outline-light btn-sm">
-        <i class="bi bi-list"></i> Lista
-      </a>
-      <a href="config.html" class="btn btn-outline-light btn-sm">
-        <i class="bi bi-gear"></i> Config
-      </a>
-      <button onclick="logout()" class="btn btn-danger btn-sm">
-        <i class="bi bi-box-arrow-right"></i> Sair
-      </button>
-    </div>
-  </nav>
+  <!-- LOGO -->
+  <a
+    href="dashboard.html"
+    class="navbar-brand fw-bold d-flex align-items-center"
+  >
+    <i class="bi bi-shop me-2"></i>
+    Meli Helper
+  </a>
+
+  <!-- MENU -->
+  <div class="d-flex gap-2 flex-wrap">
+
+    <!-- DASHBOARD -->
+    <a
+      href="dashboard.html"
+      class="btn btn-outline-light btn-sm"
+    >
+      <i class="bi bi-speedometer2"></i>
+      Dashboard
+    </a>
+
+    <!-- LISTA -->
+    <a
+      href="lista.html"
+      class="btn btn-outline-light btn-sm"
+    >
+      <i class="bi bi-list-ul"></i>
+      Produtos
+    </a>
+
+    <!-- CADASTRO -->
+    <a
+      href="cadastro.html"
+      class="btn btn-outline-light btn-sm"
+    >
+      <i class="bi bi-plus-circle"></i>
+      Cadastro
+    </a>
+
+    <!-- CONFIG -->
+    <a
+      href="config.html"
+      class="btn btn-outline-light btn-sm"
+    >
+      <i class="bi bi-gear"></i>
+      Config
+    </a>
+
+    <!-- SWAGGER -->
+    <a
+      href="http://localhost:3000/docs"
+      target="_blank"
+      class="btn btn-outline-info btn-sm"
+    >
+      <i class="bi bi-file-earmark-code"></i>
+      API
+    </a>
+
+    <!-- LOGOUT -->
+    <button
+      onclick="logout()"
+      class="btn btn-danger btn-sm"
+    >
+      <i class="bi bi-box-arrow-right"></i>
+      Sair
+    </button>
+
+  </div>
+
+</nav>
 
   <!-- CONTAINER -->
   <div class="container mt-5">

@@ -1,21 +1,44 @@
-// 🔒 Verifica login
+// 🔒 VERIFICA LOGIN
 if (!localStorage.getItem("token")) {
   window.location.href = "index.html"
 }
 
-// 🔑 Headers com JWT
+////////////////////////////////////////////////////////////
+
+// 🔑 HEADERS
 function getHeaders() {
+
   return {
     "Content-Type": "application/json",
-    Authorization: "Bearer " + localStorage.getItem("token")
+
+    Authorization:
+      "Bearer " +
+      localStorage.getItem("token")
   }
 }
 
-// 🔹 Mostrar mensagem temporária
+////////////////////////////////////////////////////////////
+
+// 🔹 LOGOUT
+function logout() {
+
+  localStorage.removeItem("token")
+
+  window.location.href = "index.html"
+}
+
+////////////////////////////////////////////////////////////
+
+// 🔹 MENSAGEM
 let timeoutId
 
-function mostrarMensagem(texto, cor = "green") {
-  const msg = document.getElementById("msg")
+function mostrarMensagem(
+  texto,
+  cor = "green"
+) {
+
+  const msg =
+    document.getElementById("msg")
 
   if (!msg) return
 
@@ -26,23 +49,23 @@ function mostrarMensagem(texto, cor = "green") {
 
   timeoutId = setTimeout(() => {
     msg.textContent = ""
-  }, 2000)
-}
-
-// 🔹 Logout automático
-function logout() {
-  localStorage.removeItem("token")
-  window.location.href = "index.html"
+  }, 2500)
 }
 
 ////////////////////////////////////////////////////////////
 
-// 🔹 Buscar configuração da API
+// 🔹 CARREGAR CONFIG
 async function carregarConfiguracao() {
+
   try {
-    const res = await fetch("http://localhost:3000/config", {
-      headers: getHeaders()
-    })
+
+    const res =
+      await fetch(
+        "http://localhost:3000/config",
+        {
+          headers: getHeaders()
+        }
+      )
 
     if (res.status === 401) {
       logout()
@@ -51,62 +74,121 @@ async function carregarConfiguracao() {
 
     const data = await res.json()
 
-    document.getElementById("confComissao").textContent = data.comissao ?? 0
-    document.getElementById("confImposto").textContent = data.imposto ?? 0
-    document.getElementById("confCusto").textContent = data.custoOperacional ?? 0
+    ////////////////////////////////////////////////////////
+    // INPUTS
 
-  } catch (error) {
+    document.getElementById("imposto").value =
+      data.imposto ?? 0
+
+    document.getElementById("custoOperacional").value =
+      data.custoOperacional ?? 0
+
+    ////////////////////////////////////////////////////////
+    // RESUMO
+
+    document.getElementById("confImposto").textContent =
+      data.imposto ?? 0
+
+    document.getElementById("confCusto").textContent =
+      Number(
+        data.custoOperacional ?? 0
+      ).toFixed(2)
+
+  }
+  catch (error) {
+
     console.error(error)
-    mostrarMensagem("Erro ao carregar configuração", "red")
+
+    mostrarMensagem(
+      "Erro ao carregar configuração",
+      "red"
+    )
   }
 }
 
 ////////////////////////////////////////////////////////////
 
-// 🔹 Capturar formulário
-const form = document.getElementById("formConfig")
+// 🔹 FORM
+const form =
+  document.getElementById("formConfig")
 
 if (form) {
-  form.addEventListener("submit", async (e) => {
-    e.preventDefault()
 
-    try {
-      const data = {
-        comissao: Number(document.getElementById("comissao").value) || 0,
-        imposto: Number(document.getElementById("imposto").value) || 0,
-        custoOperacional: Number(document.getElementById("custoOperacional").value) || 0
+  form.addEventListener(
+    "submit",
+
+    async (e) => {
+
+      e.preventDefault()
+
+      try {
+
+        ////////////////////////////////////////////////////
+        // BODY
+
+        const data = {
+
+          imposto: Number(
+            document
+              .getElementById("imposto")
+              .value
+          ) || 0,
+
+          custoOperacional: Number(
+            document
+              .getElementById("custoOperacional")
+              .value
+          ) || 0
+        }
+
+        ////////////////////////////////////////////////////
+        // REQUEST
+
+        const res =
+          await fetch(
+            "http://localhost:3000/config",
+            {
+              method: "POST",
+
+              headers: getHeaders(),
+
+              body: JSON.stringify(data)
+            }
+          )
+
+        if (res.status === 401) {
+          logout()
+          return
+        }
+
+        if (!res.ok) {
+          throw new Error()
+        }
+
+        ////////////////////////////////////////////////////
+        // SUCESSO
+
+        mostrarMensagem(
+          "Configuração salva com sucesso!"
+        )
+
+        carregarConfiguracao()
+
       }
+      catch (error) {
 
-      const res = await fetch("http://localhost:3000/config", {
-        method: "POST",
-        headers: getHeaders(),
-        body: JSON.stringify(data)
-      })
+        console.error(error)
 
-      if (res.status === 401) {
-        logout()
-        return
+        mostrarMensagem(
+          "Erro ao salvar configuração",
+          "red"
+        )
       }
-
-      if (!res.ok) {
-        throw new Error("Erro ao salvar")
-      }
-
-      mostrarMensagem("Configuração salva com sucesso!")
-
-      // 🔥 Atualiza os valores exibidos
-      carregarConfiguracao()
-
-      form.reset()
-
-    } catch (error) {
-      console.error(error)
-      mostrarMensagem("Erro ao salvar configuração", "red")
     }
-  })
+  )
 }
 
 ////////////////////////////////////////////////////////////
 
-// 🔥 Carrega ao abrir
+// 🔥 INIT
 carregarConfiguracao()
