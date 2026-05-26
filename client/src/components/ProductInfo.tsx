@@ -1,6 +1,6 @@
 // src/components/productForm/InfoSection.tsx
 import { Grid, TextInput, Text } from '@mantine/core';
-import { ProductFormData } from '../../pages/ProductCreate';
+import { ProductFormData } from '../pages/ProductCreate';
 
 interface InfoSectionProps {
   data: ProductFormData;
