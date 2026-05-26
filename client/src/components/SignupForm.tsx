@@ -10,14 +10,16 @@ import {
   Stack,
   Text
 } from '@mantine/core';
+import { useNavigate } from 'react-router-dom';
+import api from '../services/api';
 
-export default function Signup() {
-  // Estados para controlar os campos do formulário
+export default function SignupForm() {
+  const navigate = useNavigate();
+
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   
-  // Estados para gerenciar feedback visual
   const [loading, setLoading] = useState(false);
   const [erro, setErro] = useState('');
 
@@ -25,7 +27,6 @@ export default function Signup() {
     e.preventDefault();
     setErro('');
 
-    // Validação básica: as senhas precisam ser idênticas
     if (password !== confirmPassword) {
       setErro('As senhas não coincidem. Verifique e tente novamente.');
       return;
@@ -33,14 +34,26 @@ export default function Signup() {
 
     setLoading(true);
 
-    // Aqui entrará a chamada de criação de usuário do seu backend (ex: POST /api/signup)
-    console.log('Criando conta com:', { email, password });
+    try {
+      // O Axios já faz o JSON.stringify() por baixo dos panos e envia para baseURL + '/register'
+      const response = await api.post('/register', { email, password });
 
-    // Simulando o tempo de resposta do servidor
-    setTimeout(() => {
+      console.log('Usuário criado com sucesso:', response.data);
+      
+      // Redireciona para o login após o sucesso
+      navigate('/login'); 
+      
+    } catch (err: any) {
+      // O Axios armazena a resposta do servidor em err.response
+      if (err.response && err.response.data) {
+        // Captura a mensagem de erro que você configurou no backend (ex: res.status(400).json({ message: "..." }))
+        setErro(err.response.data.message || 'Erro ao realizar o cadastro.');
+      } else {
+        setErro('Não foi possível conectar ao servidor. Verifique sua conexão.');
+      }
+    } finally {
       setLoading(false);
-      // Aqui você poderia redirecionar o usuário para o /login usando o useNavigate() do React Router
-    }, 1500);
+    }
   };
 
   return (
@@ -79,13 +92,11 @@ export default function Signup() {
               label="Confirmar Senha"
               placeholder="Repita a senha anterior"
               required
-              // O Mantine aceita uma prop de erro integrada. Se houver erro, o input fica vermelho automaticamente!
               error={!!erro} 
               value={confirmPassword}
               onChange={(event) => setConfirmPassword(event.currentTarget.value)}
             />
 
-            {/* Mensagem de erro amigável caso as senhas estejam diferentes */}
             {erro && (
               <Text c="red.4" size="sm" fw={500} ta="center">
                 {erro}
