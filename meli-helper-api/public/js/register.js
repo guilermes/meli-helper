@@ -6,9 +6,48 @@ const msg =
 
 ///////////////////////////////////////////////////////////
 
+function toggleSenha(inputId, btn) {
+
+  const input =
+    document.getElementById(inputId)
+
+  const icon =
+    btn.querySelector("i")
+
+  if (input.type === "password") {
+
+    input.type = "text"
+    icon.className = "bi bi-eye-slash"
+  }
+  else {
+
+    input.type = "password"
+    icon.className = "bi bi-eye"
+  }
+}
+
+///////////////////////////////////////////////////////////
+
 form.addEventListener("submit", async (e) => {
 
   e.preventDefault()
+
+  const senha =
+    document.getElementById("senha").value
+
+  const confirmarSenha =
+    document.getElementById("confirmarSenha").value
+
+  if (senha !== confirmarSenha) {
+
+    msg.className =
+      "text-danger text-center mt-3 fw-semibold"
+
+    msg.innerText =
+      "As senhas não coincidem"
+
+    return
+  }
 
   /////////////////////////////////////////////////////////
 
@@ -23,8 +62,9 @@ form.addEventListener("submit", async (e) => {
     email:
       document.getElementById("email").value,
 
-    senha:
-      document.getElementById("senha").value,
+    senha,
+
+    confirmarSenha,
 
     nicho:
       document.getElementById("nicho").value,

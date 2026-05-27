@@ -5,6 +5,9 @@ const router = express.Router()
 const controller =
   require("../controllers/authController")
 
+const auth =
+  require("../middlewares/authMiddleware")
+
 ///////////////////////////////////////////////////////////
 
 /**
@@ -79,6 +82,11 @@ router.post("/register", controller.register)
  *         description: Login realizado
  */
 router.post("/login", controller.login)
+
+///////////////////////////////////////////////////////////
+
+router.get("/profile", auth, controller.getProfile)
+router.put("/profile", auth, controller.updateProfile)
 
 ///////////////////////////////////////////////////////////
 

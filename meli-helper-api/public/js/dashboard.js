@@ -74,23 +74,27 @@ async function carregarDashboard() {
   // MÉDIAS
 
   const mediaClassico =
-    anuncios.length > 0
-      ? anuncios.reduce(
-          (acc, item) =>
-            acc +
-            Number(item.margemClassico || 0),
-          0
-        ) / anuncios.length
+    anuncios.filter(a => a.tipoAnuncio === "CLASSICO").length > 0
+      ? anuncios
+          .filter(a => a.tipoAnuncio === "CLASSICO")
+          .reduce(
+            (acc, item) =>
+              acc + Number(item.margem || 0),
+            0
+          ) /
+        anuncios.filter(a => a.tipoAnuncio === "CLASSICO").length
       : 0
 
   const mediaPremium =
-    anuncios.length > 0
-      ? anuncios.reduce(
-          (acc, item) =>
-            acc +
-            Number(item.margemPremium || 0),
-          0
-        ) / anuncios.length
+    anuncios.filter(a => a.tipoAnuncio === "PREMIUM").length > 0
+      ? anuncios
+          .filter(a => a.tipoAnuncio === "PREMIUM")
+          .reduce(
+            (acc, item) =>
+              acc + Number(item.margem || 0),
+            0
+          ) /
+        anuncios.filter(a => a.tipoAnuncio === "PREMIUM").length
       : 0
 
   ////////////////////////////////////////////////////////////
@@ -98,12 +102,16 @@ async function carregarDashboard() {
 
   const ruinsPremium =
     anuncios.filter(
-      a => Number(a.margemPremium || 0) < 10
+      a =>
+        a.tipoAnuncio === "PREMIUM" &&
+        Number(a.margem || 0) < 10
     ).length
 
   const bonsPremium =
     anuncios.filter(
-      a => Number(a.margemPremium || 0) >= 18
+      a =>
+        a.tipoAnuncio === "PREMIUM" &&
+        Number(a.margem || 0) >= 18
     ).length
 
   ////////////////////////////////////////////////////////////
@@ -159,7 +167,9 @@ function gerarAlertas(anuncios) {
 
   const ruinsPremium =
     anuncios.filter(
-      a => Number(a.margemPremium || 0) < 10
+      a =>
+        a.tipoAnuncio === "PREMIUM" &&
+        Number(a.margem || 0) < 10
     )
 
   if (ruinsPremium.length > 0) {
@@ -256,8 +266,8 @@ function gerarRanking(anuncios) {
   const ranking =
     [...anuncios].sort(
       (a, b) =>
-        Number(b.margemPremium || 0) -
-        Number(a.margemPremium || 0)
+        Number(b.margem || 0) -
+        Number(a.margem || 0)
     )
 
   const top5 =
@@ -282,7 +292,7 @@ function gerarRanking(anuncios) {
         </td>
 
         <td class="text-success fw-bold">
-          ${Number(a.margemPremium || 0).toFixed(2)}%
+          ${Number(a.margem || 0).toFixed(2)}%
         </td>
 
       </tr>
@@ -357,8 +367,8 @@ function gerarInsights(anuncios) {
   const melhor =
     [...anuncios].sort(
       (a, b) =>
-        Number(b.margemPremium || 0) -
-        Number(a.margemPremium || 0)
+        Number(b.margem || 0) -
+        Number(a.margem || 0)
     )[0]
 
   if (melhor) {
@@ -368,12 +378,12 @@ function gerarInsights(anuncios) {
 
         <i class="bi bi-trophy-fill text-primary me-2"></i>
 
-        Melhor margem premium:
+        Melhor margem:
         <strong>
           ${melhor.nome}
         </strong>
 
-        (${Number(melhor.margemPremium || 0).toFixed(2)}%)
+        (${Number(melhor.margem || 0).toFixed(2)}%)
 
       </li>
     `

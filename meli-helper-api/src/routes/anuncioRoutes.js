@@ -146,6 +146,10 @@ router.get("/:id", auth, controller.getById)
  *               marca:
  *                 type: string
  *                 example: JBL
+ *               tipoAnuncio:
+ *                 type: string
+ *                 enum: [CLASSICO, PREMIUM]
+ *                 example: CLASSICO
  *               custo:
  *                 type: number
  *                 example: 50
@@ -197,6 +201,10 @@ router.post("/", auth, controller.create)
  *               marca:
  *                 type: string
  *                 example: Samsung
+ *               tipoAnuncio:
+ *                 type: string
+ *                 enum: [CLASSICO, PREMIUM]
+ *                 example: PREMIUM
  *               custo:
  *                 type: number
  *                 example: 60

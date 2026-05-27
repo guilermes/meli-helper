@@ -165,13 +165,13 @@ async function calcularValores(
     calcularPesoUtilizado(anuncio)
 
   ////////////////////////////////////////////////////////
-  // 🔥 COMISSÕES FIXAS ML
+  // 🔥 COMISSÃO ML (conforme tipo do anúncio)
 
-  const comissaoClassico =
-    anuncio.precoVenda * 0.12
+  const taxaComissao =
+    anuncio.tipoAnuncio === "PREMIUM" ? 0.18 : 0.12
 
-  const comissaoPremium =
-    anuncio.precoVenda * 0.18
+  const comissao =
+    anuncio.precoVenda * taxaComissao
 
   ////////////////////////////////////////////////////////
   // 🔥 IMPOSTO
@@ -181,32 +181,18 @@ async function calcularValores(
     anuncio.precoVenda
 
   ////////////////////////////////////////////////////////
-  // 🔥 LUCRO CLÁSSICO
+  // 🔥 LUCRO
 
-  const lucroClassico =
+  const lucro =
     anuncio.precoVenda -
     anuncio.custo -
     frete -
     impostoValor -
     config.custoOperacional -
-    comissaoClassico
+    comissao
 
-  const margemClassico =
-    (lucroClassico / anuncio.precoVenda) * 100
-
-  ////////////////////////////////////////////////////////
-  // 🔥 LUCRO PREMIUM
-
-  const lucroPremium =
-    anuncio.precoVenda -
-    anuncio.custo -
-    frete -
-    impostoValor -
-    config.custoOperacional -
-    comissaoPremium
-
-  const margemPremium =
-    (lucroPremium / anuncio.precoVenda) * 100
+  const margem =
+    (lucro / anuncio.precoVenda) * 100
 
   ////////////////////////////////////////////////////////
 
@@ -217,23 +203,11 @@ async function calcularValores(
     pesoUtilizado:
       Number(pesoUtilizado.toFixed(2)),
 
-    //////////////////////////////////////////////////////
-    // CLÁSSICO
+    lucro:
+      Number(lucro.toFixed(2)),
 
-    lucroClassico:
-      Number(lucroClassico.toFixed(2)),
-
-    margemClassico:
-      Number(margemClassico.toFixed(2)),
-
-    //////////////////////////////////////////////////////
-    // PREMIUM
-
-    lucroPremium:
-      Number(lucroPremium.toFixed(2)),
-
-    margemPremium:
-      Number(margemPremium.toFixed(2))
+    margem:
+      Number(margem.toFixed(2))
   }
 }
 

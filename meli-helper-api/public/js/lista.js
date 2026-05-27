@@ -73,6 +73,18 @@ function getClasseMargem(valor) {
   return "text-success"
 }
 
+function labelTipo(tipo) {
+
+  return tipo === "PREMIUM" ? "Premium" : "Clássico"
+}
+
+function badgeTipo(tipo) {
+
+  return tipo === "PREMIUM"
+    ? "bg-primary"
+    : "bg-success"
+}
+
 ////////////////////////////////////////////////////////////
 
 // 🔥 BUSCAR
@@ -98,36 +110,50 @@ async function buscarAnuncios() {
       resposta.pagination.total || 0
 
     const mediaClassico =
-      dados.length > 0
-        ? dados.reduce(
-            (acc, item) =>
-              acc +
-              Number(item.margemClassico || 0),
-            0
-          ) / dados.length
+      dados.filter(a => a.tipoAnuncio === "CLASSICO").length > 0
+        ? dados
+            .filter(a => a.tipoAnuncio === "CLASSICO")
+            .reduce(
+              (acc, item) =>
+                acc + Number(item.margem || 0),
+              0
+            ) /
+          dados.filter(a => a.tipoAnuncio === "CLASSICO").length
         : 0
 
     const mediaPremium =
+      dados.filter(a => a.tipoAnuncio === "PREMIUM").length > 0
+        ? dados
+            .filter(a => a.tipoAnuncio === "PREMIUM")
+            .reduce(
+              (acc, item) =>
+                acc + Number(item.margem || 0),
+              0
+            ) /
+          dados.filter(a => a.tipoAnuncio === "PREMIUM").length
+        : 0
+
+    const mediaGeral =
       dados.length > 0
         ? dados.reduce(
             (acc, item) =>
-              acc +
-              Number(item.margemPremium || 0),
+              acc + Number(item.margem || 0),
             0
           ) / dados.length
         : 0
 
-    const mediaGeral =
-      (mediaClassico + mediaPremium) / 2
-
     const ruinsClassico =
       dados.filter(
-        a => Number(a.margemClassico || 0) < 10
+        a =>
+          a.tipoAnuncio === "CLASSICO" &&
+          Number(a.margem || 0) < 10
       ).length
 
     const ruinsPremium =
       dados.filter(
-        a => Number(a.margemPremium || 0) < 10
+        a =>
+          a.tipoAnuncio === "PREMIUM" &&
+          Number(a.margem || 0) < 10
       ).length
 
     ////////////////////////////////////////////////////////
@@ -169,6 +195,7 @@ async function buscarAnuncios() {
 
           data-nome="${a.nome}"
           data-marca="${a.marca}"
+          data-tipo="${a.tipoAnuncio}"
 
           data-custo="${a.custo}"
           data-preco="${a.precoVenda}"
@@ -192,6 +219,12 @@ async function buscarAnuncios() {
           </td>
 
           <td>${a.marca}</td>
+
+          <td>
+            <span class="badge ${badgeTipo(a.tipoAnuncio)}">
+              ${labelTipo(a.tipoAnuncio)}
+            </span>
+          </td>
 
           <td>${a.largura ?? "-"}</td>
 
@@ -219,24 +252,12 @@ async function buscarAnuncios() {
             R$ ${Number(a.freteCalculado || a.frete || 0).toFixed(2)}
           </td>
 
-          <!-- CLASSICO -->
-
           <td class="fw-semibold">
-            R$ ${Number(a.lucroClassico || 0).toFixed(2)}
+            R$ ${Number(a.lucro || 0).toFixed(2)}
           </td>
 
-          <td class="${getClasseMargem(a.margemClassico)} fw-bold">
-            ${Number(a.margemClassico || 0).toFixed(2)}%
-          </td>
-
-          <!-- PREMIUM -->
-
-          <td class="fw-semibold">
-            R$ ${Number(a.lucroPremium || 0).toFixed(2)}
-          </td>
-
-          <td class="${getClasseMargem(a.margemPremium)} fw-bold">
-            ${Number(a.margemPremium || 0).toFixed(2)}%
+          <td class="${getClasseMargem(a.margem)} fw-bold">
+            ${Number(a.margem || 0).toFixed(2)}%
           </td>
 
           <!-- AÇÕES -->
@@ -298,6 +319,9 @@ function abrirModal(id) {
   document.getElementById("edit-marca").value =
     linha.dataset.marca
 
+  document.getElementById("edit-tipoAnuncio").value =
+    linha.dataset.tipo || "CLASSICO"
+
   document.getElementById("edit-custo").value =
     linha.dataset.custo
 
@@ -358,6 +382,9 @@ async function salvarModal() {
 
       marca:
         document.getElementById("edit-marca").value,
+
+      tipoAnuncio:
+        document.getElementById("edit-tipoAnuncio").value,
 
       custo:
         Number(

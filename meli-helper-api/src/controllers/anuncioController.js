@@ -223,6 +223,8 @@ exports.create = async (req, res) => {
       nome,
       marca,
 
+      tipoAnuncio,
+
       custo,
       precoVenda,
       frete,
@@ -248,6 +250,16 @@ exports.create = async (req, res) => {
 
       return res.status(400).json({
         erro: "Marca obrigatória"
+      })
+    }
+
+    if (
+      !tipoAnuncio ||
+      !["CLASSICO", "PREMIUM"].includes(tipoAnuncio)
+    ) {
+
+      return res.status(400).json({
+        erro: "Tipo de anúncio inválido (CLASSICO ou PREMIUM)"
       })
     }
 
@@ -279,6 +291,8 @@ exports.create = async (req, res) => {
 
           nome,
           marca,
+
+          tipoAnuncio,
 
           custo:
             toNumber(custo),
@@ -355,6 +369,16 @@ exports.update = async (req, res) => {
       })
     }
 
+    if (
+      req.body.tipoAnuncio &&
+      !["CLASSICO", "PREMIUM"].includes(req.body.tipoAnuncio)
+    ) {
+
+      return res.status(400).json({
+        erro: "Tipo de anúncio inválido (CLASSICO ou PREMIUM)"
+      })
+    }
+
     ////////////////////////////////////////////////////////////
 
     const atualizado =
@@ -374,6 +398,9 @@ exports.update = async (req, res) => {
 
           marca:
             req.body.marca,
+
+          tipoAnuncio:
+            req.body.tipoAnuncio,
 
           custo:
             toNumber(req.body.custo),
