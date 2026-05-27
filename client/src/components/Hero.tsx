@@ -7,9 +7,9 @@ export function Hero() {
     <div className={classes.heroWrapper}>
       <Container size="md" className={classes.container}>
         <div className={classes.inner}>
-          
-          <Badge 
-            variant="filled" 
+
+          <Badge
+            variant="filled"
             className={classes.badge}
             size="lg"
           >
@@ -23,34 +23,34 @@ export function Hero() {
           </Title>
 
           <Text className={classes.description} size="xl" mt="xl">
-            Calcule a cubagem de frete com precisão, evite cobranças abusivas 
+            Calcule a cubagem de frete com precisão, evite cobranças abusivas
             e proteja sua margem de lucro na maior plataforma de e-commerce da América Latina.
           </Text>
 
           <Group className={classes.controls} mt={35}>
-            <Button 
-              size="lg" 
+            <Button
+              size="lg"
               className={classes.controlPrimary}
               radius="md"
               component={Link}
-                to="/cadastro"
+              to="/cadastro"
             >
               Começar Agora Grátis
             </Button>
-            <Button 
-              size="lg" 
-              variant="outline" 
+            <Button
+              component={Link}
+              to="/about" // ou "/sobre"
+              size="lg"
+              variant="outline"
               className={classes.controlSecondary}
               radius="md"
-              component={Link}
-              to="/recursos"
             >
               Conhecer Recursos
             </Button>
-          </Group>
+        </Group>
 
-        </div>
-      </Container>
     </div>
+      </Container >
+    </div >
   );
 }

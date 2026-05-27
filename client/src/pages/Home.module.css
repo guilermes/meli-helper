@@ -1,0 +1,8 @@
+.homeLayout {
+  background-color: #0b0c0d; /* Preto profundo do tema MeliHelper */
+  min-height: 100vh; /* Garante que o fundo cubra a tela cheia se o conteúdo for menor */
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1; /* Substitui o 'flex-grow' do Tailwind perfeitamente */
+  overflow-x: hidden; /* Evita barras de rolagem horizontais indesejadas */
+}

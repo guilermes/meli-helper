@@ -1,0 +1,14 @@
+.pageWrapper {
+  background-color: #0b0c0d; /* Preto profundo padrão MeliHelper */
+  min-height: 100vh; /* Ocupa toda a altura da janela */
+  display: flex;
+  align-items: center; /* Centraliza verticalmente */
+  justify-content: center; /* Centraliza horizontalmente */
+  width: 100vw;
+}
+
+.container {
+  width: 100%;
+  padding-left: 16px;
+  padding-right: 16px;
+}
