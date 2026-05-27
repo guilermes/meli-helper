@@ -1,0 +1,100 @@
+.paperContainer {
+  background-color: #141517; /* Cinza escuro do tema */
+  border-color: #2c2e33;
+}
+
+.table {
+  min-width: 1000px; /* Garante espaço horizontal adequado para todas as colunas */
+}
+
+.thead {
+  background-color: #1a1b1e;
+}
+
+.th {
+  color: #c1c2c5 !important;
+  border-bottom: 2px solid #2c2e33 !important;
+  font-weight: 600;
+  font-size: 13px;
+  text-align: left;
+}
+
+.thCenter {
+  text-align: center;
+}
+
+.row {
+  border-bottom: 1px solid #2c2e33;
+  transition: background-color 0.2s ease;
+}
+
+.row:hover {
+  background-color: rgba(255, 255, 255, 0.02);
+}
+
+/* Tipografias e Cores das Células */
+.textId {
+  color: #5c5f66;
+  font-size: 11px;
+  font-family: monospace;
+}
+
+.textName {
+  color: #ffffff;
+  font-weight: 600;
+}
+
+.textMain {
+  color: #e4e6eb;
+}
+
+.textDimmed {
+  color: #909296;
+}
+
+.textLucro {
+  color: #ffffff;
+  font-weight: 700;
+}
+
+/* Badges de Margem */
+.badgeAlert {
+  background-color: #e03131;
+  color: #ffffff;
+}
+
+.badgeNormal {
+  color: #adb5bd;
+  border-color: #495057;
+}
+
+/* Botões de Ação Customizados */
+.btnEditar {
+  color: #c1c2c5;
+  font-weight: 500;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.btnEditar:hover {
+  background-color: rgba(255, 255, 255, 0.05);
+  color: #ffffff;
+}
+
+.btnExcluir {
+  color: #ff8787;
+  font-weight: 500;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.btnExcluir:hover {
+  background-color: rgba(224, 49, 49, 0.1);
+  color: #fa5252;
+}
+
+/* Mensagem de Lista Vazia */
+.emptyText {
+  color: #5c5f66;
+  text-align: center;
+  padding: 24px 0;
+  font-style: italic;
+}

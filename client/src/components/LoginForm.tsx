@@ -1,4 +1,3 @@
-// src/components/LoginForm.tsx
 import { useState, FormEvent } from 'react';
 import { 
   Paper, 
@@ -9,8 +8,8 @@ import {
   Button, 
   Stack 
 } from '@mantine/core';
+import classes from './LoginForm.module.css';
 
-// Definimos o contrato do que o componente precisa receber para funcionar
 interface LoginFormProps {
   onSubmit: (email: string, senha: string) => void;
   loading: boolean;
@@ -29,24 +28,24 @@ export function LoginForm({ onSubmit, loading, erro }: LoginFormProps) {
   return (
     <Paper 
       withBorder 
-      shadow="md" 
+      shadow="xl" 
       p="xl" 
       radius="md" 
-      className="bg-slate-900 border-slate-800"
+      className={classes.card}
     >
       <Stack gap="xs" align="center" mb="lg">
-        <Title order={2} c="white" className="tracking-tight">
-          Meli Helper
+        <Title order={2} className={classes.title}>
+          Meli<span className={classes.highlight}>Helper</span>
         </Title>
-        <Text size="sm" c="slate.400">
+        <Text size="sm" className={classes.subtitle}>
           Entre com suas credenciais para acessar o painel
         </Text>
       </Stack>
 
-      {/* Caixa de feedback de erro */}
+      {/* Caixa de feedback de erro customizada */}
       {erro && (
-        <Paper p="xs" mb="md" radius="sm" className="bg-red-950/40 border border-red-800/60">
-          <Text size="xs" c="red.4" fw={500} ta="center">
+        <Paper p="xs" mb="md" radius="sm" className={classes.errorBox}>
+          <Text size="xs" fw={500} ta="center">
             {erro}
           </Text>
         </Paper>
@@ -61,6 +60,10 @@ export function LoginForm({ onSubmit, loading, erro }: LoginFormProps) {
             value={email}
             onChange={(e) => setEmail(e.currentTarget.value)}
             disabled={loading}
+            classNames={{
+              input: classes.input,
+              label: classes.inputLabel,
+            }}
           />
 
           <PasswordInput
@@ -70,14 +73,21 @@ export function LoginForm({ onSubmit, loading, erro }: LoginFormProps) {
             value={senha}
             onChange={(e) => setSenha(e.currentTarget.value)}
             disabled={loading}
+            classNames={{
+              input: classes.input,
+              label: classes.inputLabel,
+              innerInput: classes.innerInput,
+            }}
           />
 
           <Button 
             type="submit" 
-            color="teal" 
             fullWidth 
             mt="md"
             loading={loading}
+            className={classes.buttonSubmit}
+            radius="md"
+            size="md"
           >
             Entrar no Sistema
           </Button>

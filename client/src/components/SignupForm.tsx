@@ -1,120 +1,125 @@
-// src/pages/Signup.tsx
-import { useState } from 'react';
+import { useState, FormEvent } from 'react';
 import { 
-  Container, 
   Paper, 
   Title, 
+  Text, 
   TextInput, 
   PasswordInput, 
   Button, 
-  Stack,
-  Text
+  Stack 
 } from '@mantine/core';
-import { useNavigate } from 'react-router-dom';
-import api from '../services/api';
+import classes from './SignupForm.module.css';
 
-export default function SignupForm() {
-  const navigate = useNavigate();
+interface SignupFormProps {
+  onSubmit: (email: string, password: string) => void;
+  loading: boolean;
+  erro: string | null;
+}
 
+export function SignupForm({ onSubmit, loading, erro }: SignupFormProps) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
-  
-  const [loading, setLoading] = useState(false);
-  const [erro, setErro] = useState('');
+  const [erroLocal, setErroLocal] = useState<string | null>(null);
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const lidarComSubmissao = (e: FormEvent) => {
     e.preventDefault();
-    setErro('');
+    setErroLocal(null);
 
     if (password !== confirmPassword) {
-      setErro('As senhas não coincidem. Verifique e tente novamente.');
+      setErroLocal('As senhas não coincidem. Verifique e tente novamente.');
       return;
     }
 
-    setLoading(true);
-
-    try {
-      // O Axios já faz o JSON.stringify() por baixo dos panos e envia para baseURL + '/register'
-      const response = await api.post('/register', { email, password });
-
-      console.log('Usuário criado com sucesso:', response.data);
-      
-      // Redireciona para o login após o sucesso
-      navigate('/login'); 
-      
-    } catch (err: any) {
-      // O Axios armazena a resposta do servidor em err.response
-      if (err.response && err.response.data) {
-        // Captura a mensagem de erro que você configurou no backend (ex: res.status(400).json({ message: "..." }))
-        setErro(err.response.data.message || 'Erro ao realizar o cadastro.');
-      } else {
-        setErro('Não foi possível conectar ao servidor. Verifique sua conexão.');
-      }
-    } finally {
-      setLoading(false);
-    }
+    onSubmit(email, password);
   };
 
+  // Prioriza o erro vindo da API/Pai, se não houver, mostra o erro de validação local
+  const erroExibido = erro || erroLocal;
+
   return (
-    <Container size="xs" py="xl" mt={60}>
-      <Paper 
-        withBorder 
-        shadow="md" 
-        p="xl" 
-        radius="md" 
-        className="bg-slate-900 border-slate-800"
-      >
-        <Title order={2} ta="center" c="white" mb="xl">
-          Criar Conta
+    <Paper 
+      withBorder 
+      shadow="xl" 
+      p="xl" 
+      radius="md" 
+      className={classes.card}
+    >
+      <Stack gap="xs" align="center" mb="lg">
+        <Title order={2} className={classes.title}>
+          Criar Conta no Meli<span className={classes.highlight}>Helper</span>
         </Title>
+        <Text size="sm" className={classes.subtitle}>
+          Comece a gerenciar suas dimensões e proteger seu lucro
+        </Text>
+      </Stack>
 
-        <form onSubmit={handleSubmit}>
-          <Stack gap="md">
-            <TextInput
-              label="E-mail"
-              placeholder="seu@email.com"
-              type="email"
-              required
-              value={email}
-              onChange={(event) => setEmail(event.currentTarget.value)}
-            />
+      {/* Caixa de feedback de erro customizada */}
+      {erroExibido && (
+        <Paper p="xs" mb="md" radius="sm" className={classes.errorBox}>
+          <Text size="xs" fw={500} ta="center">
+            {erroExibido}
+          </Text>
+        </Paper>
+      )}
 
-            <PasswordInput
-              label="Senha"
-              placeholder="Crie uma senha forte"
-              required
-              value={password}
-              onChange={(event) => setPassword(event.currentTarget.value)}
-            />
+      <form onSubmit={lidarComSubmissao}>
+        <Stack gap="md">
+          <TextInput
+            label="E-mail"
+            placeholder="seu@email.com"
+            type="email"
+            required
+            value={email}
+            onChange={(e) => setEmail(e.currentTarget.value)}
+            disabled={loading}
+            classNames={{
+              input: classes.input,
+              label: classes.inputLabel,
+            }}
+          />
 
-            <PasswordInput
-              label="Confirmar Senha"
-              placeholder="Repita a senha anterior"
-              required
-              error={!!erro} 
-              value={confirmPassword}
-              onChange={(event) => setConfirmPassword(event.currentTarget.value)}
-            />
+          <PasswordInput
+            label="Senha"
+            placeholder="Crie uma senha forte"
+            required
+            value={password}
+            onChange={(e) => setPassword(e.currentTarget.value)}
+            disabled={loading}
+            classNames={{
+              input: classes.input,
+              label: classes.inputLabel,
+              innerInput: classes.innerInput,
+            }}
+          />
 
-            {erro && (
-              <Text c="red.4" size="sm" fw={500} ta="center">
-                {erro}
-              </Text>
-            )}
+          <PasswordInput
+            label="Confirmar Senha"
+            placeholder="Repita a senha anterior"
+            required
+            value={confirmPassword}
+            onChange={(e) => setConfirmPassword(e.currentTarget.value)}
+            disabled={loading}
+            classNames={{
+              input: classes.input,
+              label: classes.inputLabel,
+              innerInput: classes.innerInput,
+            }}
+          />
 
-            <Button 
-              type="submit" 
-              color="teal" 
-              fullWidth 
-              mt="md"
-              loading={loading}
-            >
-              Cadastrar
-            </Button>
-          </Stack>
-        </form>
-      </Paper>
-    </Container>
+          <Button 
+            type="submit" 
+            fullWidth 
+            mt="md"
+            loading={loading}
+            className={classes.buttonSubmit}
+            radius="md"
+            size="md"
+          >
+            Cadastrar e Começar
+          </Button>
+        </Stack>
+      </form>
+    </Paper>
   );
 }

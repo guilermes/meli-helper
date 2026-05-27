@@ -1,7 +1,7 @@
 // src/pages/ProductCreate.tsx
 import { useState } from 'react';
 import { Container, Paper, Title, Text, Button, Stack, Divider } from '@mantine/core';
-import { Product } from '../components/Table';
+import { Product } from '../components/ProductTable';
 import { InfoSection } from '../components/ProductInfo';
 import { DimensionsSection } from '../components/Dimensions';
 import { FinanceSection } from '../components/Finance';
