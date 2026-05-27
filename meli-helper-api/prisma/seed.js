@@ -2,6 +2,9 @@ const { PrismaClient } = require("@prisma/client")
 
 const prisma = new PrismaClient()
 
+const EMAIL_USUARIO = "dan@email.com"
+const TOTAL_ANUNCIOS = 100
+
 async function main() {
 
   ////////////////////////////////////////////////////////////
@@ -10,10 +13,14 @@ async function main() {
   await prisma.anuncio.deleteMany()
 
   ////////////////////////////////////////////////////////////
-  // USER TESTE
+  // USUÁRIO
 
   let user =
-    await prisma.user.findFirst()
+    await prisma.user.findUnique({
+      where: {
+        email: EMAIL_USUARIO
+      }
+    })
 
   if (!user) {
 
@@ -23,9 +30,9 @@ async function main() {
         data: {
 
           nome: "Dan",
-          nomeLoja: "Loja Teste",
+          nomeLoja: "Loja Dan",
 
-          email: "teste@teste.com",
+          email: EMAIL_USUARIO,
 
           senha: "123456"
         }
@@ -96,7 +103,18 @@ async function main() {
   ////////////////////////////////////////////////////////////
   // GERAR ANÚNCIOS
 
-  const anuncios = produtos.map(([nome, marca]) => {
+  const anuncios = Array.from({ length: TOTAL_ANUNCIOS }, (_, index) => {
+
+    const [nomeBase, marca] =
+      produtos[index % produtos.length]
+
+    const repeticao =
+      Math.floor(index / produtos.length)
+
+    const nome =
+      repeticao === 0
+        ? nomeBase
+        : `${nomeBase} ${repeticao + 1}`
 
     const custo =
       Number((Math.random() * 3000 + 50).toFixed(2))
@@ -120,6 +138,9 @@ async function main() {
 
       nome,
       marca,
+
+      tipoAnuncio:
+        Math.random() < 0.5 ? "CLASSICO" : "PREMIUM",
 
       custo,
       precoVenda,
@@ -146,7 +167,7 @@ async function main() {
 
   ////////////////////////////////////////////////////////////
 
-  console.log("✅ 50 produtos criados!")
+  console.log(`✅ ${TOTAL_ANUNCIOS} anúncios criados para ${EMAIL_USUARIO}!`)
 }
 
 ////////////////////////////////////////////////////////////

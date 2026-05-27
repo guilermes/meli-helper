@@ -50,6 +50,7 @@ form.addEventListener("submit", async (e) => {
   idMercadoLivre: document.getElementById("idMercadoLivre").value || null,
   nome: document.getElementById("nome").value,
   marca: document.getElementById("marca").value,
+  tipoAnuncio: document.querySelector('input[name="tipoAnuncio"]:checked').value,
   custo: parseValor(document.getElementById("custo").value),
   precoVenda: parseValor(document.getElementById("precoVenda").value),
   frete: parseValor(document.getElementById("frete").value),

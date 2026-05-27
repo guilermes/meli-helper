@@ -36,6 +36,8 @@ model Anuncio {
   nome             String
   marca            String
 
+  tipoAnuncio      String  @default("CLASSICO")
+
   custo            Float
   precoVenda       Float
 
