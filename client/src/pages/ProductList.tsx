@@ -2,9 +2,9 @@
 import { useState, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Container, Title, Text, Button, Group } from '@mantine/core';
-import ProductTable from '../components/Table';
+import ProductTable from '../components/ProductTable';
 import { ProductEditModal } from '../components/EditModal';
-import { Product } from '../components/Table'; // Ajuste o import conforme seu projeto
+import { Product } from '../components/ProductTable'; // Ajuste o import conforme seu projeto
 
 export default function ProductList() {
   const [produtos, setProdutos] = useState<Product[]>([]);

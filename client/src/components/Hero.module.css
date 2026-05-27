@@ -1,0 +1,122 @@
+.heroWrapper {
+  background-color: #0b0c0d; /* Preto profundo */
+  min-height: 80vh;
+  display: flex;
+  align-items: center;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Efeito sutil de iluminação de fundo (Glow) em vermelho */
+.heroWrapper::before {
+  content: '';
+  position: absolute;
+  top: -20%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 600px;
+  height: 400px;
+  background: radial-gradient(circle, rgba(224, 49, 49, 0.15) 0%, rgba(0,0,0,0) 70%);
+  pointer-events: none;
+}
+
+.container {
+  position: relative;
+  z-index: 1;
+}
+
+.inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.badge {
+  background-color: rgba(224, 49, 49, 0.2);
+  color: #ff8787;
+  border: 1px solid #e03131;
+  margin-bottom: 24px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.title {
+  color: #ffffff;
+  font-family: var(--mantine-font-family);
+  font-weight: 900;
+  line-height: 1.15;
+  font-size: 48px;
+  max-width: 800px;
+}
+
+/* O destaque em Vermelho */
+.highlight {
+  color: #e03131; /* Vermelho Mantine / Custom */
+  position: relative;
+}
+
+.description {
+  color: #adb5bd; /* Cinza claro para excelente leitura no escuro */
+  max-width: 600px;
+  line-height: 1.6;
+}
+
+.controls {
+  width: 100%;
+  justify-content: center;
+}
+
+/* Botão Principal Vermelho */
+.controlPrimary {
+  background-color: #e03131;
+  color: #ffffff;
+  transition: background-color 0.2s ease, transform 0.1s ease;
+  padding-left: 32px;
+  padding-right: 32px;
+}
+
+.controlPrimary:hover {
+  background-color: #c92a2a; /* Vermelho um tom mais escuro */
+  transform: translateY(-1px);
+}
+
+.controlPrimary:active {
+  transform: translateY(1px);
+}
+
+/* Botão Secundário Cinza/Transparente */
+.controlSecondary {
+  color: #ffffff;
+  border-color: #495057; /* Borda cinza */
+  background-color: transparent;
+  transition: background-color 0.2s ease, border-color 0.2s ease;
+  padding-left: 32px;
+  padding-right: 32px;
+}
+
+.controlSecondary:hover {
+  background-color: rgba(255, 255, 255, 0.05);
+  border-color: #868e96;
+}
+
+/* Responsividade básica para telas menores */
+@media (max-width: 768px) {
+  .title {
+    font-size: 34px;
+  }
+
+  .description {
+    font-size: 16px;
+  }
+
+  .controls {
+    flex-direction: column;
+    width: 100%;
+    padding: 0 16px;
+  }
+
+  .controlPrimary, .controlSecondary {
+    width: 100%;
+  }
+}

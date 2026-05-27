@@ -5,6 +5,8 @@ import Home from '../pages/Home.tsx';
 import Config  from '../pages/Config.tsx';
 import ProductCreate from '../pages/ProductCreate.tsx';
 import ProductList from '../pages/ProductList.tsx';
+import Signup from '../pages/Signup.tsx';
+import About from '../pages/About.tsx';
 
 
 export function AppRoutes() {
@@ -15,6 +17,8 @@ export function AppRoutes() {
       <Route path="/config" element={<Config />} />
       <Route path="/productCreate" element={<ProductCreate />} />
       <Route path="/anuncios" element={<ProductList />} />
+      <Route path="/cadastro" element={<Signup />} />
+      <Route path="/sobre" element={<About />} />
       
       {/* Rota de página não encontrada (404) - Opcional */}
       <Route path="*" element={<h1 className="text-white p-6">Página não encontrada</h1>} />

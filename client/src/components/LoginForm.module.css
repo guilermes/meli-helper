@@ -1,0 +1,70 @@
+.card {
+  background-color: #141517; /* Cinza bem escuro para destacar do fundo da página */
+  border-color: #2c2e33; /* Borda cinza suave */
+  max-width: 420px;
+  width: 100%;
+  margin: 0 auto;
+}
+
+.title {
+  color: #ffffff;
+  font-weight: 800;
+  letter-spacing: -0.5px;
+}
+
+.highlight {
+  color: #e03131; /* Vermelho característico */
+}
+
+.subtitle {
+  color: #909296; /* Cinza médio para descrição */
+  text-align: center;
+}
+
+/* Caixa de Erro em harmonia com o tema */
+.errorBox {
+  background-color: rgba(224, 49, 49, 0.1);
+  border: 1px solid rgba(224, 49, 49, 0.4);
+  color: #ff8787;
+}
+
+/* Customização dos Inputs (Mantine v7) */
+.inputLabel {
+  color: #c1c2c5; /* Cinza claro para o título do campo */
+  margin-bottom: 4px;
+  font-weight: 500;
+}
+
+.input {
+  background-color: #25262b; /* Fundo do input mais escuro */
+  border-color: #373a40;
+  color: #ffffff;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+/* Garante que o texto digitado no PasswordInput também fique branco */
+.innerInput {
+  color: #ffffff !important;
+}
+
+.input:focus,
+.input:focus-within {
+  border-color: #e03131 !important; /* Borda vermelha no foco */
+}
+
+/* Botão de Submit Vermelho */
+.buttonSubmit {
+  background-color: #e03131;
+  color: #ffffff;
+  font-weight: 600;
+  transition: background-color 0.2s ease, transform 0.1s ease;
+}
+
+.buttonSubmit:hover {
+  background-color: #c92a2a; /* Tom vermelho levemente mais escuro */
+  transform: translateY(-1px);
+}
+
+.buttonSubmit:active {
+  transform: translateY(1px);
+}

@@ -2,75 +2,47 @@
 @tailwind components;
 @tailwind utilities;
 
-/* VARIÁVEIS DE COR DO TEMA - SOFT LIGHT (Gentil para os olhos) */
-:root {
-  /* Fundo principal ligeiramente acinzentado/quente para quebrar o brilho do branco */
-  --bg-primary: #a1a1a1;       /* Slate 50 - Extremamente suave */
-  
-  /* Fundo secundário para Cards, Navbar e Sidebar (Branco puro para dar contraste sutil sobre o fundo) */
-  --bg-secondary: #ffffff;     
-  
-  /* Textos em tons de grafite escuro em vez de preto puro (evita contraste agressivo) */
-  --text-primary: #1e293b;     /* Slate 800 - Leitura perfeita e confortável */
-  --text-secondary: #64748b;   /* Slate 500 - Para textos secundários e legendas */
-  
-  /* Cor de Destaque / Ações Principais (Um azul corporativo suave e moderno) */
-  --accent: #0f766e;           /* Teal 700 - Elegante, profissional e ótimo contraste no claro */
-  --accent-hover: #115e59;     /* Teal 800 */
-  
-  /* Bordas finas e discretas para separar os elementos sem poluir visualmente */
-  --border: #e2e8f0;           /* Slate 200 - Divisória muito suave */
-  
-  --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
-  --transition-fast: 0.2s ease-in-out;
-}
-
-/* RESET E CORREÇÕES DE RENDERIZAÇÃO */
-*, *::before, *::after {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-}
+/* 
+  Nota: Certifique-se de que o @mantine/core/styles.css 
+  esteja importado ANTES deste arquivo no seu projeto.
+*/
 
 html {
-  font-size: 16px;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   scroll-behavior: smooth;
 }
 
 body {
-  background-color: var(--bg-primary);
-  color: var(--text-primary);
-  font-family: var(--font-sans);
+  /* O Mantine gerencia o background e a cor do texto automaticamente, 
+     mas garantimos a altura mínima e o comportamento de flex para o Footer colar embaixo */
   min-height: 100vh;
-  line-height: 1.6;
   display: flex;
   flex-direction: column;
 }
 
-/* CUSTOMIZAÇÃO DA SCROLLBAR (Tema Claro Elegante) */
+/* Garante que a estrutura do seu app ocupe o espaço correto para o Footer */
+#root, __next {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+/* CUSTOMIZAÇÃO DA SCROLLBAR MINIMALISTA */
 ::-webkit-scrollbar {
-  width: 8px;
+  width: 6px;
+  height: 6px;
 }
+
 ::-webkit-scrollbar-track {
-  background: var(--bg-primary);
+  background: var(--mantine-color-body); /* Usa a cor de fundo do Mantine */
 }
+
 ::-webkit-scrollbar-thumb {
-  background: #cbd5e1; /* Slate 300 */
-  border-radius: 4px;
+  background: var(--mantine-color-gray-3); /* Usa o cinza do Mantine */
+  border-radius: 10px;
 }
+
 ::-webkit-scrollbar-thumb:hover {
-  background: #94a3b8; /* Slate 400 */
-}
-
-/* Reseta estilos de links globais para não conflitar com o Mantine */
-a {
-  color: inherit;
-  text-decoration: none;
-}
-
-img, svg {
-  display: block;
-  max-width: 100%;
+  background: var(--mantine-color-gray-5);
 }

@@ -1,0 +1,61 @@
+.pageWrapper {
+  background-color: #0b0c0d; /* Fundo preto padrão */
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+}
+
+.container {
+  width: 100%;
+}
+
+.card {
+  background-color: #141517; /* Card cinza escuro */
+  border-color: #2c2e33;
+}
+
+.header {
+  text-align: center;
+  margin-bottom: 24px;
+}
+
+.title {
+  color: #ffffff;
+  font-weight: 800;
+}
+
+.subtitle {
+  color: #909296; /* Cinza médio para descrições secundárias */
+}
+
+.divider {
+  border-color: #2c2e33 !important;
+}
+
+/* Botão Vermelho de Ação */
+.buttonSubmit {
+  background-color: #e03131;
+  color: #ffffff;
+  font-weight: 600;
+  transition: background-color 0.2s ease, transform 0.1s ease;
+}
+
+.buttonSubmit:hover {
+  background-color: #c92a2a;
+  transform: translateY(-1px);
+}
+
+.buttonSubmit:active {
+  transform: translateY(1px);
+}
+
+/* Texto de Feedback de Sucesso */
+.feedbackText {
+  color: #40c057; /* Verde suave do Mantine para indicar sucesso no Dark Mode */
+  animation: pulse 2s infinite ease-in-out;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}

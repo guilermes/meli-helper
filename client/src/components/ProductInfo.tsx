@@ -1,6 +1,13 @@
 // src/components/productForm/InfoSection.tsx
 import { Grid, TextInput, Text } from '@mantine/core';
-import { ProductFormData } from '../../pages/ProductCreate';
+import classes from './ProductInfo.module.css';
+
+// Mantendo exatamente a assinatura original que o seu ProductCreate espera
+interface ProductFormData {
+  idMercadoLivre: string;
+  nome: string;
+  marca: string;
+}
 
 interface InfoSectionProps {
   data: ProductFormData;
@@ -8,11 +15,18 @@ interface InfoSectionProps {
 }
 
 export function InfoSection({ data, onChange }: InfoSectionProps) {
+  // Objeto utilitário para não repetir classNames em todos os inputs
+  const inputStyles = {
+    input: classes.input,
+    label: classes.inputLabel,
+  };
+
   return (
-    <div>
-      <Text fw={600} c="blue.4" size="sm" mb="md" className="uppercase tracking-wider">
+    <div className={classes.sectionWrapper}>
+      <Text className={classes.sectionTitle}>
         1. Informações do Anúncio
       </Text>
+      
       <Grid gutter="md">
         <Grid.Col span={{ base: 12, sm: 6 }}>
           <TextInput
@@ -20,8 +34,10 @@ export function InfoSection({ data, onChange }: InfoSectionProps) {
             placeholder="Ex: MLB1234567890 (opcional)"
             value={data.idMercadoLivre}
             onChange={(e) => onChange('idMercadoLivre', e.currentTarget.value)}
+            classNames={inputStyles}
           />
         </Grid.Col>
+        
         <Grid.Col span={{ base: 12, sm: 6 }}>
           <TextInput
             label="Nome do Produto"
@@ -29,8 +45,10 @@ export function InfoSection({ data, onChange }: InfoSectionProps) {
             required
             value={data.nome}
             onChange={(e) => onChange('nome', e.currentTarget.value)}
+            classNames={inputStyles}
           />
         </Grid.Col>
+        
         <Grid.Col span={12}>
           <TextInput
             label="Marca"
@@ -38,6 +56,7 @@ export function InfoSection({ data, onChange }: InfoSectionProps) {
             required
             value={data.marca}
             onChange={(e) => onChange('marca', e.currentTarget.value)}
+            classNames={inputStyles}
           />
         </Grid.Col>
       </Grid>

@@ -8,22 +8,34 @@ import {
   Button, 
   Stack 
 } from '@mantine/core';
-import classes from './LoginForm.module.css';
+import classes from './SignupForm.module.css';
 
-interface LoginFormProps {
-  onSubmit: (email: string, senha: string) => void;
+interface SignupFormProps {
+  onSubmit: (email: string, password: string) => void;
   loading: boolean;
   erro: string | null;
 }
 
-export function LoginForm({ onSubmit, loading, erro }: LoginFormProps) {
+export function SignupForm({ onSubmit, loading, erro }: SignupFormProps) {
   const [email, setEmail] = useState('');
-  const [senha, setSenha] = useState('');
+  const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
+  const [erroLocal, setErroLocal] = useState<string | null>(null);
 
   const lidarComSubmissao = (e: FormEvent) => {
     e.preventDefault();
-    onSubmit(email, senha);
+    setErroLocal(null);
+
+    if (password !== confirmPassword) {
+      setErroLocal('As senhas não coincidem. Verifique e tente novamente.');
+      return;
+    }
+
+    onSubmit(email, password);
   };
+
+  // Prioriza o erro vindo da API/Pai, se não houver, mostra o erro de validação local
+  const erroExibido = erro || erroLocal;
 
   return (
     <Paper 
@@ -35,18 +47,18 @@ export function LoginForm({ onSubmit, loading, erro }: LoginFormProps) {
     >
       <Stack gap="xs" align="center" mb="lg">
         <Title order={2} className={classes.title}>
-          Meli<span className={classes.highlight}>Helper</span>
+          Criar Conta no Meli<span className={classes.highlight}>Helper</span>
         </Title>
         <Text size="sm" className={classes.subtitle}>
-          Entre com suas credenciais para acessar o painel
+          Comece a gerenciar suas dimensões e proteger seu lucro
         </Text>
       </Stack>
 
       {/* Caixa de feedback de erro customizada */}
-      {erro && (
+      {erroExibido && (
         <Paper p="xs" mb="md" radius="sm" className={classes.errorBox}>
           <Text size="xs" fw={500} ta="center">
-            {erro}
+            {erroExibido}
           </Text>
         </Paper>
       )}
@@ -56,6 +68,7 @@ export function LoginForm({ onSubmit, loading, erro }: LoginFormProps) {
           <TextInput
             label="E-mail"
             placeholder="seu@email.com"
+            type="email"
             required
             value={email}
             onChange={(e) => setEmail(e.currentTarget.value)}
@@ -68,10 +81,24 @@ export function LoginForm({ onSubmit, loading, erro }: LoginFormProps) {
 
           <PasswordInput
             label="Senha"
-            placeholder="Sua senha secreta"
+            placeholder="Crie uma senha forte"
             required
-            value={senha}
-            onChange={(e) => setSenha(e.currentTarget.value)}
+            value={password}
+            onChange={(e) => setPassword(e.currentTarget.value)}
+            disabled={loading}
+            classNames={{
+              input: classes.input,
+              label: classes.inputLabel,
+              innerInput: classes.innerInput,
+            }}
+          />
+
+          <PasswordInput
+            label="Confirmar Senha"
+            placeholder="Repita a senha anterior"
+            required
+            value={confirmPassword}
+            onChange={(e) => setConfirmPassword(e.currentTarget.value)}
             disabled={loading}
             classNames={{
               input: classes.input,
@@ -89,7 +116,7 @@ export function LoginForm({ onSubmit, loading, erro }: LoginFormProps) {
             radius="md"
             size="md"
           >
-            Entrar no Sistema
+            Cadastrar e Começar
           </Button>
         </Stack>
       </form>

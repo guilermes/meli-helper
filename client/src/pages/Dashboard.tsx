@@ -1,92 +1,110 @@
-import { Link } from 'react-router-dom';
-import { 
-  Container, 
-  Title, 
-  Text, 
-  Button, 
-  SimpleGrid, 
-  Paper, 
-  Group, 
-  Stack 
-} from '@mantine/core';
+// src/pages/Dashboard.tsx
+import { useEffect, useState } from 'react';
+import { Container, Title, SimpleGrid, Space, Loader, Center, Text, Paper } from '@mantine/core';
+import api from '../services/api';
+import { MetricCard } from '../components/MetricCard';
+import { ProductTable, ProdutoData } from '../components/ProductTable';
 
-export default function Dashboard() {
-  // Dados fictícios de resumo que futuramente virão de um endpoint de agregação no seu backend
-  const metricasResumo = [
-    { titulo: 'Total de Anúncios', valor: '142', subtexto: 'Produtos monitorados', cor: 'blue' },
-    { titulo: 'Preço Médio de Venda', valor: 'R$ 134,50', subtexto: 'Baseado no catálogo', cor: 'teal' },
-    { titulo: 'Margem de Lucro Média', valor: '24.8%', subtexto: 'Meta ideal > 20%', cor: 'green' },
-  ];
-
-  return (
-    <Container size="lg" py="xl" mt={30} className="flex-grow">
-      
-      <Paper 
-        p="xl" 
-        radius="md" 
-        className="bg-gradient-to-r from-slate-900 to-slate-950 border border-slate-800 mb-12 text-center sm:text-left"
-      >
-        <GridOrStackContainer />
-      </Paper>
-
-    {/* PAINEL DE MÉTRICAS RÁPIDAS */}
-        <Title order={3} c="white" mb="md" className="tracking-wide">
-             Visão Geral da Operação
-        </Title>
-
-    {/* O SimpleGrid lida com as colunas responsivas de forma nativa e sem esforço */}
-      <SimpleGrid cols={{ base: 1, sm: 3 }} spacing="md">
-        {metricasResumo.map((item, index) => (
-          <Paper 
-            key={index}
-            withBorder 
-            p="lg" 
-            radius="md" 
-            className="bg-slate-900 border-slate-800 hover:border-slate-700 transition-all"
-          >
-            <Stack gap="xs">
-              <Text size="xs" c="slate.400" fw={700} className="uppercase tracking-wider">
-                {item.titulo}
-              </Text>
-              <Group align="flex-end" gap="xs">
-                <Text size="2rem" fw={700} c={`${item.cor}.4`}>
-                  {item.valor}
-                </Text>
-              </Group>
-              <Text size="xs" c="slate.500">
-                {item.subtexto}
-              </Text>
-            </Stack>
-          </Paper>
-        ))}
-      </SimpleGrid>
-
-    </Container>
-  );
+interface DashboardResponse {
+  metricas: {
+    margemMedia: number;
+    cubagemGeral: number;
+    anunciosCriticos: number;
+  };
+  produtos: ProdutoData[];
 }
 
-// Componente interno auxiliar para deixar o código do Hero limpo
-function GridOrStackContainer() {
-  return (
-    <Group justify="space-between" align="center" className="flex-col sm:flex-row gap-6 p-4">
-      <Stack gap="xs" className="max-w-xl">
-        <Title order={1} className="text-white text-3xl sm:text-4xl font-extrabold tracking-tight">
-          Bem-vindo ao <span className="text-teal-400">Meli Helper</span>
-        </Title>
-        <Text size="lg" c="slate.300">
-          Sua ferramenta definitiva para gerenciar dimensões, calcular cubagem de frete e maximizar sua margem de lucro no Mercado Livre.
-        </Text>
-      </Stack>
+export default function Dashboard() {
+  const [loading, setLoading] = useState(true);
+  const [erro, setErro] = useState<string | null>(null);
+  const [dados, setDados] = useState<DashboardResponse | null>(null);
 
-      <Button 
-        component={Link} 
-        to="/login" 
-        size="lg" 
-        color="teal" 
-        className="shadow-lg shadow-teal-950/50"
-      >
-        Acessar Painel
-      </Button>
-    </Group>
+  useEffect(() => {
+    const buscarDadosDashboard = async () => {
+      try {
+        const token = localStorage.getItem('token');
+        
+        // Dispara o GET enviando o Bearer Token no cabeçalho de autorização
+        const response = await api.get('/dashboard', {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+        setDados(response.data);
+      } catch (err: any) {
+        console.error(err);
+        setErro('Não foi possível carregar os dados do painel.');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    buscarDadosDashboard();
+  }, []);
+
+  if (loading) {
+    return (
+      <div style={{ backgroundColor: '#0b0c0d', minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+        <Loader color="red" size="xl" type="bars" />
+      </div>
+    );
+  }
+
+  if (erro || !dados) {
+    return (
+      <div style={{ backgroundColor: '#0b0c0d', minHeight: '100vh', padding: '40px' }}>
+        <Center>
+          <Paper p="md" withBorder style={{ backgroundColor: '#141517', borderColor: '#e03131' }}>
+            <Text c="red.4" fw={500}>{erro || 'Erro inesperado.'}</Text>
+          </Paper>
+        </Center>
+      </div>
+    );
+  }
+
+  return (
+    <div style={{ backgroundColor: '#0b0c0d', minHeight: '100vh', color: '#ffffff', paddingBottom: '40px' }}>
+      <Container size="lg" pt="xl">
+        <Title order={1} style={{ fontWeight: 800 }}>
+          Painel de Controle
+        </Title>
+        <Text c="dimmed" size="sm" mt={4}>
+          Visão geral da cubagem e lucratividade da sua conta do Mercado Livre.
+        </Text>
+
+        <Space h="xl" />
+
+        {/* Grade Responsiva de Cartões de Métrica */}
+        <SimpleGrid cols={{ base: 1, sm: 3 }} gap="md">
+          <MetricCard 
+            title="Margem Média Geral" 
+            value={`${dados.metricas.margemMedia.toFixed(1)}%`} 
+            description="Lucro líquido médio estimado" 
+          />
+          <MetricCard 
+            title="Cubagem Total Alocada" 
+            value={`${dados.metricas.cubagemGeral.toFixed(2)} $m^3$`} 
+            description="Volume total de estoque em metros cúbicos" 
+          />
+          <MetricCard 
+            title="Anúncios Críticos" 
+            value={dados.metricas.anunciosCriticos} 
+            description="Produtos com margem abaixo de 15%" 
+            isAlert={dados.metricas.anunciosCriticos > 0}
+          />
+        </SimpleGrid>
+
+        <Space h="xl" />
+        <Space h="md" />
+
+        <Title order={2} style={{ fontWeight: 700, fontSize: '22px' }}>
+          Análise de Cubagem por Anúncio
+        </Title>
+        
+        {/* Passa a lista recebida do Axios direto para o componente visual */}
+        <ProductTable produtos={dados.produtos} />
+      </Container>
+    </div>
   );
 }

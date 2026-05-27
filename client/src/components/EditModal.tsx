@@ -1,7 +1,7 @@
 // src/components/ProductEditModal.tsx
 import { Modal, Stack, Text, Grid, TextInput, NumberInput, Divider, Group, Button } from '@mantine/core';
 import { useState, useEffect } from 'react';
-import { Product } from './Table';
+import { Product } from './ProductTable';
 
 interface ProductEditModalProps {
   opened: boolean;
