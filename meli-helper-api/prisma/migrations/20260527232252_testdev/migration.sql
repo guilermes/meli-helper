@@ -16,6 +16,7 @@ CREATE TABLE "Anuncio" (
     "idMercadoLivre" TEXT,
     "nome" TEXT NOT NULL,
     "marca" TEXT NOT NULL,
+    "tipoAnuncio" TEXT NOT NULL DEFAULT 'CLASSICO',
     "custo" REAL NOT NULL,
     "precoVenda" REAL NOT NULL,
     "frete" REAL,
