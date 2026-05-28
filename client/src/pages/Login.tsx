@@ -29,7 +29,7 @@ export default function Login() {
       }
 
       localStorage.setItem("token", data.token);
-      navigate('/produtos');
+      navigate('/anuncios');
 
     } catch (err: any) {
       setErro(err.message);

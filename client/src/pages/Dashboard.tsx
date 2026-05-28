@@ -3,7 +3,8 @@ import { useEffect, useState } from 'react';
 import { Container, Title, SimpleGrid, Space, Loader, Center, Text, Paper } from '@mantine/core';
 import api from '../services/api';
 import { MetricCard } from '../components/MetricCard';
-import { ProductTable, ProdutoData } from '../components/ProductTable';
+import ProductTable from '../components/ProductTable';
+
 
 interface DashboardResponse {
   metricas: {

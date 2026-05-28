@@ -1,25 +1,30 @@
 import { useState, FormEvent } from 'react';
-import { 
-  Paper, 
-  Title, 
-  Text, 
-  TextInput, 
-  PasswordInput, 
-  Button, 
-  Stack 
+import {
+  Paper,
+  Title,
+  Text,
+  TextInput,
+  Select,
+  PasswordInput,
+  Button,
+  Stack
 } from '@mantine/core';
 import classes from './SignupForm.module.css';
 
 interface SignupFormProps {
-  onSubmit: (email: string, password: string) => void;
+  onSubmit: (nome: string, nomeLoja: string, email: string, password: string, nicho: string, nivelSeller: string) => void;
   loading: boolean;
   erro: string | null;
 }
 
 export function SignupForm({ onSubmit, loading, erro }: SignupFormProps) {
+  const [nome, setNome] = useState('');
+  const [nomeLoja, setNomeLoja] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
+  const [nicho, setNicho] = useState('');
+  const [nivelSeller, setNivelSeller] = useState(''); // Seu estado se chama nivelSeller
   const [erroLocal, setErroLocal] = useState<string | null>(null);
 
   const lidarComSubmissao = (e: FormEvent) => {
@@ -31,18 +36,18 @@ export function SignupForm({ onSubmit, loading, erro }: SignupFormProps) {
       return;
     }
 
-    onSubmit(email, password);
+    // CORREÇÃO AQUI: Trocado 'nivel' por 'nivelSeller' para bater com o estado e a assinatura
+    onSubmit(nome, nomeLoja, email, password, nicho, nivelSeller);
   };
 
-  // Prioriza o erro vindo da API/Pai, se não houver, mostra o erro de validação local
   const erroExibido = erro || erroLocal;
 
   return (
-    <Paper 
-      withBorder 
-      shadow="xl" 
-      p="xl" 
-      radius="md" 
+    <Paper
+      withBorder
+      shadow="xl"
+      p="xl"
+      radius="md"
       className={classes.card}
     >
       <Stack gap="xs" align="center" mb="lg">
@@ -54,7 +59,6 @@ export function SignupForm({ onSubmit, loading, erro }: SignupFormProps) {
         </Text>
       </Stack>
 
-      {/* Caixa de feedback de erro customizada */}
       {erroExibido && (
         <Paper p="xs" mb="md" radius="sm" className={classes.errorBox}>
           <Text size="xs" fw={500} ta="center">
@@ -65,6 +69,32 @@ export function SignupForm({ onSubmit, loading, erro }: SignupFormProps) {
 
       <form onSubmit={lidarComSubmissao}>
         <Stack gap="md">
+          <TextInput
+            label="Nome"
+            placeholder="Nome"
+            type="text"
+            required
+            value={nome}
+            onChange={(e) => setNome(e.currentTarget.value)}
+            disabled={loading}
+            classNames={{
+              input: classes.input,
+              label: classes.inputLabel,
+            }}
+          />
+          <TextInput
+            label="Nome da Loja"
+            placeholder="Nome da Loja"
+            type="text"
+            required
+            value={nomeLoja}
+            onChange={(e) => setNomeLoja(e.currentTarget.value)}
+            disabled={loading}
+            classNames={{
+              input: classes.input,
+              label: classes.inputLabel,
+            }}
+          />
           <TextInput
             label="E-mail"
             placeholder="seu@email.com"
@@ -106,10 +136,34 @@ export function SignupForm({ onSubmit, loading, erro }: SignupFormProps) {
               innerInput: classes.innerInput,
             }}
           />
+          <Select
+            label="Nicho:"
+            placeholder="Selecione"
+            data={['Automotivo', 'Beleza', 'Casa', 'Eletrônicos', 'Esportes', 'Moda', 'Pet Shop']}
+            clearable
+            value={nicho}
+            onChange={(value) => setNicho(value || '')}
+            classNames={{
+              input: classes.input,
+              label: classes.inputLabel,
+            }}
+          />
+          <Select
+            label="Nível:"
+            placeholder="Selecione"
+            data={['Iniciante', 'Intermediário', 'Avançado']}
+            clearable
+            value={nivelSeller}
+            onChange={(value) => setNivelSeller(value || '')}
+            classNames={{
+              input: classes.input,
+              label: classes.inputLabel,
+            }}
+          />
 
-          <Button 
-            type="submit" 
-            fullWidth 
+          <Button
+            type="submit"
+            fullWidth
             mt="md"
             loading={loading}
             className={classes.buttonSubmit}
