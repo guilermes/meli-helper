@@ -1,9 +1,9 @@
-import express from "express"
-import cors from "cors"
-import swaggerUi from "swagger-ui-express"
-import swaggerSpec from "./swagger.js" // Lembre-se do .js no final ao usar ES Modules
+const express = require("express");
+const cors = require ("cors");
+const swaggerUi = require("swagger-ui-express");
+const swaggerSpec = require("./swagger.js"); // Lembre-se do .js no final ao usar ES Modules
 
-const app = express()
+const app = express();
 
 // 🔌 Habilita o CORS para o seu frontend React (ajuste a porta se necessário)
 app.use(cors({
