@@ -1,181 +1,263 @@
-# Projeto Integrador: MeliHelper
-Solução de Software end-to-end para auxiliar novos sellers na jornada de vendas no Mercado Livre, automatizando cálculos de precificação, frete e análise de lucro.
+# Meli Helper
 
-## Visão Geral
-Este projeto tem como objetivo desenvolver uma solução completa de software, abrangendo todo o ciclo de vida de desenvolvimento: desde o levantamento de requisitos até a implementação, testes e disponibilização da aplicação.A solução foi projetada para resolver um problema real de negócio, utilizando boas práticas de engenharia de software, arquitetura escalável e tecnologias modernas de desenvolvimento.
-O Meli Helper foi desenvolvido com o objetivo de ser um hub de apoio para vendedores iniciantes, reunindo em uma única aplicação diversas ferramentas essenciais para a tomada de decisão.
-O sistema permite:
-  - Cadastro e gerenciamento de anúncios;
-  - Cálculo automático de lucro e margem;
-  - Cálculo dinâmico de frete baseado em cubagem;
-  - Configuração de taxas (comissão, impostos, custos);
-  - Autenticação segura com JWT.
-  
-  **Foco inicial (MVP):** suporte exclusivo ao Mercado Livre.
-  
-  ## Problema de Negócio
-  Vendedores iniciantes enfrentam dificuldades diárias que impactam a saúde financeira de suas operações, tais como:
-  - **Falta de clareza financeira:** Dificuldade para calcular corretamente o lucro real de cada venda;
-  - **Logística complexa:** Negligência ou erro no cálculo do impacto do frete sobre a margem de lucro;
-  - **Erros na precificação:** Falta de conhecimento sobre tarifas de exposição, comissões da plataforma e impostos; e,
-  - **Ausência de ferramentas acessíveis:** Escassez de plataformas simples e integradas para o microempreendedor.
-  
-  ## Solução Proposta
-  O Meli Helper é uma plataforma web desenvolvida para automatizar cálculos complexos de taxas e fretes, transformando a gestão de anúncios em um processo ágil e intuitivo. Através de uma arquitetura baseada em microsserviços e uma API REST robusta, o sistema centraliza desde a autenticação segura do usuário até a análise detalhada de margem de lucro e rentabilidade.
-  
-  ### Tecnologias Utilizadas
-  Para garantir escalabilidade e uma interface responsiva, o projeto foi construído com:
-  - **Backend:** Node.js, Express e Prisma ORM.
-  - **Frontend:** HTML5, JavaScript e Bootstrap para uma UI/UX moderna.
-  - **Segurança & Docs:** Autenticação via JWT e documentação interativa com Swagger.
-  
-  ### Diferenciais
-  - **Cálculo Automatizado:** Resultados instantâneos de lucro líquido e margens.
-  - **Arquitetura Moderna:** Uso de microsserviços para maior independência entre módulos.
-  - **Acessibilidade:** Interface focada em produtividade, acessível via qualquer navegador.
-  
-  ## Arquitetura da Solução
-  O projeto segue o padrão **MVC (Model-View-Controller)** para a aplicação principal:
-  - **Model:** Interação com o banco de dados relacional através do Prisma ORM.
-  - **View:** Interface web dinâmica construída com HTML5, CSS3 e Bootstrap.
-  - **Controller:** Camada responsável pelas regras de negócio, validações e controle de rotas.
-  
-  Além disso, o ecossistema adota uma abordagem moderna distribuída contendo:
-  
-  ### 🔌 Microsserviço de Frete
-  Serviço independente responsável exclusivamente pelas regras de cálculo de envio. Baseia-se em:
-  - Peso real;
-  - Peso cúbico (cubagem);
-  - Faixas de preço e tabelas tarifárias.
+Plataforma web para auxiliar sellers do **Mercado Livre** na gestão de anúncios, com cálculo automático de frete, lucro e margem. O sistema centraliza cadastro de produtos, configuração de taxas e análise financeira em uma interface simples e acessível.
 
-  ### 📦 Cálculo de Peso
-  A cubagem é calculada utilizando a fórmula padrão dos Correios e transportadoras parceiras:
-  
-  $$\text{Peso Cúbico} = \frac{\text{Largura (cm)} \times \text{Altura (cm)} \times \text{Comprimento (cm)}}{6000}$$
-  
-  O sistema realiza a validação de segurança utilizando o maior peso para tarifação:
-  
-  $$\text{Peso Utilizado} = \max(\text{Peso Real}, \text{Peso Cúbico})$$
+---
 
-  ### 🚚 Cálculo de Frete
-  Baseado na tabela oficial de tarifas do Mercado Livre. A precificação final do frete é cruzada dinamicamente cruzando as seguintes variáveis:
-  - Faixa de preço do produto (isenções de frete grátis);
-  - Faixa de peso calculada.
-  
-  ### 💰 Cálculo de Lucro
-  
-  $$\text{Lucro} = \text{Preço} - \text{Custo} - \text{Frete} - \text{Comissão} - \text{Impostos} - \text{Custo Operacional}$$
-  
-  ### 📊 Margem
-  
-  $$\text{Margem (\%)} = \left( \frac{\text{Lucro}}{\text{Preço}} \right) \times 100$$
-  
-  ### 🔐 Autenticação
-  O sistema utiliza o padrão de mercado JWT (JSON Web Token) e o método Bearer Token para proteger as rotas da API e garantir a privacidade dos dados de cada vendedor. Fluxo de Autenticação:
-```
-  authFlow
-    Autenticação ->> Usuário: Realiza login com e-mail/senha
-    Usuário ->> API: Valida credenciais e gera JWT
-    API ->> Usuário: Retorna Token JWT
-    Usuário ->> Recursos Protegidos: Envia Token no Header de Autorização
-```
-Para todas as requisições autenticadas, insira o cabeçalho HTTP:
+## Visão geral
+
+Vendedores iniciantes frequentemente erram na precificação por não considerar comissão da plataforma, impostos, frete e custos operacionais. O **Meli Helper** automatiza esses cálculos e exibe o resultado de forma clara, ajudando na tomada de decisão antes de publicar ou ajustar um anúncio.
+
+### Principais funcionalidades
+
+- Cadastro e login com JWT
+- Perfil do usuário (nome, loja, nicho, senha — e-mail não editável)
+- CRUD de anúncios com tipo **Clássico (12%)** ou **Premium (18%)**
+- Cálculo automático de frete via microsserviço (cubagem + tabela ML)
+- Cálculo de lucro e margem conforme o tipo do anúncio
+- Configuração de imposto (%) e custo operacional fixo
+- Dashboard com KPIs, alertas, ranking e insights
+- Lista de produtos com paginação, busca e edição
+- Documentação interativa da API (Swagger)
+
+---
+
+## Arquitetura
+
+O projeto é composto por **dois serviços Node.js** e um frontend estático servido pela API principal:
 
 ```
-HTTPAuthorization: Bearer SEU_TOKEN_JWT
+┌─────────────────┐     HTTP      ┌──────────────────┐     HTTP      ┌─────────────────┐
+│   Navegador     │ ────────────► │  meli-helper-api │ ────────────► │  frete-service  │
+│  (Bootstrap)    │   :3000       │  Express + Prisma│   :4000       │  Cálculo frete  │
+└─────────────────┘               └────────┬─────────┘               └─────────────────┘
+                                           │
+                                           ▼
+                                  ┌─────────────────┐
+                                  │  SQLite (Prisma) │
+                                  └─────────────────┘
 ```
 
-## Documentação do Projeto
-[Acessar Workspace no Confluence]()<br>
-[Acompanhar Quadro no Jira](https://gabrielpozza335-1775085903755.atlassian.net/jira/software/projects/MH/boards/102/backlog?atlOrigin=eyJpIjoiMDNkODFlNDY3N2E0NGI1MmJiMGViNGE0YmE5OGUxYTMiLCJwIjoiaiJ9)<br>
-[Visualizar Documento de Requisitos]()<br>
+| Módulo | Pasta | Porta | Descrição |
+|--------|-------|-------|-----------|
+| API + Frontend | `meli-helper-api/` | 3000 | REST API, autenticação, regras de negócio e telas HTML |
+| Microsserviço de Frete | `frete-service/` | 4000 | Cálculo de frete por peso, cubagem e faixa de preço |
+| Frontend React *(opcional)* | `client/` | 5173 | Versão em React/Vite em desenvolvimento |
 
-### Sprints
-| Nº Sprint | Objetivo Principal | Data Início | Data Término | Status |
-| --- | --- | --- | --- | --- |
-| 1 | Levantamento de requisitos, arquitetura e modelagem do banco. | 01/03/2026 | 15/03/2026 | Concluído |
-| 2 | Desenvolvimento do Backend (API REST) e integração com o Prisma. | 16/03/2026 | 30/03/2026 | Concluído | 
-| 3 | Desenvolvimento do Microsserviço de Frete e regras de cubagem. | 01/04/2026 | 15/04/2026 | Concluído |
-| 4 | Criação do Frontend (Bootstrap), integração com API e Testes. | 16/04/2026 | 05/05/2026 | Em Andamento |
+---
 
-### Tecnologias Utilizadas
-**Linguagem:** JavaScript (ES Modules)<br>
-**Frontend:** React/Bootstrap<br>
-**Backend:** Node.js, Express<br>
-**Banco de Dados:** PostgreSQL (Prisma ORM)<br>
-**Documentação da API:** Swagger UI<br>
-**Gestão & Versionamento:** Git, GitHub, Jira, Confluence<br>
+## Tecnologias
 
-### Funcionalidades
-- ✅ Cadastro de novos usuários
-- ✅ Login seguro com autenticação JWT
-- ✅ CRUD completo de anúncios (criar, visualizar, editar e excluir)
-- ✅ Cálculo automatizado de Frete, Lucro Líquido e Margem (%)
-- ✅ Configuração flexível de regras de negócio (taxas fixas, custos extras)
-- ✅ Integração resiliente via REST com o Microsserviço de Frete
+| Camada | Stack |
+|--------|-------|
+| Backend | Node.js, Express 5, Prisma ORM |
+| Banco de dados | SQLite |
+| Frontend (ativo) | HTML5, JavaScript, Bootstrap 5 |
+| Autenticação | JWT + bcrypt |
+| Documentação | Swagger UI |
+| Microsserviço | Express (frete-service) |
 
-### Resultados Esperados
-- Resolução do problema de negócio: Prover uma ferramenta real que evite prejuízos aos lojistas.
-- Eficiência operacional: Redução drástica no tempo gasto para cadastrar e calcular a margem de um anúncio.
-- Experiência simplificada: UI amigável e limpa que descomplica fórmulas matemáticas pesadas.
-- Escalabilidade: Arquitetura desacoplada (microsserviços) preparada para novos mercados e integrações futuras.
+---
 
-### 📅 Roadmap (Futuro)
-- [ ] Integração direta com as APIs oficiais do Mercado Livre (Sincronização em tempo real).
-- [ ] Dashboard interativo com gráficos de desempenho de vendas.
-- [ ] Mecanismo de Inteligência Artificial para sugestão automática de preço ideal.
-- [ ] Deploy automatizado em infraestrutura de Nuvem (AWS/Vercel/Render).
-- [ ] Arquitetura preparada para Multi-marketplace (Shopee, Amazon, etc.).
+## Estrutura do repositório
 
-## Como Executar o Projeto
-
-### Pré-requisitos
-Node.js (versão 18.x ou superior recomendada)<br>
-PostgreSQL<br>
-Gerenciador de pacotes npm (incluso no Node.js)<br>
-
-### Passo a Passo de Instalação
-🔹 1. Clonar o repositório
 ```
+meli-helper-vc/
+├── meli-helper-api/          # API principal + frontend estático
+│   ├── prisma/               # Schema, migrations e seed
+│   ├── public/               # Telas HTML e assets (js/, css)
+│   └── src/
+│       ├── controllers/      # Lógica das rotas
+│       ├── routes/           # Definição de endpoints
+│       ├── services/         # Regras de negócio (cálculos)
+│       └── middlewares/      # Autenticação JWT
+├── frete-service/            # Microsserviço de frete
+└── client/                   # Frontend React (alternativo)
+```
+
+---
+
+## Pré-requisitos
+
+- [Node.js](https://nodejs.org/) **18+** (recomendado 20+)
+- npm (incluso no Node.js)
+- Git
+
+> Não é necessário instalar PostgreSQL. O projeto usa **SQLite** localmente.
+
+---
+
+## Instalação e execução
+
+### 1. Clonar o repositório
+
+```bash
 git clone https://github.com/guilermes/meli-helper.git
-cd meli-helper
+cd meli-helper-vc
 ```
-🔹 2. Configurar Variáveis de Ambiente
-Crie um arquivo .env na raiz do projeto principal e preencha as variáveis necessárias (exemplo):
+
+### 2. Configurar a API principal
+
+```bash
+cd meli-helper-api
 ```
-DATABASE_URL="postgresql://usuario:senha@localhost:5432/melihelper?schema=public"
-JWT_SECRET="sua_chave_secreta_super_segura"
-PORT=3000
+
+Crie o arquivo `.env` na pasta `meli-helper-api/`:
+
+```env
+DATABASE_URL="file:./dev.db"
 ```
-🔹 3. Instalar dependências do projeto principal
-```
+
+Instale as dependências e prepare o banco:
+
+```bash
 npm install
-```
-🔹 4. Executar Migrations do Banco de Dados
-```
 npx prisma migrate dev
 ```
-🔹 5. Iniciar a API Principal (Backend)
+
+**Opcional — popular o banco com dados de teste:**
+
+```bash
+node prisma/seed.js
 ```
+
+> A seed cria 100 anúncios para o usuário `dan@email.com` (senha padrão: `123456`, se criado pela seed).
+
+Inicie a API:
+
+```bash
 npm run dev
 ```
-🔹 6. Configurar e Rodar o Microsserviço de Frete
-Em um novo terminal, navegue até a pasta do microsserviço:
-```
+
+A API ficará disponível em **http://localhost:3000**
+
+### 3. Configurar o microsserviço de frete
+
+Em **outro terminal**:
+
+```bash
 cd frete-service
 npm install
-node server.js
+node index.js
 ```
-🔹 7. Acessar o Sistema
-Abra o seu navegador e acesse: [http://localhost:3000](http://localhost:3000)
 
-## 👨‍💻 Equipe
-Daniel Fernando — Fullstack Developer & DB Specialist<br>
-Guilherme Nobrega — Fullstack Developer & Software Architect<br>
+O serviço de frete ficará em **http://localhost:4000**
 
-## 📚 Considerações Finais
-O desenvolvimento do Meli Helper consolida na prática conceitos cruciais de Engenharia de Software voltados ao mercado de trabalho, tais como:
-- Aplicação prática e consistente do padrão de arquitetura MVC;
-- Implementação de microsserviços e comunicação integrada via APIs REST;
-- Garantia de segurança no tráfego de dados e controle de acessos;
-- Uso de metodologias ágeis e ferramentas de nível corporativo para gestão de ciclo de vida de software.
+> ⚠️ O cálculo de frete nos anúncios depende deste serviço estar rodando. Sem ele, o frete retorna `0` como fallback.
+
+### 4. Acessar o sistema
+
+| Recurso | URL |
+|---------|-----|
+| Login | http://localhost:3000/index.html |
+| Cadastro | http://localhost:3000/register.html |
+| Dashboard | http://localhost:3000/dashboard.html |
+| Swagger (API) | http://localhost:3000/api-docs |
+| Swagger (Frete) | http://localhost:4000/docs |
+
+---
+
+## Fluxo de uso
+
+1. Crie uma conta em `/register.html` (senha com confirmação)
+2. Faça login em `/index.html`
+3. Configure impostos e custo operacional em **Config**
+4. Cadastre anúncios escolhendo **Clássico** ou **Premium**
+5. Acompanhe margens no **Dashboard** e na **Lista de Produtos**
+6. Edite seu perfil em **Perfil** (e-mail não pode ser alterado)
+
+---
+
+## Regras de cálculo
+
+### Peso utilizado
+
+```
+Peso Cúbico = (Largura × Altura × Comprimento) / 6000
+Peso Utilizado = max(Peso Real, Peso Cúbico)
+```
+
+### Comissão Mercado Livre
+
+| Tipo | Taxa |
+|------|------|
+| Clássico | 12% |
+| Premium | 18% |
+
+### Lucro e margem
+
+```
+Lucro = Preço − Custo − Frete − Imposto − Custo Operacional − Comissão
+Margem (%) = (Lucro / Preço) × 100
+```
+
+O frete é obtido pelo microsserviço com base na tabela tarifária do Mercado Livre (faixas de preço × faixas de peso).
+
+---
+
+## API — endpoints principais
+
+| Método | Rota | Auth | Descrição |
+|--------|------|------|-----------|
+| POST | `/register` | — | Cadastro de usuário |
+| POST | `/login` | — | Login (retorna JWT) |
+| GET | `/profile` | ✅ | Dados do perfil |
+| PUT | `/profile` | ✅ | Atualizar perfil |
+| GET | `/anuncios` | ✅ | Listar anúncios (paginação) |
+| POST | `/anuncios` | ✅ | Criar anúncio |
+| PUT | `/anuncios/:id` | ✅ | Atualizar anúncio |
+| DELETE | `/anuncios/:id` | ✅ | Excluir anúncio |
+| GET/PUT | `/config` | ✅ | Configurações financeiras |
+| POST | `/calcular-frete` | ✅ | Proxy para frete-service |
+
+Rotas autenticadas exigem o header:
+
+```
+Authorization: Bearer SEU_TOKEN_JWT
+```
+
+---
+
+## Frontend React (opcional)
+
+Existe uma versão alternativa em React na pasta `client/`. Para executá-la:
+
+```bash
+cd client
+npm install
+npm run dev
+```
+
+Ela roda separadamente (porta padrão do Vite: **5173**) e ainda não substitui o frontend Bootstrap em produção local.
+
+---
+
+## Equipe
+
+| Nome | Papel |
+|------|-------|
+| Daniel Fernando | Fullstack Developer & DB Specialist |
+| Guilherme Nobrega | Fullstack Developer & Software Architect |
+
+---
+
+## Roadmap
+
+- [ ] Integração com APIs oficiais do Mercado Livre
+- [ ] Gráficos interativos no dashboard
+- [ ] Sugestão de preço com IA
+- [ ] Deploy em nuvem (AWS / Render / Vercel)
+- [ ] Suporte multi-marketplace (Shopee, Amazon, etc.)
+- [ ] Consolidar frontend React como interface principal
+
+---
+
+## Links do projeto
+
+- [Quadro Jira](https://gabrielpozza335-1775085903755.atlassian.net/jira/software/projects/MH/boards/102/backlog)
+
+---
+
+## Licença
+
+Projeto acadêmico / integrador — uso educacional.

@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+
+  <meta charset="UTF-8">
+
+  <title>Cadastro</title>
+
+  <link
+    href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+    rel="stylesheet"
+  >
+
+  <link
+    href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css"
+    rel="stylesheet"
+  >
+
+</head>
+
+<body class="bg-light d-flex align-items-center justify-content-center py-5">
+
+  <div class="container">
+
+    <div class="row justify-content-center">
+
+      <div class="col-md-6">
+
+        <div class="card shadow border-0">
+
+          <div class="card-body p-4">
+
+            <!-- HEADER -->
+            <div class="text-center mb-4">
+
+              <h3 class="fw-bold">
+                <i class="bi bi-shop me-2"></i>
+                Meli Helper
+              </h3>
+
+              <small class="text-muted">
+                Crie sua conta
+              </small>
+
+            </div>
+
+            <!-- FORM -->
+            <form id="formRegister">
+
+              <div class="row g-3">
+
+                <!-- NOME -->
+                <div class="col-md-6">
+
+                  <label class="form-label">
+                    Nome
+                  </label>
+
+                  <input
+                    type="text"
+                    id="nome"
+                    class="form-control"
+                    required
+                  >
+
+                </div>
+
+                <!-- LOJA -->
+                <div class="col-md-6">
+
+                  <label class="form-label">
+                    Nome da Loja
+                  </label>
+
+                  <input
+                    type="text"
+                    id="nomeLoja"
+                    class="form-control"
+                    required
+                  >
+
+                </div>
+
+                <!-- EMAIL -->
+                <div class="col-12">
+
+                  <label class="form-label">
+                    Email
+                  </label>
+
+                  <input
+                    type="email"
+                    id="email"
+                    class="form-control"
+                    required
+                  >
+
+                </div>
+
+                <!-- SENHA -->
+                <div class="col-md-6">
+
+                  <label class="form-label">
+                    Senha
+                  </label>
+
+                  <div class="input-group">
+
+                    <input
+                      type="password"
+                      id="senha"
+                      class="form-control"
+                      required
+                    >
+
+                    <button
+                      type="button"
+                      class="btn btn-outline-secondary"
+                      onclick="toggleSenha('senha', this)"
+                      tabindex="-1"
+                    >
+                      <i class="bi bi-eye"></i>
+                    </button>
+
+                  </div>
+
+                  <small class="text-muted">
+                    8 caracteres, maiúscula, minúscula e número
+                  </small>
+
+                </div>
+
+                <!-- CONFIRMAR SENHA -->
+                <div class="col-md-6">
+
+                  <label class="form-label">
+                    Confirmar Senha
+                  </label>
+
+                  <div class="input-group">
+
+                    <input
+                      type="password"
+                      id="confirmarSenha"
+                      class="form-control"
+                      required
+                    >
+
+                    <button
+                      type="button"
+                      class="btn btn-outline-secondary"
+                      onclick="toggleSenha('confirmarSenha', this)"
+                      tabindex="-1"
+                    >
+                      <i class="bi bi-eye"></i>
+                    </button>
+
+                  </div>
+
+                </div>
+
+                <!-- NICHO -->
+                <div class="col-md-6">
+
+                  <label class="form-label">
+                    Nicho
+                  </label>
+
+                  <select id="nicho" class="form-select">
+
+                    <option value="">
+                      Selecionar
+                    </option>
+
+                    <option>Moda</option>
+                    <option>Eletrônicos</option>
+                    <option>Casa</option>
+                    <option>Automotivo</option>
+                    <option>Pet Shop</option>
+                    <option>Esportes</option>
+                    <option>Outros</option>
+
+                  </select>
+
+                </div>
+
+                <!-- NÍVEL -->
+                <div class="col-md-6">
+
+                  <label class="form-label">
+                    Nível Seller
+                  </label>
+
+                  <select id="nivelSeller" class="form-select">
+
+                    <option value="">
+                      Selecionar
+                    </option>
+
+                    <option>Iniciante</option>
+                    <option>Intermediário</option>
+                    <option>Avançado</option>
+
+                  </select>
+
+                </div>
+
+              </div>
+
+              <!-- BOTÃO -->
+              <div class="d-grid mt-4">
+
+                <button
+                  type="submit"
+                  class="btn btn-primary"
+                >
+                  <i class="bi bi-person-plus"></i>
+                  Criar Conta
+                </button>
+
+              </div>
+
+            </form>
+
+            <!-- MSG -->
+            <p
+              id="msg"
+              class="text-center mt-3 fw-semibold"
+            ></p>
+
+            <!-- LOGIN -->
+            <div class="text-center mt-4">
+
+              <small class="text-muted">
+                Já possui conta?
+              </small>
+
+              <a href="index.html">
+                Entrar
+              </a>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+  <script src="js/register.js"></script>
+
+</body>
+</html>

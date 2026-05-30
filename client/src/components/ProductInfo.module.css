@@ -1,0 +1,39 @@
+/* src/components/productForm/ProductForm.module.css */
+
+.sectionWrapper {
+  margin-bottom: 32px;
+}
+
+.sectionTitle {
+  font-size: 13px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: #e03131; /* Título da seção em Vermelho MeliHelper */
+  margin-bottom: 16px;
+}
+
+/* Customização dos Inputs do Mantine v7 */
+.inputLabel {
+  color: #c1c2c5; /* Cinza claro */
+  margin-bottom: 4px;
+  font-weight: 500;
+  font-size: 14px;
+}
+
+.input {
+  background-color: #25262b; /* Fundo escuro do input */
+  border-color: #373a40;
+  color: #ffffff;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.input::placeholder {
+  color: #5c5f66; /* Cor do placeholder mais discreta */
+}
+
+/* Efeito de foco padrão MeliHelper (Vermelho sutil) */
+.input:focus,
+.input:focus-within {
+  border-color: #e03131 !important;
+}

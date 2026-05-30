@@ -1,0 +1,51 @@
+.navBar {
+    background-color: var(--mantine-color-white);
+    border-bottom: 1px solid var(--mantine-color-gray-2);
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 var(--mantine-spacing-md);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+.logo {
+    font-weight: 800;
+    font-size: var(--mantine-font-size-lg);
+    color: var(--mantine-color-dark-9);
+    cursor: pointer;
+}
+
+.logoSpan {
+    color: var(--mantine-color-brandRed-7);
+}
+
+.logoLink {
+    text-decoration: none;
+    color: inherit;
+}
+
+.navLinks {
+    display: flex;
+    gap: var(--mantine-spacing-lg);
+}
+
+.link {
+    color: var(--mantine-color-gray-7);
+    font-weight: 500;
+    font-size: var(--mantine-font-size-sm);
+    transition: color 0.2s ease;
+    text-decoration: none;
+}
+
+.link:hover {
+    color: var(--mantine-color-brandRed-7);
+}
+
+.activeLink {
+    color: var(--mantine-color-dark-9);
+    font-weight: 600;
+    border-bottom: 2px solid var(--mantine-color-brandRed-7);
+}

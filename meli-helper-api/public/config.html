@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Configuração</title>
+
+  <!-- Bootstrap -->
+  <link
+    href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+    rel="stylesheet"
+  >
+
+  <!-- Icons -->
+  <link
+    href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css"
+    rel="stylesheet"
+  >
+
+  <link href="js/layout.css" rel="stylesheet">
+</head>
+
+<body class="bg-light">
+
+<div class="page-wrapper">
+
+  <div id="sidebar-container"></div>
+
+  <main class="main-content">
+
+  <!-- CONTAINER -->
+  <div class="container">
+
+    <!-- HEADER -->
+    <div class="mb-4">
+
+      <h3 class="fw-semibold mb-1">
+        Configurações
+      </h3>
+
+      <small class="text-muted">
+        Configure impostos e custos operacionais da sua operação
+      </small>
+
+    </div>
+
+    <!-- COMISSÕES FIXAS -->
+    <div class="row mb-4">
+
+      <!-- CLASSICO -->
+      <div class="col-md-6">
+
+        <div class="card border-0 shadow-sm h-100">
+
+          <div class="card-body">
+
+            <div class="d-flex justify-content-between align-items-start">
+
+              <div>
+
+                <small class="text-muted">
+                  Comissão Mercado Livre
+                </small>
+
+                <h4 class="fw-bold text-primary mt-1">
+                  Clássico
+                </h4>
+
+              </div>
+
+              <span class="badge bg-primary fs-6">
+                12%
+              </span>
+
+            </div>
+
+            <hr>
+
+            <p class="text-muted mb-0">
+
+              Exposição média, sem parcelamento sem juros.
+              Ideal para produtos de ticket mais baixo.
+
+            </p>
+
+          </div>
+
+        </div>
+
+      </div>
+
+      <!-- PREMIUM -->
+      <div class="col-md-6">
+
+        <div class="card border-0 shadow-sm h-100">
+
+          <div class="card-body">
+
+            <div class="d-flex justify-content-between align-items-start">
+
+              <div>
+
+                <small class="text-muted">
+                  Comissão Mercado Livre
+                </small>
+
+                <h4 class="fw-bold text-warning mt-1">
+                  Premium
+                </h4>
+
+              </div>
+
+              <span class="badge bg-warning text-dark fs-6">
+                18%
+              </span>
+
+            </div>
+
+            <hr>
+
+            <p class="text-muted mb-0">
+
+              Alta exposição e parcelamento sem juros.
+              Ideal para produtos de ticket mais alto.
+
+            </p>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- CONFIG + RESUMO -->
+    <div class="row g-4">
+
+      <!-- FORM -->
+      <div class="col-lg-6">
+
+        <div class="card border-0 shadow-sm">
+
+          <div class="card-body">
+
+            <h5 class="mb-4 text-primary">
+              <i class="bi bi-sliders me-2"></i>
+              Configurações da Operação
+            </h5>
+
+            <form id="formConfig">
+
+              <!-- IMPOSTO -->
+              <div class="mb-3">
+
+                <label class="form-label">
+                  Imposto (%)
+                </label>
+
+                <div class="input-group">
+
+                  <span class="input-group-text">
+                    %
+                  </span>
+
+                  <input
+                    type="number"
+                    step="0.01"
+                    id="imposto"
+                    class="form-control"
+                    placeholder="Ex: 6"
+                  >
+
+                </div>
+
+              </div>
+
+              <!-- CUSTO -->
+              <div class="mb-4">
+
+                <label class="form-label">
+                  Custo Operacional
+                </label>
+
+                <div class="input-group">
+
+                  <span class="input-group-text">
+                    R$
+                  </span>
+
+                  <input
+                    type="number"
+                    step="0.01"
+                    id="custoOperacional"
+                    class="form-control"
+                    placeholder="Ex: 5"
+                  >
+
+                </div>
+
+              </div>
+
+              <!-- BOTÃO -->
+              <div class="d-grid">
+
+                <button
+                  type="submit"
+                  class="btn btn-primary"
+                >
+                  <i class="bi bi-save"></i>
+                  Salvar Configuração
+                </button>
+
+              </div>
+
+            </form>
+
+            <p
+              id="msg"
+              class="mt-3 text-center fw-semibold"
+            ></p>
+
+          </div>
+
+        </div>
+
+      </div>
+
+      <!-- RESUMO -->
+      <div class="col-lg-6">
+
+        <div class="card border-0 shadow-sm">
+
+          <div class="card-body">
+
+            <h5 class="mb-4 text-success">
+              <i class="bi bi-bar-chart-fill me-2"></i>
+              Configuração Atual
+            </h5>
+
+            <div class="list-group">
+
+              <!-- IMPOSTO -->
+              <div class="list-group-item d-flex justify-content-between align-items-center">
+
+                <span>
+                  <i class="bi bi-receipt text-warning me-2"></i>
+                  Imposto
+                </span>
+
+                <span class="badge bg-warning text-dark fs-6">
+
+                  <span id="confImposto">
+                    0
+                  </span>%
+
+                </span>
+
+              </div>
+
+              <!-- CUSTO -->
+              <div class="list-group-item d-flex justify-content-between align-items-center">
+
+                <span>
+                  <i class="bi bi-cash-stack text-success me-2"></i>
+                  Custo Operacional
+                </span>
+
+                <span class="badge bg-success fs-6">
+
+                  R$
+                  <span id="confCusto">
+                    0
+                  </span>
+
+                </span>
+
+              </div>
+
+            </div>
+
+            <!-- INFO -->
+            <div class="alert alert-light border mt-4 mb-0">
+
+              <div class="d-flex">
+
+                <i class="bi bi-info-circle text-primary me-2"></i>
+
+                <small class="text-muted">
+
+                  As comissões de anúncios
+                  Clássico e Premium são aplicadas
+                  automaticamente pelo sistema.
+
+                </small>
+
+              </div>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+  </main>
+
+</div>
+
+  <!-- Bootstrap -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+  <script src="js/sidebar.js"></script>
+  <script src="js/config.js"></script>
+
+</body>
+</html>

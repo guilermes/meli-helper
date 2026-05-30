@@ -1,0 +1,26 @@
+/* src/components/MetricCard/MetricCard.module.css */
+.card {
+  background-color: #141517;
+  border-color: #2c2e33;
+  flex: 1;
+  min-width: 240px;
+}
+
+.title {
+  text-transform: uppercase;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  color: #909296 !important;
+}
+
+.value {
+  font-size: 32px;
+  font-weight: 700;
+  color: #ffffff;
+  line-height: 1;
+}
+
+/* Se a métrica for um alerta (ex: anúncios tomando prejuízo) acende em vermelho */
+.alertValue {
+  color: #e03131;
+}

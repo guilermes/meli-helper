@@ -1,14 +1,21 @@
-const express = require("express")
+import express from "express"
+import cors from "cors"
+import swaggerUi from "swagger-ui-express"
+import swaggerSpec from "./swagger.js" // Lembre-se do .js no final ao usar ES Modules
+
 const app = express()
-const swaggerUi = require("swagger-ui-express")
-const swaggerSpec = require("./swagger")
 
-
-app.use("/docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec))
+// 🔌 Habilita o CORS para o seu frontend React (ajuste a porta se necessário)
+app.use(cors({
+  origin: "http://localhost:5173" 
+}))
 
 app.use(express.json())
 
-// 🔥 FAIXA DE PREÇO
+// 📖 Documentação Swagger
+app.use("/docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec))
+
+// 💰 Regras de Faixa de Preço
 function getFaixaPreco(preco) {
   if (preco <= 18.99) return 0
   if (preco <= 48.99) return 1
@@ -20,40 +27,19 @@ function getFaixaPreco(preco) {
   return 7
 }
 
-// 🔥 FAIXA DE PESO
+// ⚖️ Regras de Faixa de Peso
 function getFaixaPeso(peso) {
-  if (peso <= 0.3) return 0
-  if (peso <= 0.5) return 1
-  if (peso <= 1) return 2
-  if (peso <= 1.5) return 3
-  if (peso <= 2) return 4
-  if (peso <= 3) return 5
-  if (peso <= 4) return 6
-  if (peso <= 5) return 7
-  if (peso <= 6) return 8
-  if (peso <= 7) return 9
-  if (peso <= 8) return 10
-  if (peso <= 9) return 11
-  if (peso <= 11) return 12
-  if (peso <= 13) return 13
-  if (peso <= 15) return 14
-  if (peso <= 17) return 15
-  if (peso <= 20) return 16
-  if (peso <= 25) return 17
-  if (peso <= 30) return 18
-  if (peso <= 40) return 19
-  if (peso <= 50) return 20
-  if (peso <= 60) return 21
-  if (peso <= 70) return 22
-  if (peso <= 80) return 23
-  if (peso <= 90) return 24
-  if (peso <= 100) return 25
-  if (peso <= 125) return 26
-  if (peso <= 150) return 27
-  return 28
+  const limites = [
+    0.3, 0.5, 1, 1.5, 2, 3, 4, 5, 6, 7, 8, 9, 11, 13, 15, 
+    17, 20, 25, 30, 40, 50, 60, 70, 80, 90, 100, 125, 150
+  ]
+  
+  // Uma forma mais limpa de encontrar o índice sem usar dezenas de 'if'
+  const index = limites.findIndex(limite => peso <= limite)
+  return index === -1 ? 28 : index
 }
 
-// 🔥 TABELA COMPLETA
+// 📊 TABELA COMPLETA Matriz [Peso][Preço]
 const tabela = [
   [5.65,6.55,7.75,12.35,14.35,16.45,18.45,20.95],
   [5.95,6.65,7.85,13.25,15.45,17.65,19.85,22.55],
@@ -89,40 +75,27 @@ const tabela = [
 /**
  * @swagger
  * /calcular-frete:
- *   post:
- *     summary: Calcula o frete com base no peso e cubagem
- *     tags: [Frete]
- *     requestBody:
- *       required: true
- *       content:
- *         application/json:
- *           schema:
- *             type: object
- *             properties:
- *               precoVenda:
- *                 type: number
- *               largura:
- *                 type: number
- *               altura:
- *                 type: number
- *               comprimento:
- *                 type: number
- *               peso:
- *                 type: number
- *     responses:
- *       200:
- *         description: Frete calculado com sucesso
+ * post:
+ * summary: Calcula o frete com base no peso e cubagem
+ * tags: [Frete]
+ * ...
  */
-// 🔥 ROTA FINAL
 app.post("/calcular-frete", (req, res) => {
   const { precoVenda, largura, altura, comprimento, peso } = req.body
 
-  if (!precoVenda) {
+  // Validação básica de segurança
+  if (precoVenda === undefined || precoVenda === null) {
     return res.status(400).json({ erro: "Preço de venda obrigatório" })
   }
 
-  const pesoCubico = (largura * altura * comprimento) / 6000 || 0
-  const pesoUtilizado = Math.max(peso || 0, pesoCubico)
+  // Tratando nulos/indefinidos para evitar quebras em cálculos matemáticos
+  const l = largura || 0
+  const a = altura || 0
+  const c = comprimento || 0
+  const p = peso || 0
+
+  const pesoCubico = (l * a * c) / 6000
+  const pesoUtilizado = Math.max(p, pesoCubico)
 
   const faixaPreco = getFaixaPreco(precoVenda)
   const faixaPeso = getFaixaPeso(pesoUtilizado)
@@ -135,7 +108,6 @@ app.post("/calcular-frete", (req, res) => {
   })
 })
 
-// 🚀 START
 app.listen(4000, () => {
   console.log("🚚 Frete service rodando na porta 4000")
 })

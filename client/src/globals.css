@@ -1,0 +1,48 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* 
+  Nota: Certifique-se de que o @mantine/core/styles.css 
+  esteja importado ANTES deste arquivo no seu projeto.
+*/
+
+html {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  scroll-behavior: smooth;
+}
+
+body {
+  /* O Mantine gerencia o background e a cor do texto automaticamente, 
+     mas garantimos a altura mínima e o comportamento de flex para o Footer colar embaixo */
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Garante que a estrutura do seu app ocupe o espaço correto para o Footer */
+#root, __next {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+/* CUSTOMIZAÇÃO DA SCROLLBAR MINIMALISTA */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--mantine-color-body); /* Usa a cor de fundo do Mantine */
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--mantine-color-gray-3); /* Usa o cinza do Mantine */
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--mantine-color-gray-5);
+}
