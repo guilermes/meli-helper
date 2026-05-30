@@ -27,9 +27,11 @@
     color: inherit;
 }
 
+/* Garante que o container alinhe o texto e o avatar centralizados na vertical */
 .navLinks {
-    display: flex;
-    gap: var(--mantine-spacing-lg);
+  display: flex;
+  align-items: center; /* Centraliza verticalmente */
+  gap: 1.5rem;         /* Mantém um espaçamento consistente entre os links e o avatar */
 }
 
 .link {
@@ -48,4 +50,18 @@
     color: var(--mantine-color-dark-9);
     font-weight: 600;
     border-bottom: 2px solid var(--mantine-color-brandRed-7);
+}
+
+/* Estilização básica do botão do avatar para dar feedback visual de clique */
+.userButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: transform 0.15s ease;
+  border-radius: 50%;
+}
+
+.userButton:active {
+  transform: scale(0.95); /* Efeito de clique físico encolhendo levemente */
 }

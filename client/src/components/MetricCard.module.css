@@ -1,26 +1,44 @@
 /* src/components/MetricCard/MetricCard.module.css */
 .card {
-  background-color: #141517;
-  border-color: #2c2e33;
+  background-color: #141517 !important;
+  border-color: #25262b !important; /* Mesma cor de borda usada na tabela */
   flex: 1;
   min-width: 240px;
+  transition: border-color 0.15s ease, transform 0.15s ease;
+}
+
+.card:hover {
+  border-color: #373a40 !important; /* Efeito sutil de hover ao passar o mouse */
+}
+
+/* 🌟 Borda superior vermelha para dar o realce de atenção no card crítico */
+.cardAlert {
+  border-top: 4px solid #e03131 !important;
 }
 
 .title {
   text-transform: uppercase;
   font-weight: 700;
-  letter-spacing: 0.5px;
+  letter-spacing: 0.7px;
   color: #909296 !important;
+  font-size: 11px;
 }
 
 .value {
   font-size: 32px;
-  font-weight: 700;
+  font-weight: 800;
   color: #ffffff;
   line-height: 1;
+  letter-spacing: -0.5px;
 }
 
-/* Se a métrica for um alerta (ex: anúncios tomando prejuízo) acende em vermelho */
+/* Vermelho com excelente contraste para leitura no fundo escuro */
 .alertValue {
-  color: #e03131;
+  color: #ff6b6b; 
+}
+
+.description {
+  color: #a6a7ab !important;
+  font-size: 12px;
+  line-height: 1.4;
 }

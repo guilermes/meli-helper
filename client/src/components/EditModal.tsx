@@ -2,6 +2,8 @@
 import { Modal, Stack, Text, Grid, TextInput, NumberInput, Divider, Group, Button } from '@mantine/core';
 import { useState, useEffect } from 'react';
 import { Product } from './ProductTable';
+import api from '../services/api';
+import classes from './EditModal.module.css';
 
 interface ProductEditModalProps {
   opened: boolean;
@@ -10,11 +12,11 @@ interface ProductEditModalProps {
   onSave: (updatedProduct: Product) => void;
 }
 
-export function ProductEditModal({ opened, onClose, product, onSave }: ProductEditModalProps) {
-  // Estado interno para controlar a edição local sem afetar a tabela antes da hora
+export default function ProductEditModal({ opened, onClose, product, onSave }: ProductEditModalProps) {
   const [editedProduct, setEditedProduct] = useState<Product | null>(null);
+  const [saveLoading, setSaveLoading] = useState(false);
 
-  // Toda vez que o modal abrir com um produto novo, atualiza o estado interno
+  // Sincroniza o estado interno sempre que o produto selecionado mudar
   useEffect(() => {
     if (product) setEditedProduct({ ...product });
   }, [product]);
@@ -25,6 +27,30 @@ export function ProductEditModal({ opened, onClose, product, onSave }: ProductEd
     setEditedProduct((prev) => prev ? { ...prev, [campo]: valor } : null);
   };
 
+  // 🌟 Função assíncrona para salvar as alterações no banco de dados (SQLite + Prisma)
+  const handleSaveConfirm = async () => {
+    if (!editedProduct) return;
+    setSaveLoading(true);
+
+    try {
+      const tokenRaw = localStorage.getItem('token');
+      const token = tokenRaw ? tokenRaw.replace(/^"(.*)"$/, '$1') : '';
+
+      // Envia a atualização para a rota correta usando o ID do anúncio
+      await api.put(`/anuncios/${editedProduct.id}`, editedProduct, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+
+      // Se deu certo na API, executa a função de callback para atualizar a tela
+      onSave(editedProduct);
+    } catch (error) {
+      console.error('Erro ao atualizar o anúncio:', error);
+      alert('Não foi possível salvar as alterações. Verifique os dados e tente novamente.');
+    } finally {
+      setSaveLoading(false);
+    }
+  };
+
   return (
     <Modal
       opened={opened}
@@ -32,15 +58,15 @@ export function ProductEditModal({ opened, onClose, product, onSave }: ProductEd
       title="Editar Anúncio"
       size="lg"
       centered
-      styles={{
-        content: { backgroundColor: '#1e293b', color: '#fff' },
-        header: { backgroundColor: '#0f172a', borderBottom: '1px solid #334155' }
+      classNames={{
+        content: classes.modalContent,
+        header: classes.modalHeader,
       }}
     >
       <Stack gap="xl" mt="md">
         {/* SEÇÃO 1: INFORMAÇÕES */}
         <div>
-          <Text fw={600} c="blue.4" size="xs" mb="sm" className="uppercase tracking-wider">
+          <Text fw={600} c="blue.4" className={classes.sectionTitle}>
             Informações Gerais
           </Text>
           <Grid gutter="md">
@@ -61,11 +87,11 @@ export function ProductEditModal({ opened, onClose, product, onSave }: ProductEd
           </Grid>
         </div>
 
-        <Divider className="border-slate-700" />
+        <Divider className={classes.divider} />
 
         {/* SEÇÃO 2: DIMENSÕES */}
         <div>
-          <Text fw={600} c="orange.4" size="xs" mb="sm" className="uppercase tracking-wider">
+          <Text fw={600} c="orange.4" className={classes.sectionTitle}>
             Dimensões do Pacote
           </Text>
           <Grid gutter="sm">
@@ -101,51 +127,50 @@ export function ProductEditModal({ opened, onClose, product, onSave }: ProductEd
           </Grid>
         </div>
 
-        <Divider className="border-slate-700" />
+        <Divider className={classes.divider} />
 
         {/* SEÇÃO 3: VALORES */}
         <div>
-          <Text fw={600} c="green.4" size="xs" mb="sm" className="uppercase tracking-wider">
+          <Text fw={600} c="green.4" className={classes.sectionTitle}>
             Custos e Precificação
           </Text>
-          {/* Trecho dos inputs de Precificação dentro do seu ProductEditModal.tsx */}
-<Grid gutter="md">
-  <Grid.Col span={4}>
-    <NumberInput
-      label="Custo"
-      prefix="R$ "
-      decimalScale={2}
-      value={editedProduct.custo}
-      onChange={(val) => handleChange('custo', typeof val === 'number' ? val : 0)}
-    />
-  </Grid.Col>
-  <Grid.Col span={4}>
-    <NumberInput
-      label="Preço Venda"
-      prefix="R$ "
-      decimalScale={2}
-      value={editedProduct.precoVenda}
-      onChange={(val) => handleChange('precoVenda', typeof val === 'number' ? val : 0)}
-    />
-  </Grid.Col>
-  <Grid.Col span={4}>
-    <NumberInput
-      label="Frete"
-      prefix="R$ "
-      decimalScale={2}
-      value={editedProduct.freteCalculado}
-      onChange={(val) => handleChange('freteCalculado', typeof val === 'number' ? val : 0)}
-    />
-  </Grid.Col>
-</Grid>       
-</div>
+          <Grid gutter="md">
+            <Grid.Col span={4}>
+              <NumberInput
+                label="Custo"
+                prefix="R$ "
+                decimalScale={2}
+                value={editedProduct.custo}
+                onChange={(val) => handleChange('custo', typeof val === 'number' ? val : 0)}
+              />
+            </Grid.Col>
+            <Grid.Col span={4}>
+              <NumberInput
+                label="Preço Venda"
+                prefix="R$ "
+                decimalScale={2}
+                value={editedProduct.precoVenda}
+                onChange={(val) => handleChange('precoVenda', typeof val === 'number' ? val : 0)}
+              />
+            </Grid.Col>
+            <Grid.Col span={4}>
+              <NumberInput
+                label="Frete"
+                prefix="R$ "
+                decimalScale={2}
+                value={editedProduct.freteCalculado}
+                onChange={(val) => handleChange('freteCalculado', typeof val === 'number' ? val : 0)}
+              />
+            </Grid.Col>
+          </Grid>       
+        </div>
 
         {/* AÇÕES */}
-        <Group justify="flex-end" mt="xl" className="pt-4 border-t border-slate-700">
-          <Button variant="subtle" color="gray" onClick={onClose}>
+        <Group justify="flex-end" mt="xl" className={classes.actionsGroup}>
+          <Button variant="subtle" color="gray" onClick={onClose} disabled={saveLoading}>
             Cancelar
           </Button>
-          <Button color="green" onClick={() => onSave(editedProduct)}>
+          <Button color="green" onClick={handleSaveConfirm} loading={saveLoading}>
             Salvar Alterações
           </Button>
         </Group>

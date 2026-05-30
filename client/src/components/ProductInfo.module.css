@@ -1,39 +1,70 @@
-/* src/components/productForm/ProductForm.module.css */
+/* src/components/productForm/ProductInfo.module.css */
 
-.sectionWrapper {
-  margin-bottom: 32px;
+.formContainer {
+  width: 100%;
 }
 
+.sectionWrapper {
+  padding: 4px 0;
+}
+
+/* Base do título de seção com indicador em linha vertical */
 .sectionTitle {
   font-size: 13px;
   font-weight: 700;
   text-transform: uppercase;
-  letter-spacing: 1px;
-  color: #e03131; /* Título da seção em Vermelho MeliHelper */
-  margin-bottom: 16px;
+  letter-spacing: 0.8px;
+  margin-bottom: 20px;
+  padding-left: 10px;
 }
 
-/* Customização dos Inputs do Mantine v7 */
-.inputLabel {
-  color: #c1c2c5; /* Cinza claro */
-  margin-bottom: 4px;
-  font-weight: 500;
-  font-size: 14px;
-}
-
-.input {
-  background-color: #25262b; /* Fundo escuro do input */
-  border-color: #373a40;
+/* Cores de Acordo com a Identidade de Cada Bloco */
+.titleRed {
   color: #ffffff;
-  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  border-left: 3px solid #e03131;
+}
+
+.titleOrange {
+  color: #ffffff;
+  border-left: 3px solid #ff922b;
+}
+
+.titleGreen {
+  color: #ffffff;
+  border-left: 3px solid #40c057;
+}
+
+/* Customização dos Inputs (Campos de Texto e Numéricos) */
+.input {
+  background-color: #1a1b1e !important;
+  border: 1px solid #25262b !important;
+  color: #ffffff !important;
+  border-radius: 6px !important;
+  height: 42px !important;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+/* Efeito de foco ativado em Vermelho ao selecionar os campos */
+.input:focus, 
+.input:focus-within {
+  border-color: #e03131 !important;
+  box-shadow: 0 0 0 3px rgba(224, 49, 49, 0.18) !important;
+}
+
+.inputLabel {
+  color: #c1c2c5 !important;
+  font-weight: 500;
+  font-size: 12px;
+  margin-bottom: 6px;
+  letter-spacing: 0.3px;
 }
 
 .input::placeholder {
-  color: #5c5f66; /* Cor do placeholder mais discreta */
+  color: #5c5f66 !important;
+  font-size: 13px;
 }
 
-/* Efeito de foco padrão MeliHelper (Vermelho sutil) */
-.input:focus,
-.input:focus-within {
-  border-color: #e03131 !important;
+/* Linha divisória customizada e sutil entre blocos */
+.divider {
+  border-top-color: #25262b !important;
 }

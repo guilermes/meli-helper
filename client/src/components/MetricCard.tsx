@@ -11,8 +11,13 @@ interface MetricCardProps {
 
 export function MetricCard({ title, value, description, isAlert }: MetricCardProps) {
   return (
-    <Paper withBorder radius="md" p="md" className={classes.card}>
-      <Text size="xs" c="dimmed" className={classes.title}>
+    <Paper 
+      withBorder 
+      radius="md" 
+      p="md" 
+      className={`${classes.card} ${isAlert ? classes.cardAlert : ''}`} // 🌟 Aplica o estilo de alerta no card todo
+    >
+      <Text className={classes.title}>
         {title}
       </Text>
       
@@ -22,7 +27,7 @@ export function MetricCard({ title, value, description, isAlert }: MetricCardPro
         </Text>
       </Group>
 
-      <Text size="xs" c="dimmed" mt="sm">
+      <Text className={classes.description} mt="xs">
         {description}
       </Text>
     </Paper>

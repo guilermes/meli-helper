@@ -1,10 +1,13 @@
+/* src/components/ProductTable.module.css */
 .paperContainer {
-  background-color: #141517; /* Cinza escuro do tema */
-  border-color: #2c2e33;
+  background-color: #141517 !important;
+  border-color: #25262b !important;
+  overflow: hidden;
 }
 
 .table {
-  min-width: 1000px; /* Garante espaço horizontal adequado para todas as colunas */
+  background-color: #141517;
+  color: #ffffff;
 }
 
 .thead {
@@ -13,88 +16,100 @@
 
 .th {
   color: #c1c2c5 !important;
-  border-bottom: 2px solid #2c2e33 !important;
   font-weight: 600;
-  font-size: 13px;
-  text-align: left;
+  border-bottom: 2px solid #25262b !important;
+  text-transform: uppercase;
+  font-size: 11px;
+  letter-spacing: 0.5px;
 }
 
 .thCenter {
-  text-align: center;
+  text-align: center !important;
 }
 
 .row {
-  border-bottom: 1px solid #2c2e33;
-  transition: background-color 0.2s ease;
+  border-bottom: 1px solid #25262b;
+  transition: background-color 0.15s ease;
 }
 
 .row:hover {
-  background-color: rgba(255, 255, 255, 0.02);
+  background-color: #1f2023;
 }
 
-/* Tipografias e Cores das Células */
 .textId {
-  color: #5c5f66;
-  font-size: 11px;
   font-family: monospace;
+  color: #909296;
+  font-size: 12px;
 }
 
 .textName {
+  font-weight: 500;
   color: #ffffff;
-  font-weight: 600;
 }
 
 .textMain {
-  color: #e4e6eb;
+  color: #e4e5e7;
 }
 
 .textDimmed {
   color: #909296;
 }
 
+/* Lucro saudável destacado em verde */
 .textLucro {
-  color: #ffffff;
-  font-weight: 700;
+  color: #40c057;
+  font-weight: 600;
 }
 
-/* Badges de Margem */
-.badgeAlert {
-  background-color: #e03131;
-  color: #ffffff;
-}
-
+/* Badges de Margem Baseadas na Identidade do App */
 .badgeNormal {
-  color: #adb5bd;
-  border-color: #495057;
+  background-color: transparent !important;
+  color: #c1c2c5 !important;
+  border: 1px solid #373a40 !important;
 }
 
-/* Botões de Ação Customizados */
+.badgeAlert {
+  background-color: #e03131 !important;
+  color: #ffffff !important;
+  border: none !important;
+  font-weight: 700;
+  animation: pulse 2.5s infinite ease-in-out;
+}
+
+/* Botões de Ação Personalizados */
 .btnEditar {
-  color: #c1c2c5;
-  font-weight: 500;
-  transition: background-color 0.2s ease, color 0.2s ease;
+  color: #c1c2c5 !important;
 }
 
 .btnEditar:hover {
-  background-color: rgba(255, 255, 255, 0.05);
-  color: #ffffff;
+  background-color: rgba(255, 255, 255, 0.05) !important;
+  color: #ffffff !important;
 }
 
 .btnExcluir {
-  color: #ff8787;
-  font-weight: 500;
-  transition: background-color 0.2s ease, color 0.2s ease;
+  color: #ff8787 !important;
 }
 
 .btnExcluir:hover {
-  background-color: rgba(224, 49, 49, 0.1);
-  color: #fa5252;
+  background-color: rgba(224, 49, 49, 0.15) !important;
+  color: #ffc9c9 !important;
 }
 
-/* Mensagem de Lista Vazia */
 .emptyText {
-  color: #5c5f66;
   text-align: center;
-  padding: 24px 0;
+  color: #909296;
+  padding: 32px 0;
   font-style: italic;
+}
+
+/* Animação suave para atrair a atenção para margens perigosas (<15%) */
+@keyframes pulse {
+  0%, 100% {
+    transform: scale(1);
+    background-color: #e03131;
+  }
+  50% {
+    transform: scale(1.03);
+    background-color: #ff4d4d;
+  }
 }

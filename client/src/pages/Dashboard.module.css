@@ -1,0 +1,76 @@
+.pageWrapper {
+  background-color: #0b0c0d;
+  min-height: 100vh;
+  color: #ffffff;
+  padding-bottom: 60px;
+}
+
+.loadingContainer {
+  background-color: #0b0c0d;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.errorCard {
+  background-color: #141517;
+  border-color: #e03131;
+  color: #ff8787;
+}
+
+.pageTitle {
+  font-weight: 800;
+  color: #ffffff;
+  letter-spacing: -0.5px;
+}
+
+.pageSubtitle {
+  color: #909296;
+}
+
+.sectionTitle {
+  font-weight: 700;
+  font-size: 22px;
+  color: #ffffff;
+  margin-bottom: 16px;
+  border-left: 4px solid #e03131; /* Detalhe em vermelho na lateral do título da tabela */
+  padding-left: 10px;
+}
+
+/* Botão Vermelho Customizado */
+.btnCriarAnuncio {
+  background-color: #e03131 !important;
+  color: #ffffff !important;
+  font-weight: 600;
+  transition: background-color 0.2s ease, transform 0.1s ease;
+  border: none;
+}
+
+.btnCriarAnuncio:hover {
+  background-color: #ff4d4d !important;
+}
+
+.btnCriarAnuncio:active {
+  transform: scale(0.97);
+}
+
+/* Estado Vazio */
+.emptyStateCard {
+  background-color: #141517 !important;
+  border-color: #25262b !important;
+  padding: 60px 24px !important;
+  border-top: 4px solid #e03131 !important; /* Detalhe em vermelho no topo do card vazio */
+}
+
+.emptyStateTitle {
+  font-size: 24px;
+  font-weight: 700;
+  color: #ffffff;
+}
+
+.emptyStateText {
+  color: #a6a7ab;
+  max-width: 520px;
+  line-height: 1.6;
+}

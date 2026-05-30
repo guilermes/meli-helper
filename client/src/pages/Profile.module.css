@@ -1,0 +1,27 @@
+/* Efeito de hover nos cards de marketplace */
+.integrationCard {
+  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+}
+
+.integrationCard:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--mantine-shadow-sm) !important;
+}
+
+/* Container da foto de perfil para dar destaque */
+.avatarContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: var(--mantine-spacing-xl);
+  text-align: center;
+}
+
+/* Linha de integração individual */
+.marketplaceRow {
+  padding: var(--mantine-spacing-md);
+  border: 1px solid var(--mantine-color-default-border);
+  border-radius: var(--mantine-radius-md);
+  background-color: var(--mantine-color-body);
+}

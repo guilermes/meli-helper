@@ -1,54 +1,90 @@
+// src/pages/ProductCreate.tsx
 import { useState } from 'react';
-import { Container, Paper, Title, Text, Button, Stack, Divider } from '@mantine/core';
+import { useNavigate } from 'react-router-dom';
+import { Container, Paper, Title, Text, Button, Stack } from '@mantine/core';
+import api from '../services/api';
 import { Product } from '../components/ProductTable';
-import { InfoSection } from '../components/ProductInfo'; // Corrigido o caminho conforme a estrutura
-import { DimensionsSection } from '../components/Dimensions';
-import { FinanceSection } from '../components/Finance';
+import { InfoSection } from '../components/ProductInfo';
 import classes from './ProductCreate.module.css';
 
-// Exportando o tipo corrigido e flexível para que InfoSection, DimensionsSection e FinanceSection herdem corretamente
+// Definição do tipo estendido para o formulário de cadastro
 export type ProductFormData = Omit<Product, 'lucro' | 'margemPorcentagem'> & {
   idMercadoLivre?: string;
+  tipoAnuncio?: string; // 🌟 Propriedade adicionada para suportar a nova seleção
 };
 
 export default function ProductCreate() {
+  const navigate = useNavigate();
   const [formData, setFormData] = useState<ProductFormData>({
-    id: '', idMercadoLivre: '', nome: '', marca: '',
-    largura: 0, altura: 0, comprimento: 0, peso: 0, pesoUsado: 0,
-    custo: 0, precoVenda: 0, freteCalculado: 0,
+    id: '',
+    idMercadoLivre: '',
+    tipoAnuncio: '', // 🌟 Inicializado como string vazia para o componente Select controlado
+    nome: '',
+    marca: '',
+    largura: 0,
+    altura: 0,
+    comprimento: 0,
+    peso: 0,
+    pesoUsado: 0,
+    custo: 0,
+    precoVenda: 0,
+    freteCalculado: 0,
   });
 
   const [loading, setLoading] = useState(false);
   const [feedback, setFeedback] = useState('');
+  const [isError, setIsError] = useState(false);
 
-  // Handler genérico perfeitamente alinhado com a assinatura dos filhos
+
   const handleFieldChange = (campo: keyof ProductFormData, valor: string | number) => {
     setFormData((prev) => ({ ...prev, [campo]: valor }));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
     setFeedback('');
+    setIsError(false);
 
-    console.log('Enviando dados do Meli Helper:', formData);
+    try {
+      const token = localStorage.getItem('token');
 
-    setTimeout(() => {
-      setLoading(false);
-      setFeedback('Anúncio cadastrado com sucesso!');
-      setFormData({
-        id: '', idMercadoLivre: '', nome: '', marca: '',
-        largura: 0, altura: 0, comprimento: 0, peso: 0, pesoUsado: 0,
-        custo: 0, precoVenda: 0, freteCalculado: 0,
+      // 🌟 AJUSTE: Cria o payload final e espelha o 'peso' dentro de 'pesoUsado' para a API receber preenchido
+      const payloadFinal = {
+        ...formData,
+        pesoUsado: formData.pesoUsado || formData.peso
+      };
+
+      console.log("🚀 Enviando payload corrigido e tipado:", payloadFinal);
+
+      // Dispara usando o objeto tratado com números reais
+      await api.post('/anuncios', payloadFinal, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
       });
-    }, 1500);
+
+      setFeedback('Anúncio cadastrado com sucesso!');
+
+      setTimeout(() => {
+        navigate('/dashboard');
+      }, 1200);
+
+    } catch (error: any) {
+      console.error('Erro ao cadastrar anúncio no banco:', error);
+      setIsError(true);
+      const mensagemErro = error.response?.data?.message || 'Não foi possível cadastrar o anúncio. Verifique os dados.';
+      setFeedback(mensagemErro);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
     <div className={classes.pageWrapper}>
       <Container size="md" py="xl" className={classes.container}>
         <Paper withBorder shadow="xl" p="xl" radius="md" className={classes.card}>
-          
+
           <div className={classes.header}>
             <Title order={2} className={classes.title}>Cadastrar Anúncio</Title>
             <Text size="sm" className={classes.subtitle} mt={4}>
@@ -58,19 +94,15 @@ export default function ProductCreate() {
 
           <form onSubmit={handleSubmit}>
             <Stack gap="xl">
-              
-              {/* Seções Isoladas */}
-              <InfoSection data={formData} onChange={handleFieldChange} />
-              <Divider className={classes.divider} />
-              <DimensionsSection data={formData} onChange={handleFieldChange} className={classes.input}/>
-              <Divider className={classes.divider} />              
-              <FinanceSection data={formData} onChange={handleFieldChange} className={classes.input}/>
 
-              <Button 
-                type="submit" 
-                size="lg" 
-                fullWidth 
-                mt="md" 
+              {/* 🌟 O componente único que engloba Dados cadastrais, Dimensões e Financeiro */}
+              <InfoSection data={formData} onChange={handleFieldChange} />
+
+              <Button
+                type="submit"
+                size="lg"
+                fullWidth
+                mt="md"
                 loading={loading}
                 className={classes.buttonSubmit}
               >
@@ -78,7 +110,11 @@ export default function ProductCreate() {
               </Button>
 
               {feedback && (
-                <Text fw={600} ta="center" className={classes.feedbackText}>
+                <Text
+                  fw={600}
+                  ta="center"
+                  style={{ color: isError ? '#ff8787' : '#40c057' }}
+                >
                   {feedback}
                 </Text>
               )}
