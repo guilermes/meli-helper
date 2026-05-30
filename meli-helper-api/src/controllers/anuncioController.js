@@ -341,105 +341,41 @@ exports.create = async (req, res) => {
 exports.update = async (req, res) => {
 
   try {
+    const { id } = req.params; // Certifique-se de que o ID está sendo pego aqui
 
-    ////////////////////////////////////////////////////////////
+    const atualizado = await prisma.anuncio.update({
+      where: {
+        id: Number(id)
+      },
+      data: {
+        idMercadoLivre: req.body.idMercadoLivre || null,
+        nome: req.body.nome,
+        marca: req.body.marca,
+        tipoAnuncio: req.body.tipoAnuncio,
+        custo: toNumber(req.body.custo),
+        precoVenda: toNumber(req.body.precoVenda),
 
-    const userId = req.user.id
+        // 🌟 CORREÇÃO: Aceita 'freteCalculado' vindo do Front ou 'frete' padrão
+        frete: toNumber(req.body.freteCalculado || req.body.frete),
 
-    const id =
-      Number(req.params.id)
+        largura: toNumber(req.body.largura),
+        altura: toNumber(req.body.altura),
+        comprimento: toNumber(req.body.comprimento),
+        peso: toNumber(req.body.peso)
+      }
+    });
 
-    ////////////////////////////////////////////////////////////
-
-    const anuncio =
-      await prisma.anuncio.findFirst({
-
-        where: {
-          id,
-          userId
-        }
-      })
-
-    ////////////////////////////////////////////////////////////
-
-    if (!anuncio) {
-
-      return res.status(404).json({
-        erro: "Anúncio não encontrado"
-      })
-    }
-
-    if (
-      req.body.tipoAnuncio &&
-      !["CLASSICO", "PREMIUM"].includes(req.body.tipoAnuncio)
-    ) {
-
-      return res.status(400).json({
-        erro: "Tipo de anúncio inválido (CLASSICO ou PREMIUM)"
-      })
-    }
-
-    ////////////////////////////////////////////////////////////
-
-    const atualizado =
-      await prisma.anuncio.update({
-
-        where: {
-          id
-        },
-
-        data: {
-
-          idMercadoLivre:
-            req.body.idMercadoLivre || null,
-
-          nome:
-            req.body.nome,
-
-          marca:
-            req.body.marca,
-
-          tipoAnuncio:
-            req.body.tipoAnuncio,
-
-          custo:
-            toNumber(req.body.custo),
-
-          precoVenda:
-            toNumber(req.body.precoVenda),
-
-          frete:
-            toNumber(req.body.frete),
-
-          largura:
-            toNumber(req.body.largura),
-
-          altura:
-            toNumber(req.body.altura),
-
-          comprimento:
-            toNumber(req.body.comprimento),
-
-          peso:
-            toNumber(req.body.peso)
-        }
-      })
-
-    ////////////////////////////////////////////////////////////
-
-    res.json({
+    // Retorna o status 200 explicitamente com o registro atualizado
+    return res.status(200).json({
       mensagem: "Anúncio atualizado",
       data: atualizado
-    })
+    });
 
-  }
-  catch (error) {
-
-    console.error(error)
-
-    res.status(500).json({
+  } catch (error) {
+    console.error("Erro no controller de atualização:", error);
+    return res.status(500).json({
       erro: "Erro ao atualizar anúncio"
-    })
+    });
   }
 }
 
