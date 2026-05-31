@@ -1,21 +1,21 @@
-const jwt = require("jsonwebtoken")
+// src/middlewares/authMiddleware.js
+import jwt from 'jsonwebtoken';
 
-const SECRET = "segredo123"
+const SECRET = "segredo123";
 
-module.exports = (req, res, next) => {
-  const authHeader = req.headers.authorization
+export default (req, res, next) => {
+  // Captura o cookie HttpOnly de forma automática e segura
+  const token = req.cookies?.token;
 
-  if (!authHeader) {
-    return res.status(401).json({ erro: "Token não enviado" })
+  if (!token) {
+    return res.status(401).json({ erro: "Sessão inválida ou não encontrada. Faça login novamente." });
   }
-
-  const token = authHeader.split(" ")[1]
 
   try {
-    const decoded = jwt.verify(token, SECRET)
-    req.user = decoded
-    next()
+    const decoded = jwt.verify(token, SECRET);
+    req.user = decoded;
+    next();
   } catch {
-    res.status(401).json({ erro: "Token inválido" })
+    res.status(401).json({ erro: "Sessão expirada ou token corrompido" });
   }
-}
+};
