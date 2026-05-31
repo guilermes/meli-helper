@@ -20,22 +20,17 @@ export default function Login() {
     try {
       const res = await fetch("http://localhost:3000/login", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({ email, senha })
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, senha }),
+        credentials: 'include' // 👈 ISSO PERMITE RECEBER O COOKIE DO BACKEND!
       });
 
-      const data = await res.json();
-
       if (!res.ok) {
+        const data = await res.json();
         throw new Error(data.erro || 'Falha ao realizar login');
       }
 
-      // 🌟 PASSO 2: Substituímos o localStorage manual pela função do contexto.
-      // Ela vai guardar o token com a chave correta E avisar a NavBar imediatamente!
-      login(data.token);
-      
+      login(); // Ativa a mudança da Navbar globalmente
       navigate('/dashboard');
 
     } catch (err: any) {
@@ -48,10 +43,10 @@ export default function Login() {
   return (
     <div className={classes.pageWrapper}>
       <Container size="xs" className={classes.container}>
-        <LoginForm 
-          onSubmit={executarLogin} 
-          loading={loading} 
-          erro={erro} 
+        <LoginForm
+          onSubmit={executarLogin}
+          loading={loading}
+          erro={erro}
         />
       </Container>
     </div>

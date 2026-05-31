@@ -1,42 +1,51 @@
-// src/context/AuthContext.tsx
+// src/context/authContext.tsx
 import { createContext, useContext, useState, ReactNode } from 'react';
 
 interface AuthContextType {
   isLogado: boolean;
-  login: (token: string) => void;
+  login: () => void;
   logout: () => void;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export function AuthProvider({ children }: { children: ReactNode }) {
-  // Inicializa o estado checando o localStorage logo no primeiro carregamento
+  // O estado visual inicial lê uma flag simples de controle do client
   const [isLogado, setIsLogado] = useState<boolean>(() => {
-    return !!localStorage.getItem('@MeliHelper:token');
+    return localStorage.getItem('@MeliHelper:logged') === 'true';
   });
 
-  const login = (token: string) => {
-    localStorage.setItem('@MeliHelper:token', token);
-    setIsLogado(true); // 🌟 Isso vai disparar a atualização na NavBar na mesma hora!
+  const login = () => {
+    // Como o backend já setou o cookie HttpOnly na resposta, 
+    // nós só ligamos a chave de visualização da interface
+    localStorage.setItem('@MeliHelper:logged', 'true');
+    setIsLogado(true);
   };
 
-  const logout = () => {
-    localStorage.removeItem('@MeliHelper:token');
-    setIsLogado(false);
+  const logout = async () => {
+    try {
+      // Avisa o backend para apagar o cookie
+      await fetch("http://localhost:3000/logout", { credentials: 'include' });
+    } catch (error) {
+      console.error("Erro ao chamar a limpeza de sessão no servidor", error);
+    } finally {
+      // Limpa os estados do frontend de qualquer forma
+      localStorage.removeItem('@MeliHelper:logged');
+      setIsLogado(false);
+      window.location.href = '/login';
+    }
   };
 
   return (
     <AuthContext.Provider value={{ isLogado, login, logout }}>
-      {children}
-    </AuthContext.Provider>
+      { children }
+    </AuthContext.Provider >
   );
 }
 
-// Hook personalizado para facilitar o uso nas páginas
+
 export function useAuth() {
   const context = useContext(AuthContext);
-  if (!context) {
-    throw new Error('useAuth deve ser usado dentro de um AuthProvider');
-  }
+  if (!context) throw new Error('useAuth deve ser usado dentro de um AuthProvider');
   return context;
 }
