@@ -1,5 +1,6 @@
+// src/pages/Home.tsx
 import { Hero } from '../components/Hero';
-import classes from './Home.module.css'; // <-- Importando o novo estilo modular
+import classes from './Home.module.css';
 
 export default function Home() {
   return (

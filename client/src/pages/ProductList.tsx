@@ -1,168 +1,228 @@
-// src/pages/ProductList.tsx
-import { useState, useEffect, useCallback } from 'react';
+// src/pages/Anuncios.tsx
+import { useEffect, useState, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Container, Title, Text, Button, Group } from '@mantine/core';
-import ProductTable from '../components/ProductTable';
-import ProductEditModal from '../components/EditModal';
-import { Product } from '../components/ProductTable'; // Ajuste o import conforme seu projeto
+import {
+  Container, Title, Text, SimpleGrid, Space, Loader, Center,
+  Paper, Button, Group, Stack, TextInput,
+} from '@mantine/core';
+import api from '../services/api';
+import { MetricCard } from '../components/MetricCard';
+import ProductTable, { Product } from '../components/ProductTable';
+import classes from './ProductList.module.css';
 
-export default function ProductList() {
-  const [produtos, setProdutos] = useState<Product[]>([]);
-  const [loading, setLoading] = useState(false);
-  const [modalAberto, setModalAberto] = useState(false);
-  const [produtoEmEdicao, setProdutoEmEdicao] = useState<Product | null>(null);
-  
+interface ResumoAnuncios {
+  total: number;
+  ruins: number;
+  lucroMedio: number;
+  margemMedia: number;
+  melhorLucro: number;
+}
+
+export default function Anuncios() {
   const navigate = useNavigate();
+  const [loading, setLoading] = useState(true);
+  const [erro, setErro] = useState<string | null>(null);
+  const [produtos, setProdutos] = useState<Product[]>([]);
+  const [busca, setBusca] = useState('');
 
-  // 🔒 Centraliza a geração dos Headers com o Token JWT do localStorage
-  const obterHeaders = useCallback(() => {
-    const token = localStorage.getItem("token");
-    return {
-      "Content-Type": "application/json",
-      "Authorization": `Bearer ${token}`
+  const [resumo, setResumo] = useState<ResumoAnuncios>({
+    total: 0,
+    ruins: 0,
+    lucroMedio: 0,
+    margemMedia: 0,
+    melhorLucro: 0,
+  });
+
+  const handleProductUpdated = (updatedProduct: Product) => {
+    setProdutos((prev) =>
+      prev.map((item) => (item.id === updatedProduct.id ? updatedProduct : item))
+    );
+  };
+
+  const handleExcluirProduto = (id: string) => {
+    setProdutos((prev) => prev.filter((item) => item.id !== id));
+  };
+
+  useEffect(() => {
+    const buscarProdutos = async () => {
+      try {
+        const response = await api.get('/anuncios', {
+          withCredentials: true,
+        });
+
+        let lista: Product[] = [];
+        if (Array.isArray(response.data)) {
+          lista = response.data;
+        } else if (response.data && Array.isArray(response.data.data)) {
+          lista = response.data.data;
+        } else if (response.data && Array.isArray(response.data.anuncios)) {
+          lista = response.data.anuncios;
+        }
+
+        setProdutos(lista);
+
+        if (lista.length > 0) {
+          const ruins = lista.filter((p) => (p.margemPorcentagem ?? 0) < 15).length;
+          const lucroMedio = lista.reduce((acc, p) => acc + (p.lucro ?? 0), 0) / lista.length;
+          const margemMedia = lista.reduce((acc, p) => acc + (p.margemPorcentagem ?? 0), 0) / lista.length;
+          const melhorLucro = Math.max(...lista.map((p) => p.lucro ?? 0));
+
+          setResumo({ total: lista.length, ruins, lucroMedio, margemMedia, melhorLucro });
+        }
+      } catch (err: any) {
+        console.error('Erro ao carregar anúncios:', err);
+        setErro('Não foi possível carregar os anúncios.');
+      } finally {
+        setLoading(false);
+      }
     };
+
+    buscarProdutos();
   }, []);
 
-  // 🔹 Logout centralizado usando o ecossistema do React Router
-  const efetuarLogout = useCallback(() => {
-    localStorage.removeItem("token");
-    navigate('/login'); // Redireciona para a página de login
-  }, [navigate]);
+  // 🔍 Filtro por ID do Mercado Livre (client-side)
+  const produtosFiltrados = useMemo(() => {
+    if (!busca.trim()) return produtos;
+    const termo = busca.trim().toLowerCase();
+    return produtos.filter((p) =>
+      (p.idMercadoLivre ?? '').toLowerCase().includes(termo)
+    );
+  }, [produtos, busca]);
 
-  // 🔹 Buscar anúncios da API (GET)
-  const buscarAnuncios = useCallback(async () => {
-    // 🔒 Bloqueio de segurança caso o token suma misteriosamente
-    if (!localStorage.getItem("token")) {
-      efetuarLogout();
-      return;
-    }
+  if (loading) {
+    return (
+      <div className={classes.loadingContainer}>
+        <Loader color="red" size="xl" type="bars" />
+      </div>
+    );
+  }
 
-    setLoading(true);
-    try {
-      const res = await fetch("http://localhost:3000/anuncios", {
-        headers: obterHeaders()
-      });
-
-      if (res.status === 401) {
-        efetuarLogout();
-        return;
-      }
-
-      const dados = await res.json();
-      setProdutos(dados);
-    } catch (error) {
-      console.error("Erro ao buscar anúncios:", error);
-    } finally {
-      setLoading(false);
-    }
-  }, [obterHeaders, efetuarLogout]);
-
-  // Carregamento automático ao montar a tela
-  useEffect(() => {
-    buscarAnuncios();
-  }, [buscarAnuncios]);
-
-  const lidarComEditarClick = (produto: Product) => {
-    setProdutoEmEdicao(produto);
-    setModalAberto(true);
-  };
-
-  // 🔹 Salvar edição (PUT)
-  const salvarAlteracoes = async (produtoAtualizado: Product) => {
-    try {
-      const res = await fetch(`http://localhost:3000/anuncios/${produtoAtualizado.id}`, {
-        method: "PUT",
-        headers: obterHeaders(),
-        body: JSON.stringify({
-          nome: produtoAtualizado.nome,
-          marca: produtoAtualizado.marca,
-          custo: Number(produtoAtualizado.custo),
-          precoVenda: Number(produtoAtualizado.precoVenda),
-          freteCalculado: Number(produtoAtualizado.freteCalculado), // Seu backend espera 'frete' no body
-          largura: Number(produtoAtualizado.largura),
-          altura: Number(produtoAtualizado.altura),
-          comprimento: Number(produtoAtualizado.comprimento),
-          peso: Number(produtoAtualizado.peso)
-        })
-      });
-
-      if (res.status === 401) {
-        efetuarLogout();
-        return;
-      }
-
-      if (!res.ok) throw new Error("Erro na atualização do servidor");
-
-      // Atualiza o estado local para poupar uma requisição HTTP extra de recarga
-      setProdutos((prev) => 
-        prev.map((p) => p.id === produtoAtualizado.id ? produtoAtualizado : p)
-      );
-      
-      setModalAberto(false);
-      setProdutoEmEdicao(null);
-    } catch (error) {
-      console.error(error);
-      alert("Erro ao salvar as alterações do anúncio");
-    }
-  };
-
-  // 🔹 Excluir anúncio (DELETE)
-  const lidarComExcluir = async (id: string) => {
-    if (!window.confirm("Deseja realmente excluir este anúncio?")) return;
-
-    try {
-      const res = await fetch(`http://localhost:3000/anuncios/${id}`, {
-        method: "DELETE",
-        headers: obterHeaders()
-      });
-
-      if (res.status === 401) {
-        efetuarLogout();
-        return;
-      }
-
-      if (!res.ok) throw new Error("Erro ao deletar no servidor");
-
-      // Remove da tabela instantaneamente filtrando o estado
-      setProdutos((prev) => prev.filter((p) => p.id !== id));
-    } catch (error) {
-      console.error(error);
-      alert("Erro ao excluir o anúncio");
-    }
-  };
+  if (erro) {
+    return (
+      <div className={classes.pageWrapper}>
+        <Center>
+          <Paper p="md" withBorder className={classes.errorCard}>
+            <Text fw={500}>{erro}</Text>
+          </Paper>
+        </Center>
+      </div>
+    );
+  }
 
   return (
-    <Container size="lg" py="xl">
-      <Group justify="space-between" mb="xl" align="flex-end">
-        <div>
-          <Title order={2} c="white">Lista de Anúncios</Title>
-          <Text size="sm" c="slate.400" mt={4}>Gerencie seus produtos, dimensões e margens do Mercado Livre</Text>
-        </div>
-        <Group>
-          <Button onClick={buscarAnuncios} variant="light" color="teal" loading={loading}>
-            Atualizar Dados
-          </Button>
-          <Button onClick={efetuarLogout} variant="subtle" color="red">
-            Sair
+    <div className={classes.pageWrapper}>
+      <Container size="lg" pt="xl">
+
+        {/* ── CABEÇALHO ── */}
+        <Group justify="space-between" align="flex-start" wrap="wrap" mb="xl">
+          <Stack gap={4}>
+            <Title order={1} className={classes.pageTitle}>Meus Anúncios</Title>
+            <Text size="sm" className={classes.pageSubtitle}>
+              Gerencie, pesquise e acompanhe todos os seus anúncios.
+            </Text>
+          </Stack>
+          <Button
+            className={classes.btnNovo}
+            onClick={() => navigate('/anuncios/novo')}
+          >
+            + Novo Anúncio
           </Button>
         </Group>
-      </Group>
 
-      <ProductTable 
-        produtos={produtos} 
-        onEditar={lidarComEditarClick} 
-        onExcluir={lidarComExcluir} 
-      />
+        {produtos.length === 0 ? (
+          <Paper withBorder p="xl" radius="md" className={classes.emptyStateCard} mt="xl">
+            <Stack align="center" gap="md">
+              <Text className={classes.emptyStateTitle}>Nenhum anúncio cadastrado</Text>
+              <Text size="sm" ta="center" className={classes.emptyStateText}>
+                Você ainda não tem anúncios. Comece cadastrando seu primeiro produto!
+              </Text>
+              <Button className={classes.btnNovo} onClick={() => navigate('/anuncios/novo')}>
+                Criar Meu Primeiro Anúncio
+              </Button>
+            </Stack>
+          </Paper>
+        ) : (
+          <>
+            {/* ── CARDS DE RESUMO ── */}
+            <SimpleGrid cols={{ base: 1, sm: 2, md: 5 }} gap="md">
+              <MetricCard
+                title="Total de Anúncios"
+                value={resumo.total}
+                description="Anúncios cadastrados"
+              />
+              <MetricCard
+                title="Anúncios Ruins"
+                value={resumo.ruins}
+                description="Margem abaixo de 15%"
+                isAlert={resumo.ruins > 0}
+              />
+              <MetricCard
+                title="Lucro Médio"
+                value={`R$ ${resumo.lucroMedio.toFixed(2)}`}
+                description="Média de lucro por anúncio"
+                isAlert={resumo.lucroMedio < 0}
+              />
+              <MetricCard
+                title="Margem Média"
+                value={`${resumo.margemMedia.toFixed(1)}%`}
+                description="Margem líquida média"
+                isAlert={resumo.margemMedia < 15}
+              />
+              <MetricCard
+                title="Melhor Lucro"
+                value={`R$ ${resumo.melhorLucro.toFixed(2)}`}
+                description="Produto mais lucrativo"
+              />
+            </SimpleGrid>
 
-      <ProductEditModal 
-        opened={modalAberto}
-        onClose={() => {
-          setModalAberto(false);
-          setProdutoEmEdicao(null);
-        }}
-        product={produtoEmEdicao}
-        onSave={salvarAlteracoes}
-      />
-    </Container>
+            <Space h="xl" />
+
+            {/* ── BUSCA ── */}
+            <TextInput
+              placeholder="Pesquisar por ID do Mercado Livre..."
+              value={busca}
+              onChange={(e) => setBusca(e.currentTarget.value)}
+              className={classes.searchInput}
+              size="md"
+              radius="md"
+              leftSection={<span style={{ fontSize: 16 }}>🔍</span>}
+            />
+
+            <Space h="md" />
+
+            {/* ── RESULTADO DA BUSCA ── */}
+            {busca.trim() && (
+              <Text size="sm" className={classes.searchResult} mb="sm">
+                {produtosFiltrados.length === 0
+                  ? 'Nenhum anúncio encontrado para esse ID.'
+                  : `${produtosFiltrados.length} anúncio(s) encontrado(s)`}
+              </Text>
+            )}
+
+            {/* ── TABELA ── */}
+            {produtosFiltrados.length > 0 ? (
+              <ProductTable
+                prod={produtosFiltrados}
+                onRefresh={(lista) => {
+                  if (typeof lista === 'function') {
+                    setProdutos(lista);
+                  } else {
+                    setProdutos(lista);
+                  }
+                }}
+                onProductUpdated={handleProductUpdated}
+                onProductDelete={handleExcluirProduto}
+              />
+            ) : (
+              busca.trim() && (
+                <Center style={{ height: '20vh' }}>
+                  <Text c="dimmed">Nenhum anúncio encontrado para "{busca}".</Text>
+                </Center>
+              )
+            )}
+          </>
+        )}
+      </Container>
+    </div>
   );
 }

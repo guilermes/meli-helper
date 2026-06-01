@@ -1,3 +1,4 @@
+// src/pages/Login.tsx
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/authContext';
@@ -9,8 +10,6 @@ export default function Login() {
   const [loading, setLoading] = useState(false);
   const [erro, setErro] = useState<string | null>(null);
   const navigate = useNavigate();
-
-  // 🌟 PASSO 1: Puxa a função de login de dentro do nosso Contexto Global
   const { login } = useAuth();
 
   const executarLogin = async (email: string, senha: string) => {
@@ -18,11 +17,11 @@ export default function Login() {
     setErro(null);
 
     try {
-      const res = await fetch("http://localhost:3000/login", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
+      const res = await fetch('http://localhost:3000/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, senha }),
-        credentials: 'include' // Importante para enviar cookies (sessão) junto com a requisição
+        credentials: 'include',
       });
 
       if (!res.ok) {
@@ -30,7 +29,10 @@ export default function Login() {
         throw new Error(data.erro || 'Falha ao realizar login');
       }
 
-      login(); // Ativa a mudança da Navbar globalmente
+      const data = await res.json();
+
+      // 🌟 Passa os dados do usuário para o contexto — alimenta avatar e nome na NavBar
+      login(data.user);
       navigate('/dashboard');
 
     } catch (err: any) {

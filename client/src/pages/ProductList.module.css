@@ -1,0 +1,77 @@
+/* Anuncios.module.css */
+
+.pageWrapper {
+  background-color: #0b0c0d;
+  min-height: 100vh;
+  color: #ffffff;
+}
+
+.loadingContainer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  background-color: #0b0c0d;
+}
+
+.pageTitle {
+  color: #ffffff;
+  font-weight: 800;
+  letter-spacing: -0.5px;
+}
+
+.pageSubtitle {
+  color: #868e96;
+}
+
+.btnNovo {
+  background-color: #e03131;
+  color: #ffffff;
+  font-weight: 600;
+  border: none;
+  transition: background-color 0.2s ease;
+}
+
+.btnNovo:hover {
+  background-color: #c92a2a;
+}
+
+.searchInput input {
+  background-color: #141517;
+  border-color: #2c2e33;
+  color: #ffffff;
+}
+
+.searchInput input:focus {
+  border-color: #e03131;
+}
+
+.searchInput input::placeholder {
+  color: #495057;
+}
+
+.searchResult {
+  color: #868e96;
+}
+
+.emptyStateCard {
+  background-color: #141517;
+  border-color: #2c2e33;
+  text-align: center;
+}
+
+.emptyStateTitle {
+  color: #ffffff;
+  font-weight: 700;
+  font-size: 20px;
+}
+
+.emptyStateText {
+  color: #868e96;
+}
+
+.errorCard {
+  background-color: #141517;
+  border-color: #e03131;
+  color: #ff6b6b;
+}
