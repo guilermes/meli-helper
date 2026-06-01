@@ -21,8 +21,8 @@ export function SignupForm({ onSubmit, loading, erro }: SignupFormProps) {
   const [nome, setNome] = useState('');
   const [nomeLoja, setNomeLoja] = useState('');
   const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
+  const [senha, setSenha] = useState('');
+  const [confirmarSenha, setConfirmarSenha] = useState('');
   const [nicho, setNicho] = useState('');
   const [nivelSeller, setNivelSeller] = useState(''); // Seu estado se chama nivelSeller
   const [erroLocal, setErroLocal] = useState<string | null>(null);
@@ -31,13 +31,13 @@ export function SignupForm({ onSubmit, loading, erro }: SignupFormProps) {
     e.preventDefault();
     setErroLocal(null);
 
-    if (password !== confirmPassword) {
+    if (senha !== confirmarSenha) {
       setErroLocal('As senhas não coincidem. Verifique e tente novamente.');
       return;
     }
 
     // CORREÇÃO AQUI: Trocado 'nivel' por 'nivelSeller' para bater com o estado e a assinatura
-    onSubmit(nome, nomeLoja, email, password, nicho, nivelSeller);
+    onSubmit(nome, nomeLoja, email, senha, nicho, nivelSeller);
   };
 
   const erroExibido = erro || erroLocal;
@@ -113,8 +113,8 @@ export function SignupForm({ onSubmit, loading, erro }: SignupFormProps) {
             label="Senha"
             placeholder="Crie uma senha forte"
             required
-            value={password}
-            onChange={(e) => setPassword(e.currentTarget.value)}
+            value={senha}
+            onChange={(e) => setSenha(e.currentTarget.value)}
             disabled={loading}
             classNames={{
               input: classes.input,
@@ -127,8 +127,8 @@ export function SignupForm({ onSubmit, loading, erro }: SignupFormProps) {
             label="Confirmar Senha"
             placeholder="Repita a senha anterior"
             required
-            value={confirmPassword}
-            onChange={(e) => setConfirmPassword(e.currentTarget.value)}
+            value={confirmarSenha}
+            onChange={(e) => setConfirmarSenha(e.currentTarget.value)}
             disabled={loading}
             classNames={{
               input: classes.input,

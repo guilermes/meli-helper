@@ -8,21 +8,18 @@ import {
   Title,
   Badge,
   Divider,
-  NumberInput,
-  Button,
   Group,
   Stack,
   Notification,
   Loader,
-  Alert,
 } from '@mantine/core';
 import classes from "./Config.module.css";
-import api from '../services/api'; // 🌟 Importando a sua instância do Axios
+import api from '../services/api';
 
-interface ConfigData {
-  imposto: number;
-  custoOperacional: number;
-}
+// 🌟 IMPORTAÇÕES DOS SEUS NOVOS COMPONENTES
+// (Ajuste o caminho '../components/' caso este arquivo esteja em outra pasta, como 'src/pages')
+import { ConfigForm, ConfigData } from '../components/ConfigForm';
+import { ConfigPreview } from '../components/ConfigPreview';
 
 export default function Config() {
   // Estado do formulário (o que o usuário digita/altera)
@@ -40,14 +37,13 @@ export default function Config() {
   const [carregando, setCarregando] = useState<boolean>(true);
   const [notificacao, setNotificacao] = useState<{ tipo: 'sucesso' | 'erro'; texto: string } | null>(null);
 
-  // 🔍 BUSCAR CONFIGURAÇÕES DO BANCO (Ao montar o componente)
+  // 🔍 BUSCAR CONFIGURAÇÕES DO BANCO
   useEffect(() => {
     const buscarConfiguracoes = async () => {
       try {
         setCarregando(true);
-        const response = await api.get('/');
+        const response = await api.get('/config');
         
-        // Se o usuário já tiver configurações salvas no banco
         if (response.data) {
           const dadosMapeados = {
             imposto: response.data.imposto ?? 0,
@@ -70,14 +66,13 @@ export default function Config() {
   }, []);
 
   // 💾 SALVAR CONFIGURAÇÕES NO BACKEND
-  const lidarComSalvar = async (e: React.FormEvent) => {
-    e.preventDefault();
+  // 🌟 ALTERADO: Removido o parâmetro 'e: React.FormEvent' pois o ConfigForm já trata isso!
+  const lidarComSalvar = async () => {
     setNotificacao(null);
 
     try {
       const response = await api.post('/config/set', formValores);
 
-      // Sincroniza o painel visual com os novos valores validados vindos do backend
       const dadosAtualizados = {
         imposto: response.data.config.imposto,
         custoOperacional: response.data.config.custoOperacional
@@ -91,7 +86,6 @@ export default function Config() {
         texto: response.data.mensagem || 'Configurações salvas com sucesso no sistema!' 
       });
 
-      // Esconde a notificação de sucesso após 3 segundos
       setTimeout(() => setNotificacao(null), 3000);
     } catch (error: any) {
       setNotificacao({
@@ -101,7 +95,6 @@ export default function Config() {
     }
   };
 
-  // Se estiver buscando dados do banco, exibe o Loader centralizado
   if (carregando) {
     return (
       <Group justify="center" style={{ height: '50vh' }}>
@@ -123,7 +116,7 @@ export default function Config() {
         </Text>
       </Stack>
 
-      {/* NOTIFICAÇÃO MANTINE (Mais polida que o texto bruto) */}
+      {/* NOTIFICAÇÃO MANTINE */}
       {notificacao && (
         <Notification
           color={notificacao.tipo === 'sucesso' ? 'green' : 'red'}
@@ -135,7 +128,7 @@ export default function Config() {
         </Notification>
       )}
 
-      {/* ================= COMISSÕES FIXAS ================= */}
+      {/* ================= COMISSÕES FIXAS (Mantidos como solicitado) ================= */}
       <SimpleGrid cols={{ base: 1, sm: 2 }} mb="xl" spacing="md">
         
         {/* CARD CLÁSSICO */}
@@ -182,88 +175,21 @@ export default function Config() {
 
       </SimpleGrid>
 
-      {/* ================= CONFIG + RESUMO ================= */}
+      {/* ================= CONFIG + RESUMO REFATORADO ================= */}
       <Grid gutter="xl">
 
-        {/* LADO ESQUERDO: FORMULÁRIO */}
+        {/* LADO ESQUERDO: FORMULÁRIO COMPONENTIZADO */}
         <Grid.Col span={{ base: 12, lg: 6 }}>
-          <Card shadow="sm" padding="lg" radius="md" withBorder>
-            <Group mb="xl" gap="xs">
-              <Text fw={600} size="lg" c="blue">
-                Configurações da Operação
-              </Text>
-            </Group>
-
-            <form onSubmit={lidarComSalvar}>
-              <Stack gap="md">
-
-                {/* INPUT IMPOSTO */}
-                <NumberInput
-                  className={classes.numberInput} // 🌟 CORREÇÃO: Corrigido o erro de sintaxe do Mantine
-                  label="Imposto (%)"
-                  placeholder="Ex: 6"
-                  decimalScale={2}
-                  fixedDecimalScale
-                  leftSection={<Text size="sm" c="dimmed">%</Text>}
-                  value={formValores.imposto}
-                  onChange={(val) => setFormValores(prev => ({ ...prev, imposto: Number(val) }))}
-                  min={0}
-                />
-
-                {/* INPUT CUSTO OPERACIONAL */}
-                <NumberInput
-                  className={classes.numberInput} // 🌟 CORREÇÃO: Corrigido o erro de sintaxe do Mantine
-                  label="Custo Operacional"
-                  placeholder="Ex: 5"
-                  decimalScale={2}
-                  fixedDecimalScale
-                  leftSection={<Text size="sm" c="dimmed">R$</Text>}
-                  value={formValores.custoOperacional}
-                  onChange={(val) => setFormValores(prev => ({ ...prev, custoOperacional: Number(val) }))}
-                  min={0}
-                />
-
-                <Button type="submit" fullWidth mt="md" color="blue">
-                  Salvar Configuração
-                </Button>
-              </Stack>
-            </form>
-          </Card>
+          <ConfigForm 
+            valores={formValores} 
+            onChangeValores={setFormValores} 
+            onSalvar={lidarComSalvar} 
+          />
         </Grid.Col>
 
-        {/* LADO DIREITO: RESUMO */}
+        {/* LADO DIREITO: RESUMO COMPONENTIZADO */}
         <Grid.Col span={{ base: 12, lg: 6 }}>
-          <Card shadow="sm" padding="lg" radius="md" withBorder>
-            <Group mb="xl" gap="xs">
-              <Text fw={600} size="lg" c="green">
-                Configuração Atual
-              </Text>
-            </Group>
-
-            <Stack gap="xs">
-              {/* STATUS IMPOSTO */}
-              <Group justify="space-between" p="sm" className={classes.statusRow}>
-                <Text size="sm" fw={500}>Imposto</Text>
-                <Badge color="orange" size="lg" variant="light">
-                  {valoresSalvos.imposto.toFixed(2)}%
-                </Badge>
-              </Group>
-
-              {/* STATUS CUSTO OPERACIONAL */}
-              <Group justify="space-between" p="sm" className={classes.statusRow}>
-                <Text size="sm" fw={500}>Custo Operacional</Text>
-                <Badge color="green" size="lg" variant="light">
-                  R$ {valoresSalvos.custoOperacional.toFixed(2)}
-                </Badge>
-              </Group>
-            </Stack>
-
-            <Alert variant="light" color="blue" mt="xl" radius="md">
-              <Text size="xs" c="dimmed">
-                As comissões de anúncios Clássico e Premium são aplicadas automaticamente pelo sistema.
-              </Text>
-            </Alert>
-          </Card>
+          <ConfigPreview valoresSalvos={valoresSalvos} />
         </Grid.Col>
 
       </Grid>

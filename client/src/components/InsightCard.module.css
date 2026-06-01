@@ -1,0 +1,43 @@
+.card {
+  background-color: #1a1b1e; /* Fundo escuro profundo idêntico ao Mantine Dark */
+  border: 1px solid #2c2e33;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+  border-color: #373a40;
+}
+
+.title {
+  color: #c1c2c5;
+  font-size: 1.1rem;
+  letter-spacing: 0.5px;
+  border-bottom: 1px solid #2c2e33;
+  padding-bottom: 12px;
+}
+
+.metricRow {
+  background-color: #25262b;
+  padding: 10px 14px;
+  border-radius: 6px;
+  transition: background-color 0.15s ease;
+  width: 100%;
+  justify-content: space-between; /* Alinha labels à esquerda e valores à direita */
+}
+
+.metricRow:hover {
+  background-color: #2c2e33;
+}
+
+.label {
+  color: #909296;
+  font-weight: 500;
+}
+
+.value {
+  color: #fff;
+  font-family: 'JetBrains Mono', 'Fira Code', monospace; /* Mono para números ficarem alinhados */
+  letter-spacing: -0.2px;
+}

@@ -3,8 +3,8 @@ import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Container, Title, SimpleGrid, Space, Loader, Center, Text, Paper, Button, Stack, Group } from '@mantine/core';
 import api from '../services/api';
-
-// 🌟 IMPORTAÇÕES AJUSTADAS: Apontando para as pastas corretas conforme seus arquivos
+import { RankingCard } from '../components/RankingCard';
+import { InsightCard } from '../components/InsightCard';
 import { MetricCard } from '../components/MetricCard';
 import ProductTable, { Product } from '../components/ProductTable';
 import classes from './Dashboard.module.css';
@@ -13,6 +13,10 @@ interface MetricasDashboard {
   margemMedia: number;
   cubagemGeral: number;
   anunciosCriticos: number;
+  ticketMedio: number;
+  produtoMaisPesado: { nome: string; peso: number } | null;
+  melhorMargem: { nome: string; margem: number } | null;
+  rankingMargem: { nome: string; margem: number }[];
 }
 
 export default function Dashboard() {
@@ -24,9 +28,12 @@ export default function Dashboard() {
     margemMedia: 0,
     cubagemGeral: 0,
     anunciosCriticos: 0,
+    ticketMedio: 0,
+    produtoMaisPesado: null,
+    melhorMargem: null,
+    rankingMargem: [],
   });
 
-  // Funções de Handler para a tabela (stubs para evitar erros e permitir expansão futura)
   const handleProductUpdated = (updatedProduct: Product) => {
     setProdutos((prevProducts) =>
       prevProducts.map((item) => (item.id === updatedProduct.id ? updatedProduct : item))
@@ -35,7 +42,6 @@ export default function Dashboard() {
 
   const handleExcluirProduto = (id: string) => {
     console.log('Disparar modal de exclusão para o ID:', id);
-    // Aqui no futuro você pode colocar o api.delete ou um modal do Mantine
   };
 
   useEffect(() => {
@@ -44,13 +50,12 @@ export default function Dashboard() {
         const token = localStorage.getItem('token');
 
         const response = await api.get('/anuncios', {
-          withCredentials: true, // Garante que os cookies sejam enviados junto com a requisição
+          withCredentials: true,
           headers: {
             Authorization: `Bearer ${token}`,
           },
         });
 
-        // Validação defensiva do retorno da API
         let listaProdutos: Product[] = [];
         if (Array.isArray(response.data)) {
           listaProdutos = response.data;
@@ -63,23 +68,48 @@ export default function Dashboard() {
         setProdutos(listaProdutos);
 
         if (listaProdutos?.length > 0) {
-          // Cálculo da cubagem total em m³
           const cubagemTotal = listaProdutos.reduce((acc, prod) => {
             const volumeItem = (prod.largura * prod.altura * prod.comprimento) / 1000000;
             return acc + volumeItem;
           }, 0);
 
-          // Filtro de anúncios com margem crítica (< 15%)
-          const criticos = listaProdutos.filter((prod) => prod.margemPorcentagem < 15).length;
+          const criticos = listaProdutos.filter((prod) => (prod.margemPorcentagem ?? 0) < 15).length;
 
-          // Cálculo da média aritmética das margens
-          const somaMargens = listaProdutos.reduce((acc, prod) => acc + prod.margemPorcentagem, 0);
+          const somaMargens = listaProdutos.reduce((acc, prod) => acc + (prod.margemPorcentagem ?? 0), 0);
           const mediaMargem = somaMargens / listaProdutos.length;
+
+          // ✅ CORREÇÃO: trocado prod.preco por prod.precoVenda
+          const ticketMedio = listaProdutos.reduce((acc, prod) => acc + prod.precoVenda, 0) / listaProdutos.length;
+
+          const produtoMaisPesado = listaProdutos.reduce<{ nome: string; peso: number } | null>(
+            (maisPesado, prod) =>
+              !maisPesado || prod.peso > maisPesado.peso
+                ? { nome: prod.nome, peso: prod.peso }
+                : maisPesado,
+            null
+          );
+
+          const melhorMargem = listaProdutos.reduce<{ nome: string; margem: number } | null>(
+            (melhor, prod) =>
+              !melhor || (prod.margemPorcentagem ?? 0) > melhor.margem
+                ? { nome: prod.nome, margem: prod.margemPorcentagem ?? 0 }
+                : melhor,
+            null
+          );
+
+          const rankingMargem = [...listaProdutos]
+            .sort((a, b) => (b.margemPorcentagem ?? 0) - (a.margemPorcentagem ?? 0))
+            .slice(0, 5)
+            .map((prod) => ({ nome: prod.nome, margem: prod.margemPorcentagem ?? 0 }));
 
           setMetricas({
             margemMedia: mediaMargem,
             cubagemGeral: cubagemTotal,
             anunciosCriticos: criticos,
+            ticketMedio,
+            produtoMaisPesado,
+            melhorMargem,
+            rankingMargem,
           });
         }
 
@@ -118,7 +148,6 @@ export default function Dashboard() {
     <div className={classes.pageWrapper}>
       <Container size="lg" pt="xl">
 
-        {/* Cabeçalho superior com botão dinâmico */}
         <Group justify="space-between" align="flex-start" wrap="wrap" mb="xl">
           <Stack gap={4}>
             <Title order={1} className={classes.pageTitle}>
@@ -129,12 +158,10 @@ export default function Dashboard() {
             </Text>
           </Stack>
           <Group gap="sm">
-
-            {/* ⚙️ BOTÃO DE CONFIGURAÇÃO (O que estamos adicionando) */}
             <Button
               variant="light"
               color="gray"
-              onClick={() => navigate('/config')} // 👈 Troque pelo caminho exato da sua rota de configuração
+              onClick={() => navigate('/config')}
             >
               Configurações
             </Button>
@@ -143,19 +170,19 @@ export default function Dashboard() {
                 className={classes.btnCriarAnuncio}
                 onClick={() => navigate('/anuncios/novo')}
               >
-                Novo Anuncio
+                Novo Anúncio
               </Button>
             )}
           </Group>
         </Group>
 
         {produtos?.length === 0 ? (
-          /* Estado Vazio (Sem anúncios cadastrados) */
           <Paper withBorder p="xl" radius="md" className={classes.emptyStateCard} mt="xl">
             <Stack align="center" gap="md">
               <Text className={classes.emptyStateTitle}>Nenhum anúncio encontrado</Text>
               <Text className={classes.emptyStateText} size="sm" ta="center">
-                Sua conta ainda não possui anúncios cadastrados no sistema. Comece a publicar seus produtos para monitorar os custos de frete, cubagem e margens de lucro em tempo real!
+                Sua conta ainda não possui anúncios cadastrados no sistema. Comece a publicar seus
+                produtos para monitorar os custos de frete, cubagem e margens de lucro em tempo real!
               </Text>
               <Button
                 size="md"
@@ -167,7 +194,6 @@ export default function Dashboard() {
             </Stack>
           </Paper>
         ) : (
-          /* Estado Populado (Exibe os novos MetricCards e a ProductTable) */
           <>
             <SimpleGrid cols={{ base: 1, sm: 3 }} gap="md">
               <MetricCard
@@ -184,7 +210,7 @@ export default function Dashboard() {
                 title="Anúncios Críticos"
                 value={metricas.anunciosCriticos}
                 description="Produtos com margem abaixo de 15%"
-                isAlert={metricas.anunciosCriticos > 0} // Acende o card em vermelho se houver algum crítico
+                isAlert={metricas.anunciosCriticos > 0}
               />
             </SimpleGrid>
 
@@ -207,6 +233,17 @@ export default function Dashboard() {
                 <Text c="dimmed" mb="sm">Nenhum anúncio encontrado no banco de dados.</Text>
               </Center>
             )}
+
+            <Space h="xl" />
+
+            <SimpleGrid cols={{ base: 1, sm: 2 }} gap="md">
+              <RankingCard ranking={metricas.rankingMargem} />
+              <InsightCard
+                ticketMedio={metricas.ticketMedio}
+                produtoMaisPesado={metricas.produtoMaisPesado}
+                melhorMargem={metricas.melhorMargem}
+              />
+            </SimpleGrid>
           </>
         )}
       </Container>

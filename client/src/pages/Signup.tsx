@@ -10,12 +10,12 @@ export default function Signup() {
   const [erro, setErro] = useState<string | null>(null);
 
   const lidarComCadastro = async (nome: string, nomeLoja: string, email: string, 
-    password: string, nicho: string, nivelSeller: string) => {
+    senha: string, nicho: string, nivelSeller: string) => {
     setLoading(true);
     setErro(null);
 
     try {
-      const response = await api.post('/register', { nome, nomeLoja, email, password, nicho, nivelSeller });
+      const response = await api.post('/register', { nome, nomeLoja, email, senha, nicho, nivelSeller });
       console.log('Usuário criado com sucesso:', response.data);
       
       // Cadastro feito com sucesso? Empurra para o login!

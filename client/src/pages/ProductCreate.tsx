@@ -1,24 +1,29 @@
 // src/pages/ProductCreate.tsx
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Container, Paper, Title, Text, Button, Stack } from '@mantine/core';
 import api from '../services/api';
+import {freteApi} from '../services/freteApi';
 import { Product } from '../components/ProductTable';
 import { InfoSection } from '../components/ProductInfo';
 import classes from './ProductCreate.module.css';
 
-// Definição do tipo estendido para o formulário de cadastro
 export type ProductFormData = Omit<Product, 'lucro' | 'margemPorcentagem'> & {
   idMercadoLivre?: string;
-  tipoAnuncio?: string; // 🌟 Propriedade adicionada para suportar a nova seleção
+  tipoAnuncio?: string;
 };
+
+// Campos que, quando alterados, disparam o cálculo do frete
+const CAMPOS_FRETE: (keyof ProductFormData)[] = [
+  'largura', 'altura', 'comprimento', 'peso', 'precoVenda'
+];
 
 export default function ProductCreate() {
   const navigate = useNavigate();
   const [formData, setFormData] = useState<ProductFormData>({
     id: '',
     idMercadoLivre: '',
-    tipoAnuncio: '', // 🌟 Inicializado como string vazia para o componente Select controlado
+    tipoAnuncio: '',
     nome: '',
     marca: '',
     largura: 0,
@@ -32,9 +37,54 @@ export default function ProductCreate() {
   });
 
   const [loading, setLoading] = useState(false);
+  const [calculandoFrete, setCalculandoFrete] = useState(false);
   const [feedback, setFeedback] = useState('');
   const [isError, setIsError] = useState(false);
 
+  // 🌟 Ref para o debounce — evita chamada a cada tecla digitada
+  const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  // 🌟 Calcula o frete automaticamente quando os campos relevantes mudam
+  useEffect(() => {
+    const { largura, altura, comprimento, peso, precoVenda } = formData;
+
+    // Só dispara se todos os campos necessários tiverem valor
+    if (!largura || !altura || !comprimento || !peso || !precoVenda) return;
+
+    // Debounce de 600ms para não chamar a API a cada digitação
+    if (debounceRef.current) clearTimeout(debounceRef.current);
+
+    debounceRef.current = setTimeout(async () => {
+      setCalculandoFrete(true);
+      try {
+        const { data } = await freteApi.post(
+          '/calcular',
+          { largura, altura, comprimento, peso, precoVenda },
+        );
+
+        setFormData((prev) => ({
+          ...prev,
+          freteCalculado: data.frete ?? 0,
+          pesoUsado: data.pesoUtilizado ?? peso,
+        }));
+      } catch (error) {
+        console.error('Erro ao calcular frete:', error);
+      } finally {
+        setCalculandoFrete(false);
+      }
+    }, 600);
+
+    // Limpa o timeout se o componente desmontar
+    return () => {
+      if (debounceRef.current) clearTimeout(debounceRef.current);
+    };
+  }, [
+    formData.largura,
+    formData.altura,
+    formData.comprimento,
+    formData.peso,
+    formData.precoVenda,
+  ]);
 
   const handleFieldChange = (campo: keyof ProductFormData, valor: string | number) => {
     setFormData((prev) => ({ ...prev, [campo]: valor }));
@@ -47,34 +97,25 @@ export default function ProductCreate() {
     setIsError(false);
 
     try {
-      const token = localStorage.getItem('token');
-
-      // 🌟 AJUSTE: Cria o payload final e espelha o 'peso' dentro de 'pesoUsado' para a API receber preenchido
       const payloadFinal = {
         ...formData,
-        pesoUsado: formData.pesoUsado || formData.peso
+        pesoUsado: formData.pesoUsado || formData.peso,
       };
 
-      console.log("🚀 Enviando payload corrigido e tipado:", payloadFinal);
-
-      // Dispara usando o objeto tratado com números reais
       await api.post('/anuncios', payloadFinal, {
-        withCredentials: true, // Garante que os cookies sejam enviados junto com a requisição
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
+        withCredentials: true,
       });
 
       setFeedback('Anúncio cadastrado com sucesso!');
-
-      setTimeout(() => {
-        navigate('/dashboard');
-      }, 1200);
+      setTimeout(() => navigate('/dashboard'), 1200);
 
     } catch (error: any) {
-      console.error('Erro ao cadastrar anúncio no banco:', error);
+      console.error('Erro ao cadastrar anúncio:', error);
       setIsError(true);
-      const mensagemErro = error.response?.data?.message || 'Não foi possível cadastrar o anúncio. Verifique os dados.';
+      const mensagemErro =
+        error.response?.data?.erro ||
+        error.response?.data?.message ||
+        'Não foi possível cadastrar o anúncio. Verifique os dados.';
       setFeedback(mensagemErro);
     } finally {
       setLoading(false);
@@ -96,8 +137,14 @@ export default function ProductCreate() {
           <form onSubmit={handleSubmit}>
             <Stack gap="xl">
 
-              {/* 🌟 O componente único que engloba Dados cadastrais, Dimensões e Financeiro */}
               <InfoSection data={formData} onChange={handleFieldChange} />
+
+              {/* 🌟 Feedback visual enquanto o frete está sendo calculado */}
+              {calculandoFrete && (
+                <Text size="xs" ta="center" c="dimmed">
+                  Calculando frete...
+                </Text>
+              )}
 
               <Button
                 type="submit"
@@ -105,6 +152,7 @@ export default function ProductCreate() {
                 fullWidth
                 mt="md"
                 loading={loading}
+                disabled={calculandoFrete} // Impede salvar enquanto calcula
                 className={classes.buttonSubmit}
               >
                 Cadastrar Anúncio

@@ -1,0 +1,45 @@
+.card {
+  background-color: #1a1b1e; /* Cinza profundo padrão do Mantine Dark */
+  border: 1px solid #2c2e33;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+  border-color: #373a40;
+}
+
+.title {
+  letter-spacing: 0.5px;
+  border-bottom: 1px solid #2c2e33;
+  padding-bottom: 12px;
+}
+
+.row {
+  padding: 10px 12px;
+  border-radius: 6px;
+  transition: background-color 0.15s ease;
+}
+
+/* Cria a divisão entre as linhas de forma elegante */
+.row:not(:last-child) {
+  border-bottom: 1px solid #2c2e33;
+}
+
+.row:hover {
+  background-color: #25262b; /* Destaque ao passar o mouse */
+}
+
+.label {
+  color: #c1c2c5;
+  font-weight: 500;
+  font-size: 0.95rem;
+}
+
+/* Alinhamento numérico impecável dentro dos Badges */
+.badgeValue {
+  font-family: 'JetBrains Mono', 'Fira Code', monospace;
+  font-weight: 700;
+  letter-spacing: -0.3px;
+}

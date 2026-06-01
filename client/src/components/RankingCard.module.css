@@ -1,0 +1,72 @@
+.card {
+  background-color: #1a1b1e; /* Tom padrão Dark do Mantine */
+  border: 1px solid #2c2e33;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+  border-color: #373a40;
+}
+
+.title {
+  color: #c1c2c5;
+  font-size: 1.1rem;
+  letter-spacing: 0.5px;
+  border-bottom: 1px solid #2c2e33;
+  padding-bottom: 12px;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 8px;
+}
+
+.th {
+  text-align: left;
+  padding: 10px 8px;
+  color: #909296;
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  border-bottom: 1px solid #2c2e33;
+}
+
+.tr {
+  border-bottom: 1px solid #2c2e33;
+  transition: background-color 0.15s ease;
+}
+
+.tr:hover {
+  background-color: #25262b; /* Destaque sutil ao passar o mouse na linha */
+}
+
+.td {
+  padding: 12px 8px;
+  font-size: 0.875rem;
+  color: #c1c2c5;
+  vertical-align: middle;
+}
+
+.rank {
+  color: #909296;
+  font-family: 'JetBrains Mono', 'Fira Code', monospace;
+  font-weight: 500;
+}
+
+.marginValue {
+  font-family: 'JetBrains Mono', 'Fira Code', monospace;
+  font-weight: 600;
+}
+
+/* Classes utilitárias para a variação de cor da margem */
+.positive {
+  color: #40c057;
+}
+
+.negative {
+  color: #ff6b6b;
+}
