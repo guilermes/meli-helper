@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, FormEvent, useEffect } from 'react';
 import {
   Container,
   Grid,
@@ -11,16 +11,17 @@ import {
   Stack,
   Avatar,
   FileButton,
-  Badge,
   Divider,
+  Loader,
+  Notification
 } from '@mantine/core';
 import classes from './Profile.module.css';
+import api from '../services/api';
 
 interface UserProfile {
   nome: string;
   nomeLoja: string;
   email: string;
-  telefone: string;
 }
 
 interface Marketplaces {
@@ -29,43 +30,105 @@ interface Marketplaces {
 }
 
 export default function Profile() {
-  // Estado dos dados cadastrais
+  // Estado dos dados cadastrais vindo do backend
   const [formData, setFormData] = useState<UserProfile>({
-    nome: 'Guilherme Silva',
-    nomeLoja: 'Meli Helper Store',
-    email: 'guilherme@email.com',
-    telefone: '(15) 99999-9999',
+    nome: '',
+    nomeLoja: '',
+    email: '',
   });
 
-  // Estado da foto de perfil (inicia com uma string vazia ou placeholder)
+  // O estado do avatar guardará a string Base64 ou null se não houver foto
   const [avatarUrl, setAvatarUrl] = useState<string | null>(null);
 
-  // Estado das integrações de marketplaces
+  // Estado das integrações de marketplaces (Simulação local sustentada)
   const [integracoes, setIntegracoes] = useState<Marketplaces>({
-    mercadoLivre: true, // Começa simulando que o Mercado Livre já está conectado
+    mercadoLivre: true,
     shopee: false,
   });
 
-  const [mensagem, setMensagem] = useState<string>('');
+  const [carregando, setCarregando] = useState<boolean>(true);
+  const [mensagem, setMensagem] = useState<{ tipo: 'sucesso' | 'erro'; texto: string } | null>(null);
 
-  // Manipulador para o upload da foto (Gera um preview local)
-  const lidarComFoto = (file: File | null) => {
+  // Função auxiliar para converter o arquivo binário selecionado em String Base64
+  const converterParaBase64 = (file: File): Promise<string> => {
+    return new Promise((resolve, reject) => {
+      const fileReader = new FileReader();
+      fileReader.readAsDataURL(file);
+      fileReader.onload = () => resolve(fileReader.result as string);
+      fileReader.onerror = (error) => reject(error);
+    });
+  };
+
+  // 🔍 BUSCAR DADOS DO PERFIL (Ao carregar a página)
+  useEffect(() => {
+    const buscarDadosPerfil = async () => {
+      try {
+        setCarregando(true);
+        const response = await api.get('/profile');
+
+        setFormData({
+          nome: response.data.nome || '',
+          nomeLoja: response.data.nomeLoja || '',
+          email: response.data.email || '',
+        });
+
+        // Se o banco de dados já possuir uma string Base64 salva, injeta no estado
+        if (response.data.avatar) {
+          setAvatarUrl(response.data.avatar);
+        }
+      } catch (error: any) {
+        setMensagem({
+          tipo: 'erro',
+          texto: error.response?.data?.erro || 'Erro ao carregar dados do perfil.'
+        });
+      } finally {
+        setCarregando(false);
+      }
+    };
+
+    buscarDadosPerfil();
+  }, []);
+
+  // 📸 PROCESSAR A ESCOLHA DA FOTO
+  const lidarComFoto = async (file: File | null) => {
     if (file) {
-      const urlPreview = URL.createObjectURL(file);
-      setAvatarUrl(urlPreview);
-      setMensagem('Foto de perfil atualizada localmente!');
-      setTimeout(() => setMensagem(''), 3000);
+      try {
+        const base64String = await converterParaBase64(file);
+        setAvatarUrl(base64String); // Atualiza o preview e guarda o Base64 para enviar no submit
+      } catch (error) {
+        setMensagem({ tipo: 'erro', texto: 'Erro ao processar o arquivo de imagem.' });
+      }
     }
   };
 
-  // Salvar dados do formulário
-  const lidarComSalvarPerfil = (e: React.FormEvent) => {
+  // 💾 SALVAR ALTERAÇÕES (Texto + Foto Base64)
+  const lidarComSalvarPerfil = async (e: FormEvent) => {
     e.preventDefault();
-    setMensagem('Alterações de perfil salvas com sucesso!');
-    setTimeout(() => setMensagem(''), 3000);
+    setMensagem(null);
+
+    try {
+      const response = await api.put('/update-profile', {
+        nome: formData.nome,
+        nomeLoja: formData.nomeLoja,
+        avatar: avatarUrl // Envia a string Base64 (ou null caso não tenha)
+      });
+
+      setMensagem({
+        tipo: 'sucesso',
+        texto: response.data.mensagem || 'Perfil atualizado com sucesso!'
+      });
+
+      // Limpa a notificação de sucesso após 4 segundos
+      setTimeout(() => setMensagem(null), 4000);
+    } catch (error: any) {
+      setMensagem({
+        tipo: 'erro',
+        texto: error.response?.data?.erro || 'Falha ao atualizar o perfil.'
+      });
+    }
   };
 
-  // Alternar o vínculo do marketplace (Simulação)
+  // Alternar o vínculo do marketplace (Simulação visual de tela)
   const alternarMarketplace = (plataforma: keyof Marketplaces) => {
     setIntegracoes((prev) => ({
       ...prev,
@@ -73,177 +136,179 @@ export default function Profile() {
     }));
   };
 
+  if (carregando) {
+    return (
+      <Group justify="center" style={{ height: '50vh' }}>
+        <Loader color="red" size="lg" />
+      </Group>
+    );
+  }
+
   return (
-    <Container size="lg" py="xl">
-      
-      {/* ================= HEADER ================= */}
-      <Stack gap={2} mb="xl">
-        <Title order={3} fw={600}>
-          Meu Perfil
-        </Title>
-        <Text size="sm" c="dimmed">
-          Gerencie suas informações pessoais, dados da loja e conexões com marketplaces
-        </Text>
-      </Stack>
+    <>
+      <Container size="lg" py="xl">
 
-      <Grid gutter="xl">
-        
-        {/* ================= COLUNA ESQUERDA: FOTO E INTEGRAÇÕES ================= */}
-        <Grid.Col span={{ base: 12, md: 4 }}>
-          <Stack gap="lg">
-            
-            {/* CARD DA FOTO */}
-            <Card shadow="sm" radius="md" withBorder className={classes.avatarContainer}>
-              <Avatar
-                src={avatarUrl}
-                size={120}
-                radius={120}
-                mx="auto"
-                mb="md"
-                color="blue"
-              >
-                {formData.nome.charAt(0)}
-              </Avatar>
-              
-              <Title order={4} fw={600}>
-                {formData.nome}
-              </Title>
-              <Text size="sm" c="dimmed" mb="lg">
-                {formData.nomeLoja}
-              </Text>
+        {/* ================= HEADER ================= */}
+        <Stack gap={2} mb="xl">
+          <Title order={3} fw={600}>
+            Meu Perfil
+          </Title>
+          <Text size="sm" c="dimmed">
+            Gerencie suas informações pessoais, dados da loja e conexões com marketplaces
+          </Text>
+        </Stack>
 
-              <FileButton onChange={lidarComFoto} accept="image/png,image/jpeg">
-                {(props) => (
-                  <Button {...props} variant="light" color="blue" size="xs" fullWidth>
-                    Alterar Foto
-                  </Button>
-                )}
-              </FileButton>
-            </Card>
+        {/* NOTIFICAÇÃO DE FEEDBACK */}
+        {mensagem && (
+          <Notification
+            color={mensagem.tipo === 'sucesso' ? 'green' : 'red'}
+            onClose={() => setMensagem(null)}
+            mb="md"
+          >
+            {mensagem.texto}
+          </Notification>
+        )}
 
-            {/* CARD DE MARKETPLACES */}
-            <Card shadow="sm" radius="md" withBorder className={classes.integrationCard}>
-              <Text fw={600} size="md" mb="xs" c="blue">
-                Marketplaces Vinculados
-              </Text>
-              <Text size="xs" c="dimmed" mb="md">
-                Conecte suas contas para sincronizar anúncios automaticamente
-              </Text>
+        <Grid gutter="xl">
 
-              <Stack gap="sm">
-                
-                {/* MERCADO LIVRE */}
-                <Group justify="space-between" className={classes.marketplaceRow}>
-                  <Stack gap={0}>
-                    <Text size="sm" fw={600}>Mercado Livre</Text>
-                    <Text size="xs" c="dimmed">Sincronização de anúncios</Text>
-                  </Stack>
-                  <Button
-                    size="xs"
-                    variant={integracoes.mercadoLivre ? 'light' : 'filled'}
-                    color={integracoes.mercadoLivre ? 'red' : 'blue'}
-                    onClick={() => alternarMarketplace('mercadoLivre')}
-                  >
-                    {integracoes.mercadoLivre ? 'Desconectar' : 'Conectar'}
-                  </Button>
-                </Group>
+          {/* ================= COLUNA ESQUERDA: FOTO E INTEGRAÇÕES ================= */}
+          <Grid.Col span={{ base: 12, md: 4 }}>
+            <Stack gap="lg">
 
-                {/* SHOPEE */}
-                <Group justify="space-between" className={classes.marketplaceRow}>
-                  <Stack gap={0}>
-                    <Text size="sm" fw={600}>Shopee</Text>
-                    <Text size="xs" c="dimmed">Painel de envios externos</Text>
-                  </Stack>
-                  <Button
-                    size="xs"
-                    variant={integracoes.shopee ? 'light' : 'filled'}
-                    color={integracoes.shopee ? 'red' : 'blue'}
-                    onClick={() => alternarMarketplace('shopee')}
-                  >
-                    {integracoes.shopee ? 'Desconectar' : 'Conectar'}
-                  </Button>
-                </Group>
+              {/* CARD DA FOTO */}
+              <Card shadow="sm" radius="md" withBorder className={classes.avatarContainer}>
+                {/* 🌟 Fallback automático: Se avatarUrl for null, exibe a primeira letra com fundo Red */}
+                <Avatar
+                  src={avatarUrl}
+                  size={120}
+                  radius={120}
+                  mx="auto"
+                  mb="md"
+                  color="red"
+                >
+                  {formData.nome?.charAt(0).toUpperCase()}
+                </Avatar>
 
-              </Stack>
-            </Card>
+                <Title order={4} fw={600}>
+                  {formData.nome || 'Usuário'}
+                </Title>
+                <Text size="sm" c="dimmed" mb="lg">
+                  {formData.nomeLoja || 'Sem Loja Vinculada'}
+                </Text>
 
-          </Stack>
-        </Grid.Col>
+                <FileButton onChange={lidarComFoto} accept="image/png,image/jpeg">
+                  {(props) => (
+                    <Button {...props} variant="light" color="red" size="xs" fullWidth>
+                      Alterar Foto
+                    </Button>
+                  )}
+                </FileButton>
+              </Card>
 
-        {/* ================= COLUNA DIREITA: FORMULÁRIO DE DADOS ================= */}
-        <Grid.Col span={{ base: 12, md: 8 }}>
-          <Card shadow="sm" padding="lg" radius="md" withBorder>
-            
-            <Text fw={600} size="lg" c="blue" mb="md">
-              Dados Cadastrais
-            </Text>
-            <Divider mb="lg" />
+              {/* CARD DE MARKETPLACES (Recuperado) */}
+              <Card shadow="sm" radius="md" withBorder className={classes.integrationCard}>
+                <Text fw={600} size="md" mb="xs" c="red">
+                  Marketplaces Vinculados
+                </Text>
+                <Text size="xs" c="dimmed" mb="md">
+                  Conecte suas contas para sincronizar anúncios automaticamente
+                </Text>
 
-            <form onSubmit={lidarComSalvarPerfil}>
-              <Grid gutter="md">
-                
-                <Grid.Col span={{ base: 12, sm: 6 }}>
-                  <TextInput
-                    label="Seu Nome"
-                    placeholder="Digite seu nome completo"
-                    value={formData.nome}
-                    onChange={(e) => setFormData({ ...formData, nome: e.target.value })}
-                    required
-                  />
-                </Grid.Col>
+                <Stack gap="sm">
 
-                <Grid.Col span={{ base: 12, sm: 6 }}>
-                  <TextInput
-                    label="Nome da Loja"
-                    placeholder="Ex: Minha Loja E-commerce"
-                    value={formData.nomeLoja}
-                    onChange={(e) => setFormData({ ...formData, nomeLoja: e.target.value })}
-                    required
-                  />
-                </Grid.Col>
-
-                <Grid.Col span={{ base: 12, sm: 6 }}>
-                  <TextInput
-                    label="E-mail"
-                    type="email"
-                    placeholder="seuemail@exemplo.com"
-                    value={formData.email}
-                    onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                    required
-                  />
-                </Grid.Col>
-
-                <Grid.Col span={{ base: 12, sm: 6 }}>
-                  <TextInput
-                    label="Telefone / WhatsApp"
-                    placeholder="Ex: (15) 99999-9999"
-                    value={formData.telefone}
-                    onChange={(e) => setFormData({ ...formData, telefone: e.target.value })}
-                  />
-                </Grid.Col>
-
-                <Grid.Col span={12} mt="md">
-                  <Group justify="flex-end">
-                    <Button type="submit" color="blue" px="xl">
-                      Salvar Alterações
+                  {/* MERCADO LIVRE */}
+                  <Group justify="space-between" className={classes.marketplaceRow}>
+                    <Stack gap={0}>
+                      <Text size="sm" fw={600}>Mercado Livre</Text>
+                      <Text size="xs" c="dimmed">Sincronização de anúncios</Text>
+                    </Stack>
+                    <Button
+                      size="xs"
+                      variant={integracoes.mercadoLivre ? 'light' : 'filled'}
+                      color="red"
+                      onClick={() => alternarMarketplace('mercadoLivre')}
+                    >
+                      {integracoes.mercadoLivre ? 'Desconectar' : 'Conectar'}
                     </Button>
                   </Group>
-                </Grid.Col>
 
-              </Grid>
-            </form>
+                  {/* SHOPEE */}
+                  <Group justify="space-between" className={classes.marketplaceRow}>
+                    <Stack gap={0}>
+                      <Text size="sm" fw={600}>Shopee</Text>
+                      <Text size="xs" c="dimmed">Painel de envios externos</Text>
+                    </Stack>
+                    <Button
+                      size="xs"
+                      variant={integracoes.shopee ? 'light' : 'filled'}
+                      color="red"
+                      onClick={() => alternarMarketplace('shopee')}
+                    >
+                      {integracoes.shopee ? 'Desconectar' : 'Conectar'}
+                    </Button>
+                  </Group>
 
-            {/* FEEDBACK DE SUCESSO */}
-            {mensagem && (
-              <Text c="green" fw={600} ta="center" mt="md">
-                {mensagem}
+                </Stack>
+              </Card>
+
+            </Stack>
+          </Grid.Col>
+
+          {/* ================= COLUNA DIREITA: FORMULÁRIO DE DADOS ================= */}
+          <Grid.Col span={{ base: 12, md: 8 }}>
+            <Card shadow="sm" padding="lg" radius="md" withBorder className={classes.integrationCard}>
+
+              <Text fw={600} size="lg" c="red" mb="md">
+                Dados Cadastrais
               </Text>
-            )}
+              <Divider mb="lg" />
 
-          </Card>
-        </Grid.Col>
+              <form onSubmit={lidarComSalvarPerfil}>
+                <Grid gutter="md">
 
-      </Grid>
-    </Container>
+                  <Grid.Col span={{ base: 12, sm: 6 }}>
+                    <TextInput
+                      label="Seu Nome"
+                      placeholder="Digite seu nome completo"
+                      value={formData.nome}
+                      onChange={(e) => setFormData({ ...formData, nome: e.target.value })}
+                      required
+                    />
+                  </Grid.Col>
+
+                  <Grid.Col span={{ base: 12, sm: 6 }}>
+                    <TextInput
+                      label="Nome da Loja"
+                      placeholder="Ex: Minha Loja E-commerce"
+                      value={formData.nomeLoja}
+                      onChange={(e) => setFormData({ ...formData, nomeLoja: e.target.value })}
+                      required
+                    />
+                  </Grid.Col>
+
+                  <Grid.Col span={{ base: 12, sm: 6 }}>
+                    <TextInput
+                      label="E-mail"
+                      value={formData.email}
+                      disabled
+                    />
+                  </Grid.Col>
+
+                  <Grid.Col span={12} mt="md">
+                    <Group justify="flex-end">
+                      <Button type="submit" color="red" px="xl">
+                        Salvar Alterações
+                      </Button>
+                    </Group>
+                  </Grid.Col>
+
+                </Grid>
+              </form>
+            </Card>
+          </Grid.Col>
+
+        </Grid>
+      </Container>
+    </>
   );
 }

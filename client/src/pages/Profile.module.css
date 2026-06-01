@@ -1,14 +1,16 @@
-/* Efeito de hover nos cards de marketplace */
+body {
+  background-color: #121214 !important; /* Fundo escuro sólido para toda a página */
+  color: #e0e0e0 !important; /* Texto claro para contraste */
+}
+
 .integrationCard {
   transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+  background-color: #1a1b1e !important; /* Fundo escuro sólido do Card */
+  border: 1px solid #2c2e33 !important;  /* Borda grafite sutil */
+  border-radius: var(--mantine-radius-md);
+  color: #e0e0e0 !important; /* Texto claro para contraste */
 }
 
-.integrationCard:hover {
-  transform: translateY(-2px);
-  box-shadow: var(--mantine-shadow-sm) !important;
-}
-
-/* Container da foto de perfil para dar destaque */
 .avatarContainer {
   display: flex;
   flex-direction: column;
@@ -16,12 +18,31 @@
   justify-content: center;
   padding: var(--mantine-spacing-xl);
   text-align: center;
+  background-color: #1a1b1e !important; /* Fundo idêntico aos outros cards */
+  border: 1px solid #2c2e33 !important;
+  border-radius: var(--mantine-radius-md);
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  color: #e0e0e0 !important; /* Texto claro para contraste */
 }
 
-/* Linha de integração individual */
+
 .marketplaceRow {
   padding: var(--mantine-spacing-md);
-  border: 1px solid var(--mantine-color-default-border);
+  border: 1px solid #2c2e33 !important;
   border-radius: var(--mantine-radius-md);
-  background-color: var(--mantine-color-body);
+  background-color: #25262b !important; /* 🌙 Tom mais claro para dar profundidade sobre o card */
+  transition: border-color 0.2s ease, background-color 0.2s ease;
+  color: #e0e0e0 !important; /* Texto claro para contraste */
+}
+
+.marketplaceRow:hover {
+  border-color: #4a4c52 !important; /* Realce sutil na borda ao passar o mouse */
+  background-color: #2c2e33 !important; /* Fundo um pouco mais escuro para feedback visual */
+}
+
+.avatarContainer ~ div .mantine-Card-root,
+form id, 
+:global(.mantine-Card-root) {
+  background-color: #1a1b1e !important;
+  border-color: #2c2e33 !important;
 }

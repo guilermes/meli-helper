@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import {
   Container,
   Grid,
@@ -12,38 +12,103 @@ import {
   Button,
   Group,
   Stack,
+  Notification,
+  Loader,
   Alert,
 } from '@mantine/core';
 import classes from "./Config.module.css";
+import api from '../services/api'; // 🌟 Importando a sua instância do Axios
 
-// Definição da interface para manter o TypeScript feliz
 interface ConfigData {
   imposto: number;
   custoOperacional: number;
 }
 
 export default function Config() {
-  // Estado do formulário (o que o usuário digita)
+  // Estado do formulário (o que o usuário digita/altera)
   const [formValores, setFormValores] = useState<ConfigData>({
-    imposto: 6.0,
-    custoOperacional: 5.0,
+    imposto: 0,
+    custoOperacional: 0,
   });
 
-  // Estado consolidado (o que já foi salvo)
+  // Estado consolidado (o que está atualmente salvo no banco)
   const [valoresSalvos, setValoresSalvos] = useState<ConfigData>({
-    imposto: 6.0,
-    custoOperacional: 5.0,
+    imposto: 0,
+    custoOperacional: 0,
   });
 
-  const [mensagem, setMensagem] = useState<string>('');
+  const [carregando, setCarregando] = useState<boolean>(true);
+  const [notificacao, setNotificacao] = useState<{ tipo: 'sucesso' | 'erro'; texto: string } | null>(null);
 
-  const lidarComSalvar = (e: React.FormEvent) => {
-    e.preventDefault(); // Evita o recarregamento padrão do form HTML
-    setValoresSalvos(formValores);
-    setMensagem('Configurações salvas com sucesso no sistema!');
+  // 🔍 BUSCAR CONFIGURAÇÕES DO BANCO (Ao montar o componente)
+  useEffect(() => {
+    const buscarConfiguracoes = async () => {
+      try {
+        setCarregando(true);
+        const response = await api.get('/');
+        
+        // Se o usuário já tiver configurações salvas no banco
+        if (response.data) {
+          const dadosMapeados = {
+            imposto: response.data.imposto ?? 0,
+            custoOperacional: response.data.custoOperacional ?? 0,
+          };
+          setFormValores(dadosMapeados);
+          setValoresSalvos(dadosMapeados);
+        }
+      } catch (error: any) {
+        setNotificacao({
+          tipo: 'erro',
+          texto: error.response?.data?.erro || 'Erro ao carregar as configurações da operação.'
+        });
+      } finally {
+        setCarregando(false);
+      }
+    };
 
-    setTimeout(() => setMensagem(''), 3000);
+    buscarConfiguracoes();
+  }, []);
+
+  // 💾 SALVAR CONFIGURAÇÕES NO BACKEND
+  const lidarComSalvar = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setNotificacao(null);
+
+    try {
+      const response = await api.post('/config/set', formValores);
+
+      // Sincroniza o painel visual com os novos valores validados vindos do backend
+      const dadosAtualizados = {
+        imposto: response.data.config.imposto,
+        custoOperacional: response.data.config.custoOperacional
+      };
+      
+      setValoresSalvos(dadosAtualizados);
+      setFormValores(dadosAtualizados);
+      
+      setNotificacao({ 
+        tipo: 'sucesso', 
+        texto: response.data.mensagem || 'Configurações salvas com sucesso no sistema!' 
+      });
+
+      // Esconde a notificação de sucesso após 3 segundos
+      setTimeout(() => setNotificacao(null), 3000);
+    } catch (error: any) {
+      setNotificacao({
+        tipo: 'erro',
+        texto: error.response?.data?.erro || 'Falha ao salvar configurações.'
+      });
+    }
   };
+
+  // Se estiver buscando dados do banco, exibe o Loader centralizado
+  if (carregando) {
+    return (
+      <Group justify="center" style={{ height: '50vh' }}>
+        <Loader color="blue" size="lg" />
+      </Group>
+    );
+  }
 
   return (
     <Container size="lg" py="xl">
@@ -58,9 +123,21 @@ export default function Config() {
         </Text>
       </Stack>
 
+      {/* NOTIFICAÇÃO MANTINE (Mais polida que o texto bruto) */}
+      {notificacao && (
+        <Notification
+          color={notificacao.tipo === 'sucesso' ? 'green' : 'red'}
+          onClose={() => setNotificacao(null)}
+          mb="md"
+          className={classes.successFeedback}
+        >
+          {notificacao.texto}
+        </Notification>
+      )}
+
       {/* ================= COMISSÕES FIXAS ================= */}
       <SimpleGrid cols={{ base: 1, sm: 2 }} mb="xl" spacing="md">
-
+        
         {/* CARD CLÁSSICO */}
         <Card shadow="sm" padding="lg" radius="md" withBorder className={classes.cardHover}>
           <Group justify="space-between" align="flex-start">
@@ -111,7 +188,6 @@ export default function Config() {
         {/* LADO ESQUERDO: FORMULÁRIO */}
         <Grid.Col span={{ base: 12, lg: 6 }}>
           <Card shadow="sm" padding="lg" radius="md" withBorder>
-
             <Group mb="xl" gap="xs">
               <Text fw={600} size="lg" c="blue">
                 Configurações da Operação
@@ -123,6 +199,7 @@ export default function Config() {
 
                 {/* INPUT IMPOSTO */}
                 <NumberInput
+                  className={classes.numberInput} // 🌟 CORREÇÃO: Corrigido o erro de sintaxe do Mantine
                   label="Imposto (%)"
                   placeholder="Ex: 6"
                   decimalScale={2}
@@ -130,10 +207,12 @@ export default function Config() {
                   leftSection={<Text size="sm" c="dimmed">%</Text>}
                   value={formValores.imposto}
                   onChange={(val) => setFormValores(prev => ({ ...prev, imposto: Number(val) }))}
+                  min={0}
                 />
 
                 {/* INPUT CUSTO OPERACIONAL */}
                 <NumberInput
+                  className={classes.numberInput} // 🌟 CORREÇÃO: Corrigido o erro de sintaxe do Mantine
                   label="Custo Operacional"
                   placeholder="Ex: 5"
                   decimalScale={2}
@@ -141,34 +220,20 @@ export default function Config() {
                   leftSection={<Text size="sm" c="dimmed">R$</Text>}
                   value={formValores.custoOperacional}
                   onChange={(val) => setFormValores(prev => ({ ...prev, custoOperacional: Number(val) }))}
+                  min={0}
                 />
 
-                {/* BOTÃO SALVAR */}
-                <Button
-                  type="submit"
-                  fullWidth
-                  mt="md"
-                >
+                <Button type="submit" fullWidth mt="md" color="blue">
                   Salvar Configuração
                 </Button>
-
               </Stack>
             </form>
-
-            {/* FEEDBACK DE SUCESSO */}
-            {mensagem && (
-              <Text c="green" fw={600} ta="center" mt="md" className={classes.successFeedback}>
-                {mensagem}
-              </Text>
-            )}
-
           </Card>
         </Grid.Col>
 
         {/* LADO DIREITO: RESUMO */}
         <Grid.Col span={{ base: 12, lg: 6 }}>
           <Card shadow="sm" padding="lg" radius="md" withBorder>
-
             <Group mb="xl" gap="xs">
               <Text fw={600} size="lg" c="green">
                 Configuração Atual
@@ -176,12 +241,9 @@ export default function Config() {
             </Group>
 
             <Stack gap="xs">
-
               {/* STATUS IMPOSTO */}
               <Group justify="space-between" p="sm" className={classes.statusRow}>
-                <Group gap="xs">
-                  <Text size="sm" fw={500}>Imposto</Text>
-                </Group>
+                <Text size="sm" fw={500}>Imposto</Text>
                 <Badge color="orange" size="lg" variant="light">
                   {valoresSalvos.imposto.toFixed(2)}%
                 </Badge>
@@ -189,28 +251,18 @@ export default function Config() {
 
               {/* STATUS CUSTO OPERACIONAL */}
               <Group justify="space-between" p="sm" className={classes.statusRow}>
-                <Group gap="xs">
-                  <Text size="sm" fw={500}>Custo Operacional</Text>
-                </Group>
+                <Text size="sm" fw={500}>Custo Operacional</Text>
                 <Badge color="green" size="lg" variant="light">
                   R$ {valoresSalvos.custoOperacional.toFixed(2)}
                 </Badge>
               </Group>
-
             </Stack>
 
-            {/* ALERTA INFORMATIVO */}
-            <Alert
-              variant="light"
-              color="blue"
-              mt="xl"
-              radius="md"
-            >
+            <Alert variant="light" color="blue" mt="xl" radius="md">
               <Text size="xs" c="dimmed">
                 As comissões de anúncios Clássico e Premium são aplicadas automaticamente pelo sistema.
               </Text>
             </Alert>
-
           </Card>
         </Grid.Col>
 

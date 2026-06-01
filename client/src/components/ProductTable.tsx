@@ -1,8 +1,8 @@
 // src/components/ProductTable.tsx
 import { useState } from 'react';
-import { Table, Group, ActionIcon, Modal, Button, Text, Stack } from '@mantine/core';
+import { Table, Group, ActionIcon, Modal, Button, Text, Stack, Badge, Paper } from '@mantine/core';
 import api from '../services/api';
-import ProductEditModal from './EditModal'; 
+import ProductEditModal from './EditModal';
 import classes from './ProductTable.module.css';
 
 export interface Product {
@@ -45,11 +45,12 @@ export default function ProductTable({ prod = [], onRefresh, onProductUpdated, o
       const token = tokenRaw ? tokenRaw.replace(/^"(.*)"$/, '$1') : '';
 
       await api.delete(`/anuncios/${productToDelete.id}`, {
+        withCredentials: true, // Garante que os cookies sejam enviados junto com a requisição
         headers: { Authorization: `Bearer ${token}` },
       });
 
-      setProductToDelete(null); 
-      onRefresh(); 
+      setProductToDelete(null);
+      onRefresh();
     } catch (error) {
       console.error('Erro ao deletar anúncio:', error);
       alert('Não foi possível excluir o anúncio. Tente novamente.');
@@ -60,59 +61,67 @@ export default function ProductTable({ prod = [], onRefresh, onProductUpdated, o
 
   return (
     <>
-      <Table verticalSpacing="sm" highlightOnHover className={classes.table}>
-        <Table.Thead>
-          <Table.Tr>
-            <Table.Th>Nome</Table.Th>
-            <Table.Th>Marca</Table.Th>
-            <Table.Th>Preço Venda</Table.Th>
-            <Table.Th>Custo</Table.Th>
-            <Table.Th>Frete</Table.Th>
-            <Table.Th>Lucro</Table.Th>
-            <Table.Th>Margem</Table.Th>
-            <Table.Th style={{ textAlign: 'center' }}>Ações</Table.Th>
-          </Table.Tr>
-        </Table.Thead>
-        
-        <Table.Tbody>
-          {/* 🌟 DEFESA 2: Usamos o '?.' para garantir que o React não quebre se a lista sumir por um instante */}
-          {prod?.map((prod) => (
-            <Table.Tr key={prod.id}>
-              <Table.Td fw={500}>{prod.nome}</Table.Td>
-              <Table.Td c="dimmed">{prod.marca}</Table.Td>
-              <Table.Td>R$ {prod.precoVenda?.toFixed(2) ?? '0,00'}</Table.Td>
-              <Table.Td>R$ {prod.custo?.toFixed(2) ?? '0,00'}</Table.Td>
-              <Table.Td>R$ {prod.freteCalculado?.toFixed(2) ?? '0,00'}</Table.Td>
-              <Table.Td c={prod.lucro && prod.lucro > 0 ? 'green.4' : 'red.4'}>
-                R$ {prod.lucro?.toFixed(2) ?? '0,00'}
-              </Table.Td>
-              <Table.Td>{prod.margemPorcentagem?.toFixed(1) ?? '0.0'}%</Table.Td>
-              
-              <Table.Td>
-                <Group gap="xs" justify="center">
-                  <ActionIcon 
-                    variant="subtle" 
-                    color="blue" 
-                    title="Editar Anúncio"
-                    onClick={() => setProductToEdit(prod)}
-                  >
-                    ✏️
-                  </ActionIcon>
-                  
-                  <ActionIcon 
-                    variant="subtle" 
-                    color="red" 
-                    title="Excluir Anúncio"
-                    onClick={() => setProductToDelete(prod)}
-                  >
-                    🗑️
-                  </ActionIcon>
-                </Group>
-              </Table.Td>
+      <Paper className={classes.paperContainer}>
+        <Table verticalSpacing="sm" className={classes.table}>
+          <Table.Thead>
+            <Table.Tr>
+              <Table.Th>Tipo</Table.Th>
+              <Table.Th>Nome</Table.Th>
+              <Table.Th>Marca</Table.Th>
+              <Table.Th>Preço Venda</Table.Th>
+              <Table.Th>Custo</Table.Th>
+              <Table.Th>Frete</Table.Th>
+              <Table.Th>Lucro</Table.Th>
+              <Table.Th>Margem</Table.Th>
+              <Table.Th style={{ textAlign: 'center' }}>Ações</Table.Th>
             </Table.Tr>
-          ))}
-        </Table.Tbody>
-      </Table>
+          </Table.Thead>
+
+          <Table.Tbody>
+            {/* 🌟 DEFESA 2: Usamos o '?.' para garantir que o React não quebre se a lista sumir por um instante */}
+            {prod?.map((prod) => (
+              <Table.Tr key={prod.id} className={classes.row}>
+                <Table.Td>
+                  <Badge className={prod.tipoAnuncio === 'CLASSICO' ? classes.badgeClassic : classes.badgePremium}>
+                    {prod.tipoAnuncio}
+                  </Badge>
+                </Table.Td>
+                <Table.Td fw={500}>{prod.nome}</Table.Td>
+                <Table.Td c="dimmed">{prod.marca}</Table.Td>
+                <Table.Td>R$ {prod.precoVenda?.toFixed(2) ?? '0,00'}</Table.Td>
+                <Table.Td>R$ {prod.custo?.toFixed(2) ?? '0,00'}</Table.Td>
+                <Table.Td>R$ {prod.freteCalculado?.toFixed(2) ?? '0,00'}</Table.Td>
+                <Table.Td c={prod.lucro && prod.lucro > 0 ? 'green.4' : 'red.4'}>
+                  R$ {prod.lucro?.toFixed(2) ?? '0,00'}
+                </Table.Td>
+                <Table.Td>{prod.margemPorcentagem?.toFixed(1) ?? '0.0'}%</Table.Td>
+
+                <Table.Td>
+                  <Group gap="xs" justify="center">
+                    <ActionIcon
+                      variant="subtle"
+                      color="blue"
+                      title="Editar Anúncio"
+                      onClick={() => setProductToEdit(prod)}
+                    >
+                      ✏️
+                    </ActionIcon>
+
+                    <ActionIcon
+                      variant="subtle"
+                      color="red"
+                      title="Excluir Anúncio"
+                      onClick={() => setProductToDelete(prod)}
+                    >
+                      🗑️
+                    </ActionIcon>
+                  </Group>
+                </Table.Td>
+              </Table.Tr>
+            ))}
+          </Table.Tbody>
+        </Table>
+      </Paper>
 
       {productToEdit && (
         <ProductEditModal
@@ -138,22 +147,22 @@ export default function ProductTable({ prod = [], onRefresh, onProductUpdated, o
       >
         <Stack gap="lg" pt="xs">
           <Text size="sm">
-            Tem certeza que deseja excluir o anúncio <strong>{productToDelete?.nome}</strong>? 
+            Tem certeza que deseja excluir o anúncio <strong>{productToDelete?.nome}</strong>?
             Esta ação é permanente e não poderá ser desfeita no banco de dados.
           </Text>
 
           <Group justify="flex-end" gap="sm">
-            <Button 
-              variant="light" 
-              color="gray" 
+            <Button
+              variant="light"
+              color="gray"
               onClick={() => setProductToDelete(null)}
               disabled={deleteLoading}
             >
               Cancelar
             </Button>
-            <Button 
-              variant="filled" 
-              color="red" 
+            <Button
+              variant="filled"
+              color="red"
               onClick={handleDeleteConfirm}
               loading={deleteLoading}
             >

@@ -59,6 +59,7 @@ export default function ProductCreate() {
 
       // Dispara usando o objeto tratado com números reais
       await api.post('/anuncios', payloadFinal, {
+        withCredentials: true, // Garante que os cookies sejam enviados junto com a requisição
         headers: {
           Authorization: `Bearer ${token}`,
         },

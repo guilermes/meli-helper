@@ -44,7 +44,10 @@ export default function Dashboard() {
         const token = localStorage.getItem('token');
 
         const response = await api.get('/anuncios', {
-          headers: { Authorization: `Bearer ${token}` },
+          withCredentials: true, // Garante que os cookies sejam enviados junto com a requisição
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
         });
 
         // Validação defensiva do retorno da API

@@ -22,7 +22,7 @@ export default function Login() {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, senha }),
-        credentials: 'include' // 👈 ISSO PERMITE RECEBER O COOKIE DO BACKEND!
+        credentials: 'include' // Importante para enviar cookies (sessão) junto com a requisição
       });
 
       if (!res.ok) {

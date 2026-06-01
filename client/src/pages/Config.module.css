@@ -30,6 +30,10 @@
   animation: softPulse 2s infinite ease-in-out;
 }
 
+.numberInput {
+  color: var(--mantine-color-text);
+} 
+
 /* Keyframes das animações */
 @keyframes slideIn {
   from {
