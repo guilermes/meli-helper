@@ -1,67 +1,49 @@
 generator client {
-  provider = "prisma-client-js"
+  provider   = "prisma-client-js"
   engineType = "binary"
 }
 
 datasource db {
-  provider = "sqlite"
-  url      = env("DATABASE_URL")
+  provider  = "sqlite"
+  url       = env("DATABASE_URL")
   directUrl = env("DATABASE_URL")
 }
 
 model User {
-
-  id            Int      @id @default(autoincrement())
-
-  nome          String
-  nomeLoja      String
-
-  email         String   @unique
-  senha         String
-
-  nicho         String?
-  nivelSeller   String?
-
-  createdAt     DateTime @default(now())
-
-  anuncios      Anuncio[]
-  configuracao  Configuracao?
+  id           Int           @id @default(autoincrement())
+  nome         String
+  nomeLoja     String
+  email        String        @unique
+  senha        String
+  nicho        String?
+  nivelSeller  String?
+  createdAt    DateTime      @default(now())
+  avatar       String?
+  anuncios     Anuncio[]
+  configuracao Configuracao?
 }
 
 model Anuncio {
-
-  id               Int     @id @default(autoincrement())
-
-  idMercadoLivre   String?
-
-  nome             String
-  marca            String
-
-  tipoAnuncio      String  @default("CLASSICO")
-
-  custo            Float
-  precoVenda       Float
-
-  frete            Float?
-
-  largura          Float?
-  altura           Float?
-  comprimento      Float?
-  peso             Float?
-
-  userId           Int
-
-  user             User @relation(fields: [userId], references: [id])
+  id             Int     @id @default(autoincrement())
+  idMercadoLivre String?
+  nome           String
+  marca          String
+  tipoAnuncio    String  @default("CLASSICO")
+  custo          Float
+  precoVenda     Float
+  frete          Float?
+  largura        Float?
+  altura         Float?
+  comprimento    Float?
+  peso           Float?
+  userId         Int
+  user           User    @relation(fields: [userId], references: [id])
 }
 
 model Configuracao {
-
-  id                 Int      @id @default(autoincrement())
-
-  imposto            Float
-  custoOperacional   Float
-
-  userId             Int      @unique
-
-  user               User @relation(fields: [userId], references: [id])
+  id               Int   @id @default(autoincrement())
+  imposto          Float
+  custoOperacional Float
+  userId           Int   @unique
+  user             User  @relation(fields: [userId], references: [id])
 }
