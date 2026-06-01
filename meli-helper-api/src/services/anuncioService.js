@@ -110,7 +110,7 @@ async function calcularFrete(anuncio) {
 
     const response =
       await fetch(
-        "http://localhost:4000/calcular-frete",
+        "http://localhost:4000/calcular",
         {
           method: "POST",
 
@@ -206,7 +206,7 @@ async function calcularValores(
     lucro:
       Number(lucro.toFixed(2)),
 
-    margem:
+    margemPorcentagem:
       Number(margem.toFixed(2))
   }
 }

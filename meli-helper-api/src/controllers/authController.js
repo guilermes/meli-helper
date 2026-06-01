@@ -11,7 +11,7 @@ function emailValido(email) {
 }
 
 function senhaForte(senha) {
-  const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/;
+  const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{4,}$/;
   return regex.test(senha);
 }
 
@@ -29,7 +29,6 @@ module.exports = {
     if (!nomeLoja || nomeLoja.length < 2) return res.status(400).json({ erro: "Nome da loja inválido" });
     if (!emailValido(email)) return res.status(400).json({ erro: "Email inválido" });
     if (!senhaForte(senha)) return res.status(400).json({ erro: "Senha fraca" });
-    if (senha !== confirmarSenha) return res.status(400).json({ erro: "As senhas não coincidem" });
 
     const existe = await prisma.user.findUnique({ where: { email } });
     if (existe) return res.status(400).json({ erro: "Email já cadastrado" });

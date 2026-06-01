@@ -1,6 +1,6 @@
 generator client {
   provider   = "prisma-client-js"
-  engineType = "binary"
+  engineType = "library"
 }
 
 datasource db {
@@ -42,8 +42,8 @@ model Anuncio {
 
 model Configuracao {
   id               Int   @id @default(autoincrement())
-  imposto          Float
-  custoOperacional Float
+  imposto          Float?
+  custoOperacional Float?
   userId           Int   @unique
   user             User  @relation(fields: [userId], references: [id])
 }

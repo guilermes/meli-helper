@@ -34,17 +34,18 @@ const authMiddleware =
  *             schema:
  *               type: object
  *               properties:
- *                 imposto:
+ *
+ *               imposto:
  *                   type: number
  *                   example: 8
  *
- *                 custoOperacional:
- *                   type: number
- *                   example: 5
+ *                  custoOperacional:
+ *                    type: number
+ *                    example: 5
  *
- *                 userId:
- *                   type: integer
- *                   example: 1
+ *                  userId:
+ *                    type: integer
+ *                    example: 1
  *
  *       401:
  *         description: Token inválido ou não enviado
@@ -61,7 +62,7 @@ router.get(
 
 /**
  * @swagger
- * /config:
+ * /config/set:
  *   post:
  *     summary: Salva a configuração do usuário logado
  *     tags: [Configuração]
@@ -73,18 +74,21 @@ router.get(
  *
  *       content:
  *         application/json:
- *           schema:
+ *            schema:
  *             type: object
  *
- *             properties:
- *
- *               imposto:
- *                 type: number
- *                 example: 8
+ *              properties:
+ *              imposto:
+ *                  type: number
+ *                  example: 8
  *
  *               custoOperacional:
- *                 type: number
- *                 example: 5
+ *                  type: number
+ *                  example: 5
+ * 
+ *                comissao:
+ *                  type: number
+ *                  example: 10
  *
  *     responses:
  *       200:

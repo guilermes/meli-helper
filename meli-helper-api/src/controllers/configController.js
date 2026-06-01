@@ -16,7 +16,7 @@ exports.obterConfiguracao = async (req, res) => {
     });
 
     if (!config) {
-      return res.status(200).json({ imposto: 0, custoOperacional: 0 });
+      return res.status(200).json({ imposto: 0, custoOperacional: 0});
     }
 
     return res.status(200).json(config);
@@ -32,7 +32,7 @@ exports.obterConfiguracao = async (req, res) => {
 exports.atualizarConfiguracao = async (req, res) => {
   try {
     const userId = parseInt(typeof req.userId === 'object' ? req.userId.id : req.userId);
-    const { imposto, custoOperacional } = req.body;
+    const { imposto, custoOperacional} = req.body;
 
     if (!userId) {
       return res.status(401).json({ erro: "Usuário não autenticado." });
