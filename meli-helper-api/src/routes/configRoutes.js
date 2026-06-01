@@ -54,7 +54,7 @@ const authMiddleware =
 router.get(
   "/",
   authMiddleware,
-  controller.get
+  controller.obterConfiguracao
 )
 
 ////////////////////////////////////////////////////////////
@@ -96,9 +96,9 @@ router.get(
 
 // 🔒 ROTA PROTEGIDA
 router.post(
-  "/",
+  "/set",
   authMiddleware,
-  controller.set
+  controller.atualizarConfiguracao
 )
 
 ////////////////////////////////////////////////////////////

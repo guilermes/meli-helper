@@ -26,7 +26,7 @@ exports.getAll = async (req, res) => {
 
     ////////////////////////////////////////////////////////////
 
-    const userId = req.user.id
+    const userId = typeof req.userId === 'object' ? req.userId.id : req.userId;
 
     const search = req.query.search || ""
 
@@ -150,7 +150,7 @@ exports.getById = async (req, res) => {
 
     ////////////////////////////////////////////////////////////
 
-    const userId = req.user.id
+    const userId = typeof req.userId === 'object' ? req.userId.id : req.userId;
 
     const id =
       Number(req.params.id)
@@ -214,7 +214,7 @@ exports.create = async (req, res) => {
 
     ////////////////////////////////////////////////////////////
 
-    const userId = req.user.id
+    const userId = typeof req.userId === 'object' ? req.userId.id : req.userId;
 
     const {
 
@@ -341,7 +341,7 @@ exports.create = async (req, res) => {
 exports.update = async (req, res) => {
 
   try {
-    const { id } = req.params; // Certifique-se de que o ID está sendo pego aqui
+    const userId = typeof req.userId === 'object' ? req.userId.id : req.userId; // Certifique-se de que o ID está sendo pego aqui
 
     const atualizado = await prisma.anuncio.update({
       where: {
@@ -388,7 +388,7 @@ exports.delete = async (req, res) => {
 
     ////////////////////////////////////////////////////////////
 
-    const userId = req.user.id
+    const userId = typeof req.userId === 'object' ? req.userId.id : req.userId;
 
     const id =
       Number(req.params.id)

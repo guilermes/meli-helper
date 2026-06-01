@@ -1,7 +1,7 @@
 // src/controllers/authController.js
-import prisma from "../database/prismaClient.js";
-import jwt from "jsonwebtoken";
-import bcrypt from "bcrypt";
+const prisma = require("../database/prismaClient.js");
+const jwt = require("jsonwebtoken");
+const bcrypt = require("bcrypt");
 
 const SECRET = "segredo123";
 
@@ -16,9 +16,10 @@ function senhaForte(senha) {
 }
 
 // 🔹 REGISTER
-export const register = async (req, res) => {
-  try {
-    let { nome, nomeLoja, email, senha, confirmarSenha, nicho, nivelSeller } = req.body;
+module.exports = {
+  register: async (req, res) => {
+    try {
+      let { nome, nomeLoja, email, senha, confirmarSenha, nicho, nivelSeller } = req.body;
 
     nome = nome?.trim();
     nomeLoja = nomeLoja?.trim();
@@ -47,10 +48,10 @@ export const register = async (req, res) => {
     console.error(error);
     res.status(500).json({ erro: "Erro ao cadastrar usuário" });
   }
-};
+},
 
 // 🔹 LOGIN (Modificado para usar HttpOnly Cookie)
-export const login = async (req, res) => {
+login: async (req, res) => {
   try {
     const { email, senha } = req.body;
 
@@ -81,19 +82,19 @@ export const login = async (req, res) => {
     console.error(error);
     res.status(500).json({ erro: "Erro ao realizar login" });
   }
-};
+},
 
 // 🔹 LOGOUT (Nova rota para destruir o cookie)
-export const logout = async (req, res) => {
+logout: async (req, res) => {
   res.clearCookie('token');
   return res.json({ mensagem: "Sessão encerrada com sucesso" });
-};
+},
 
 // 🔹 PERFIL (GET)
-export const getProfile = async (req, res) => {
+getProfile: async (req, res) => {
   try {
     const user = await prisma.user.findUnique({
-      where: { id: req.user.id },
+      where: { id: req.userId },
       select: { id: true, nome: true, nomeLoja: true, email: true, nicho: true, nivelSeller: true }
     });
     if (!user) return res.status(404).json({ erro: "Usuário não encontrado" });
@@ -102,10 +103,10 @@ export const getProfile = async (req, res) => {
     console.error(error);
     res.status(500).json({ erro: "Erro ao buscar perfil" });
   }
-};
+},
 
 // 🔹 PERFIL (UPDATE)
-export const updateProfile = async (req, res) => {
+updateProfile : async (req, res) => {
   try {
     let { nome, nomeLoja, nicho, nivelSeller, senha, confirmarSenha } = req.body;
     nome = nome?.trim();
@@ -133,4 +134,4 @@ export const updateProfile = async (req, res) => {
     console.error(error);
     res.status(500).json({ erro: "Erro ao atualizar perfil" });
   }
-};
+}};

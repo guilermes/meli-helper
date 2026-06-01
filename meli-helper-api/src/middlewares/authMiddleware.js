@@ -1,9 +1,9 @@
 // src/middlewares/authMiddleware.js
-import jwt from 'jsonwebtoken';
+const jwt = require('jsonwebtoken');
 
 const SECRET = "segredo123";
 
-export default (req, res, next) => {
+module.exports = (req, res, next) => {
   // Captura o cookie HttpOnly de forma automática e segura
   const token = req.cookies?.token;
 
@@ -13,7 +13,7 @@ export default (req, res, next) => {
 
   try {
     const decoded = jwt.verify(token, SECRET);
-    req.user = decoded;
+    req.userId = decoded.id;
     next();
   } catch {
     res.status(401).json({ erro: "Sessão expirada ou token corrompido" });
