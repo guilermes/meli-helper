@@ -169,7 +169,7 @@ export default function Profile() {
           </Notification>
         )}
 
-        <Grid gutter="xl">
+        <Grid gap="xl">
 
           {/* ================= COLUNA ESQUERDA: FOTO E INTEGRAÇÕES ================= */}
           <Grid.Col span={{ base: 12, md: 4 }}>
@@ -264,7 +264,7 @@ export default function Profile() {
               <Divider mb="lg" />
 
               <form onSubmit={lidarComSalvarPerfil}>
-                <Grid gutter="md">
+                <Grid gap="md">
 
                   <Grid.Col span={{ base: 12, sm: 6 }}>
                     <TextInput

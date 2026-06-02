@@ -70,7 +70,7 @@ export default function ProductEditModal({ opened, onClose, product, onSave }: P
           <Text fw={600} c="blue.4" className={classes.sectionTitle}>
             Informações Gerais
           </Text>
-          <Grid gutter="md">
+          <Grid gap="md">
             <Grid.Col span={{ base: 12, sm: 6 }}>
               <TextInput
                 label="Nome do Produto"
@@ -95,7 +95,7 @@ export default function ProductEditModal({ opened, onClose, product, onSave }: P
           <Text fw={600} c="orange.4" className={classes.sectionTitle}>
             Dimensões do Pacote
           </Text>
-          <Grid gutter="sm">
+          <Grid gap="sm">
             <Grid.Col span={3}>
               <NumberInput
                 label="L (cm)"
@@ -135,7 +135,7 @@ export default function ProductEditModal({ opened, onClose, product, onSave }: P
           <Text fw={600} c="green.4" className={classes.sectionTitle}>
             Custos e Precificação
           </Text>
-          <Grid gutter="md">
+          <Grid gap="md">
             <Grid.Col span={4}>
               <NumberInput
                 label="Custo"
