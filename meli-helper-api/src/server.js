@@ -6,7 +6,7 @@ const app = express()
 // Middlewares Globais de Infraestrutura
 app.use(cookieParser())
 app.use(cors({
-  origin: 'http://localhost:5173', // URL do frontend
+  origin: process.env.FRONTEND_URL, // URL do frontend
   credentials: true
 }));
 app.use(express.json())
@@ -17,6 +17,7 @@ const authRoutes = require("./routes/authRoutes") // 🌟 Movido para cima
 const anuncioRoutes = require("./routes/anuncioRoutes")
 const configRoutes = require("./routes/configRoutes")
 const userRoutes = require("./routes/userRoutes")
+const dashboardRoutes = require("./routes/dashboardRoutes") // Rota de dashboard, que é uma rota de análise, deve vir depois das rotas de anúncios e configuração
 const swaggerUi = require("swagger-ui-express")
 const swaggerSpec = require("./config/swagger")
 
@@ -28,14 +29,16 @@ const swaggerSpec = require("./config/swagger")
 app.use(authRoutes) 
 
 // 2. Rotas específicas e protegidas por seus respectivos prefixos
+app.use("/users", userRoutes)
 app.use("/anuncios", anuncioRoutes)
 app.use("/config", configRoutes)
-app.use("/users", userRoutes) // Mapeado estritamente para /users/...
+app.use('/dashboard', dashboardRoutes);
+
 
 // 3. Documentação da API
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec))
 
 // Inicialização do Servidor
-app.listen(3000, () => {
-  console.log("Servidor rodando em http://localhost:3000")
+app.listen(process.env.PORT || 3000, () => {
+  console.log(`Servidor rodando em http://localhost:${process.env.PORT || 3000}`)
 })

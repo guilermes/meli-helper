@@ -3,7 +3,8 @@ const prisma = require("../database/prismaClient.js");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 
-const SECRET = "segredo123";
+
+const SECRET = process.env.JWT_SECRET;
 
 function emailValido(email) {
   const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;

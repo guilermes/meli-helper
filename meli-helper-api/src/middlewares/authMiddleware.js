@@ -1,7 +1,7 @@
 // src/middlewares/authMiddleware.js
 const jwt = require('jsonwebtoken');
 
-const SECRET = "segredo123";
+const SECRET = process.env.JWT_SECRET;
 
 module.exports = (req, res, next) => {
   // Captura o cookie HttpOnly de forma automática e segura

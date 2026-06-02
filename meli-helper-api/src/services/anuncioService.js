@@ -110,7 +110,7 @@ async function calcularFrete(anuncio) {
 
     const response =
       await fetch(
-        "http://localhost:4000/calcular",
+        process.env.FRETE_SERVICE_URL + "/calcular",
         {
           method: "POST",
 
