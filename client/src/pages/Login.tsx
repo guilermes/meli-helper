@@ -17,7 +17,7 @@ export default function Login() {
     setErro(null);
 
     try {
-      const res = await fetch('https://meli-helper-eahf03gej-guilermes-projects.vercel.app/login', {
+      const res = await fetch('https://meli-helper.onrender.com/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, senha }),
