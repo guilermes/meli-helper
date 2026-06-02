@@ -176,7 +176,7 @@ export default function Config() {
       </SimpleGrid>
 
       {/* ================= CONFIG + RESUMO REFATORADO ================= */}
-      <Grid gap="xl">
+      <Grid gutter="xl">
 
         {/* LADO ESQUERDO: FORMULÁRIO COMPONENTIZADO */}
         <Grid.Col span={{ base: 12, lg: 6 }}>
