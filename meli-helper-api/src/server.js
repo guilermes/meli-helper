@@ -2,13 +2,55 @@ const express = require("express")
 const cors = require("cors")
 const cookieParser = require("cookie-parser")
 const app = express()
+require('dotenv').config();
+
 
 // Middlewares Globais de Infraestrutura
 app.use(cookieParser())
-app.use(cors({
-  origin: process.env.FRONTEND_URL, // URL do frontend
-  credentials: true
-}));
+const allowedOrigins = [
+  process.env.FRONTEND_URL,
+  'http://localhost:5173',
+];
+
+app.use(
+  cors({
+    origin: (origin, callback) => {
+      // Permite requests sem origin
+      if (!origin) return callback(null, true);
+
+      // Permite localhost
+      if (allowedOrigins.includes(origin)) {
+        return callback(null, true);
+      }
+
+      // Permite previews da Vercel
+      if (origin.includes('.vercel.app')) {
+        return callback(null, true);
+      }
+
+      return callback(
+        new Error(`CORS bloqueado para: ${origin}`)
+      );
+    },
+
+    credentials: true,
+
+    methods: [
+      'GET',
+      'POST',
+      'PUT',
+      'PATCH',
+      'DELETE',
+      'OPTIONS',
+    ],
+
+    allowedHeaders: [
+      'Content-Type',
+      'Authorization',
+    ],
+  })
+);
+app.options(/.*/, cors());
 app.use(express.json())
 app.use(express.static("public"))
 
