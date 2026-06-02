@@ -49,7 +49,7 @@ export function InfoSection({ data, onChange }: UnifiedFormProps) {
         <Text className={`${classes.sectionTitle} ${classes.titleRed}`}>
           1. Informações do Anúncio
         </Text>
-        <Grid gap="md">
+        <Grid gutter="md">
           <Grid.Col span={{ base: 12, sm: 6 }}>
             <TextInput
               label="ID Mercado Livre"
@@ -72,7 +72,7 @@ export function InfoSection({ data, onChange }: UnifiedFormProps) {
               value={data.tipoAnuncio || ''}
               onChange={(value) => onChange('tipoAnuncio', value || '')}
               classNames={inputStyles}
-              comboboxProps={{ dropdownPadding: 4, optionPadding: 'xs' }}
+              comboboxProps={{ dropdownPadding: 4 }}
             />
           </Grid.Col>
           
@@ -107,7 +107,7 @@ export function InfoSection({ data, onChange }: UnifiedFormProps) {
         <Text className={`${classes.sectionTitle} ${classes.titleOrange}`}>
           2. Dimensões e Logística (cm / kg)
         </Text>
-        <Grid gap="md">
+        <Grid gutter="md">
           <Grid.Col span={{ base: 6, sm: 3 }}>
             <NumberInput
               label="Largura"
@@ -166,7 +166,7 @@ export function InfoSection({ data, onChange }: UnifiedFormProps) {
         <Text className={`${classes.sectionTitle} ${classes.titleGreen}`}>
           3. Valores e Custos Financeiros
         </Text>
-        <Grid gap="md">
+        <Grid gutter="md">
           <Grid.Col span={{ base: 12, sm: 4 }}>
             <NumberInput
               label="Custo do Produto"

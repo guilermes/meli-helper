@@ -74,7 +74,7 @@ export default function Dashboard() {
       <KpiCards kpis={dados.kpis} />
 
       {/* Bloco do Meio: Alertas + Calculadora */}
-      <Grid gap="lg" mb="lg" mt="md">
+      <Grid gutter="lg" mb="lg" mt="md">
         <Grid.Col span={{ base: 12, lg: 6 }}>
           <AlertasOperacionais alertas={dados.alertas} />
         </Grid.Col>
@@ -85,7 +85,7 @@ export default function Dashboard() {
       </Grid>
 
       {/* Bloco de Baixo: Ranking + Insights */}
-      <Grid gap="lg">
+      <Grid gutter="lg">
         <Grid.Col span={{ base: 12, lg: 6 }}>
           <RankingMargem ranking={dados.rankingMargem} />
         </Grid.Col>
@@ -117,7 +117,7 @@ function CalculadoraFrete() {
   return (
     <Card className={classes.card}>
       <Group mb="md"><Text fw={600} size="md">📟 Calculadora Rápida de Frete</Text></Group>
-      <Grid gap="xs">
+      <Grid gutter="xs">
         {/* 💎 Todos os inputs agora herdam o focus azul brilhante e background do CSS Module */}
         <Grid.Col span={6}><NumberInput label="Preço Venda" prefix="R$ " decimalScale={2} placeholder="0.00" value={preco} onChange={setPreco} className={classes.calcInput} /></Grid.Col>
         <Grid.Col span={6}><NumberInput label="Peso" suffix=" kg" placeholder="0" value={peso} onChange={setPeso} className={classes.calcInput} /></Grid.Col>
