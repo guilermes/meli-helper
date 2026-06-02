@@ -412,5 +412,4 @@ export default function Anuncios() {
       </Container>
     </div>
   );
-}
-```
+};
