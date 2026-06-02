@@ -2,7 +2,6 @@ import { useState, useEffect } from 'react';
 import {
   Container,
   Grid,
-  SimpleGrid,
   Card,
   Text,
   Title,
@@ -11,8 +10,6 @@ import {
   Loader,
   Button,
   NumberInput,
-  Table,
-  ThemeIcon,
 } from '@mantine/core';
 import classes from './Dashboard.module.css';
 import KpiCards from '../components/KPICards';

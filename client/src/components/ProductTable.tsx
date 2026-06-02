@@ -1,6 +1,6 @@
 // src/components/ProductTable.tsx
 import { useState } from 'react';
-import { Table, Group, ActionIcon, Modal, Button, Text, Stack, Badge, Paper, Tooltip } from '@mantine/core';
+import { Table, Group, ActionIcon, Modal, Button, Text, Stack, Badge, Paper } from '@mantine/core';
 import { IconEdit, IconTrash } from '@tabler/icons-react';
 import api from '../services/api';
 import ProductEditModal from './EditModal';
@@ -28,11 +28,10 @@ interface ProductTableProps {
   prod: Product[];
   onRefresh: () => void;
   onProductUpdated: (updatedProduct: Product) => void;
-  onProductDelete: (id: string) => void;
 }
 
 // 🌟 DEFESA 1: Definimos que se 'products' não vier, ele assume um array vazio [] por padrão
-export default function ProductTable({ prod = [], onRefresh, onProductUpdated, onProductDelete }: ProductTableProps) {
+export default function ProductTable({ prod = [], onRefresh, onProductUpdated }: ProductTableProps) {
   const [productToEdit, setProductToEdit] = useState<Product | null>(null);
   const [productToDelete, setProductToDelete] = useState<Product | null>(null);
   const [deleteLoading, setDeleteLoading] = useState(false);

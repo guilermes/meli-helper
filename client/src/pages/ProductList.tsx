@@ -175,7 +175,7 @@ export default function Anuncios() {
               }}
             >
               {/* ── CARDS DE RESUMO ── */}
-              <SimpleGrid cols={{ base: 1, sm: 2, md: 5 }} gap="md">
+              <SimpleGrid cols={{ base: 1, sm: 2, md: 5 }} spacing="md">
                 <MetricCard
                   title="Total de Anúncios"
                   value={resumo.total}
@@ -235,15 +235,11 @@ export default function Anuncios() {
                 <Stack gap="md">
                   <ProductTable
                     prod={produtos} // Passa diretamente a lista vinda do back
-                    onRefresh={(lista) => {
-                      if (typeof lista === 'function') {
+                    onRefresh={() => {
                         setProdutos(lista);
-                      } else {
-                        setProdutos(lista);
-                      }
-                    }}
+                      }}
                     onProductUpdated={handleProductUpdated}
-                    onProductDelete={handleExcluirProduto}
+                    // onProductDelete={handleExcluirProduto}
                   />
 
                   {/* ── 💎 CONTROLADOR DE PAGINAÇÃO DO MANTINE V7 ── */}

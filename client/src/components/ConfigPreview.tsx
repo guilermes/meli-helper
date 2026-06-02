@@ -1,5 +1,5 @@
 // src/components/ConfigPreview.tsx
-import { Paper, Title, Stack, Group, Text, Badge } from '@mantine/core';
+import { Paper, Title, Group, Text, Badge } from '@mantine/core';
 import { ConfigData } from './ConfigForm';
 import classes from './ConfigPreview.module.css'; // 🌟 Importação dos novos estilos
 

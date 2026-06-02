@@ -13,11 +13,6 @@ export type ProductFormData = Omit<Product, 'lucro' | 'margemPorcentagem'> & {
   tipoAnuncio?: string;
 };
 
-// Campos que, quando alterados, disparam o cálculo do frete
-const CAMPOS_FRETE: (keyof ProductFormData)[] = [
-  'largura', 'altura', 'comprimento', 'peso', 'precoVenda'
-];
-
 export default function ProductCreate() {
   const navigate = useNavigate();
   const [formData, setFormData] = useState<ProductFormData>({
