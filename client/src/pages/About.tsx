@@ -1,4 +1,4 @@
-import { Container, Title, Text, SimpleGrid, Paper, ThemeIcon, Button, Stack } from '@mantine/core';
+import { Container, Title, Text, SimpleGrid, Paper, Button, Stack } from '@mantine/core';
 import { Link } from 'react-router-dom';
 import classes from './About.module.css';
 
@@ -22,7 +22,7 @@ export default function About() {
           Nossos Pilares e Recursos
         </Title>
         
-        <SimpleGrid cols={{ base: 1, sm: 3 }} gap="xl">
+        <SimpleGrid cols={{ base: 1, sm: 3 }} spacing="xl">
           <Paper withBorder p="xl" radius="md" className={classes.card}>
             <Text className={classes.cardIcon}>📦</Text>
             <Text fw={700} size="lg" className={classes.cardTitle} mt="md">
@@ -67,7 +67,7 @@ export default function About() {
         </Paper>
 
         {/* Chamada para Ação Inferior */}
-        <div className={classes.ctaSection} mt={60}>
+        <div className={classes.ctaSection} >
           <Title order={3} className={classes.ctaTitle}>
             Pronto para proteger sua operação?
           </Title>

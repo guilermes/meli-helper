@@ -72,7 +72,7 @@ export function InfoSection({ data, onChange }: UnifiedFormProps) {
               value={data.tipoAnuncio || ''}
               onChange={(value) => onChange('tipoAnuncio', value || '')}
               classNames={inputStyles}
-              comboboxProps={{ dropdownPadding: 4, optionPadding: 'xs' }}
+              comboboxProps={{ dropdownPadding: 4 }}
             />
           </Grid.Col>
           

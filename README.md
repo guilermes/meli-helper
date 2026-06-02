@@ -366,6 +366,8 @@ model Configuracao {
 ## Links
 
 - [Repositório GitHub](https://github.com/guilermes/meli-helper)
+## Links do projeto
+- [Site na Vercel](https://meli-helper-g1qi6wf8a-guilermes-projects.vercel.app/)
 - [Quadro Jira](https://gabrielpozza335-1775085903755.atlassian.net/jira/software/projects/MH/boards/102/backlog)
 - [Confluece documentation](https://meli-helper.atlassian.net/wiki/spaces/DDS/pages/edit-v2/229492?)
 

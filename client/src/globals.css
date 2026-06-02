@@ -1,6 +1,6 @@
 html,
 body,
-#root {
+:root {
   min-height: 100%;
 }
 
