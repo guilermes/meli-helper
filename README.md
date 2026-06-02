@@ -253,7 +253,7 @@ Ela roda separadamente (porta padrão do Vite: **5173**) e ainda não substitui 
 ---
 
 ## Links do projeto
-
+- [Site na Vercel](https://meli-helper-g1qi6wf8a-guilermes-projects.vercel.app/)
 - [Quadro Jira](https://gabrielpozza335-1775085903755.atlassian.net/jira/software/projects/MH/boards/102/backlog)
 
 ---
