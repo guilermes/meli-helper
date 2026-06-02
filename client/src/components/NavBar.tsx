@@ -7,7 +7,7 @@ import classes from './NavBar.module.css';
 
 const LINKS_DESLOGADO = [
   { href: '/login', label: 'Login' },
-  { href: '/signup', label: 'Cadastre-se' },
+  { href: '/cadastro', label: 'Cadastre-se' },
   { href: '/sobre', label: 'Sobre' },
 ];
 
