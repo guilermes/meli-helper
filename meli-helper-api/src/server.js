@@ -10,6 +10,7 @@ app.use(cookieParser())
 const allowedOrigins = [
   process.env.FRONTEND_URL,
   'http://localhost:5173',
+  'https://meli-helper-eahf03gej-guilermes-projects.vercel.app'
 ];
 
 app.use(
