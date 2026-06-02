@@ -1,7 +1,7 @@
 .pageWrapper {
-  background-color: #0b0c0d; /* Fundo preto padrão MeliHelper */
+  background-color: #0f1115; /* Fundo preto padrão MeliHelper */
   min-height: 100vh;
-  color: #ffffff;
+  color: #f9fafb;
 }
 
 .heroSection {
@@ -17,7 +17,7 @@
 }
 
 .highlight {
-  color: #e03131; /* Vermelho principal */
+  color: #2563eb; /* Vermelho principal */
 }
 
 .leadText {
@@ -28,19 +28,20 @@
 .sectionTitle {
   text-align: center;
   font-weight: 800;
-  color: #ffffff;
+  color: #f9fafb;
 }
 
 /* Estilo dos Cards de Recursos */
 .card {
+  backdrop-filter: blur(10px);
   background-color: #141517; /* Cinza escuro */
-  border-color: #2c2e33;
+  border-color: #374151;
   transition: transform 0.2s ease, border-color 0.2s ease;
 }
 
 .card:hover {
   transform: translateY(-4px);
-  border-color: #e03131; /* Borda acende em vermelho no hover */
+  border-color: #2563eb; /* Borda acende em vermelho no hover */
 }
 
 .cardIcon {
@@ -48,7 +49,7 @@
 }
 
 .cardTitle {
-  color: #ffffff;
+  color: #f9fafb;
 }
 
 .cardDescription {
@@ -59,12 +60,12 @@
 /* Seção Quem Somos */
 .aboutUsCard {
   background-color: #141517;
-  border-color: #2c2e33;
-  border-left: 4px solid #e03131; /* Detalhe lateral em vermelho */
+  border-color: #374151;
+  border-left: 4px solid #2563eb; /* Detalhe lateral em vermelho */
 }
 
 .aboutUsTitle {
-  color: #ffffff;
+  color: #f9fafb;
   font-weight: 700;
 }
 
@@ -78,17 +79,17 @@
   text-align: center;
   margin-top: 60px;
   padding: 40px 0;
-  border-top: 1px solid #2c2e33;
+  border-top: 1px solid #374151;
 }
 
 .ctaTitle {
-  color: #ffffff;
+  color: #f9fafb;
   font-weight: 700;
 }
 
 .ctaButton {
-  background-color: #e03131;
-  color: #ffffff;
+  background-color: #2563eb;
+  color: #f9fafb;
   font-weight: 600;
   padding-left: 40px;
   padding-right: 40px;
@@ -96,5 +97,5 @@
 }
 
 .ctaButton:hover {
-  background-color: #c92a2a;
+  background-color: #1d4ed8;
 }

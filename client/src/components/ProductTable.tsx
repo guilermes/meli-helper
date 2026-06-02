@@ -1,6 +1,7 @@
 // src/components/ProductTable.tsx
 import { useState } from 'react';
-import { Table, Group, ActionIcon, Modal, Button, Text, Stack, Badge, Paper } from '@mantine/core';
+import { Table, Group, ActionIcon, Modal, Button, Text, Stack, Badge, Paper, Tooltip } from '@mantine/core';
+import { IconEdit, IconTrash } from '@tabler/icons-react';
 import api from '../services/api';
 import ProductEditModal from './EditModal';
 import classes from './ProductTable.module.css';
@@ -100,11 +101,11 @@ export default function ProductTable({ prod = [], onRefresh, onProductUpdated, o
                   <Group gap="xs" justify="center">
                     <ActionIcon
                       variant="subtle"
-                      color="blue"
+                      color="brandBlue"
                       title="Editar Anúncio"
                       onClick={() => setProductToEdit(prod)}
                     >
-                      ✏️
+                      <IconEdit size={18} stroke={1.8} />
                     </ActionIcon>
 
                     <ActionIcon
@@ -113,7 +114,7 @@ export default function ProductTable({ prod = [], onRefresh, onProductUpdated, o
                       title="Excluir Anúncio"
                       onClick={() => setProductToDelete(prod)}
                     >
-                      🗑️
+                      <IconTrash size={18} stroke={1.8} />
                     </ActionIcon>
                   </Group>
                 </Table.Td>

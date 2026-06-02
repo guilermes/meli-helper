@@ -3,10 +3,10 @@
    ========================================================================== */
 :local {
   --bg-main: #141517;
-  --bg-card: #1a1b1e;
+  --bg-card: #111827;
   --bg-input: #25262b;
-  --border-color: #2c2e33;
-  --text-primary: #ffffff;
+  --border-color: #374151;
+  --text-primary: #f9fafb;
   --text-muted: #909296;
   
   /* Cores de Destaque / Status */
@@ -14,7 +14,7 @@
   --brand-blue-glow: rgba(34, 139, 230, 0.15);
   --status-success: #40c057;
   --status-success-bg: rgba(64, 192, 87, 0.1);
-  --status-danger: #fa5252;
+  --status-danger: #3b82f6;
   --status-danger-bg: rgba(250, 82, 82, 0.1);
   --status-warning: #fcc419;
   --status-warning-bg: rgba(252, 196, 25, 0.1);
@@ -32,6 +32,7 @@
    CARDS DA DASHBOARD
    ========================================================================== */
 .card {
+  backdrop-filter: blur(10px);
   background-color: var(--bg-card);
   border: 1px solid var(--border-color);
   border-radius: 12px; /* Cantos um pouco mais suaves/modernos */

@@ -1,19 +1,20 @@
 .card {
+  backdrop-filter: blur(10px);
   background-color: #141517; /* Cinza bem escuro para destacar do fundo da página */
-  border-color: #2c2e33; /* Borda cinza suave */
+  border-color: #374151; /* Borda cinza suave */
   max-width: 420px;
   width: 100%;
   margin: 0 auto;
 }
 
 .title {
-  color: #ffffff;
+  color: #f9fafb;
   font-weight: 800;
   letter-spacing: -0.5px;
 }
 
 .highlight {
-  color: #e03131; /* Vermelho característico */
+  color: #2563eb; /* Vermelho característico */
 }
 
 .subtitle {
@@ -38,30 +39,30 @@
 .input {
   background-color: #25262b; /* Fundo do input mais escuro */
   border-color: #373a40;
-  color: #ffffff;
+  color: #f9fafb;
   transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
 /* Garante que o texto digitado no PasswordInput também fique branco */
 .innerInput {
-  color: #ffffff !important;
+  color: #f9fafb !important;
 }
 
 .input:focus,
 .input:focus-within {
-  border-color: #e03131 !important; /* Borda vermelha no foco */
+  border-color: #2563eb !important; /* Borda vermelha no foco */
 }
 
 /* Botão de Submit Vermelho */
 .buttonSubmit {
-  background-color: #e03131;
-  color: #ffffff;
+  background-color: #2563eb;
+  color: #f9fafb;
   font-weight: 600;
   transition: background-color 0.2s ease, transform 0.1s ease;
 }
 
 .buttonSubmit:hover {
-  background-color: #c92a2a; /* Tom vermelho levemente mais escuro */
+  background-color: #1d4ed8; /* Tom vermelho levemente mais escuro */
   transform: translateY(-1px);
 }
 

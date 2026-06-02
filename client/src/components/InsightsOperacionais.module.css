@@ -1,7 +1,8 @@
 /* Estrutura do Card de Insights */
 .card {
-  background-color: #1a1b1e;
-  border: 1px solid #2c2e33;
+  backdrop-filter: blur(10px);
+  background-color: #111827;
+  border: 1px solid #374151;
   border-radius: 12px;
   padding: 1.25rem;
 }
@@ -10,7 +11,7 @@
 .insightItem {
   list-style: none;
   padding: 0.75rem 0;
-  border-bottom: 1px solid #2c2e33;
+  border-bottom: 1px solid #374151;
   color: #ced4da;
   font-size: 0.9rem;
   display: flex;

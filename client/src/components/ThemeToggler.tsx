@@ -1,5 +1,3 @@
-// src/components/ThemeToggle.tsx
-
 import {
   ActionIcon,
   useComputedColorScheme,
@@ -25,6 +23,7 @@ export function ThemeToggle() {
       color="brandBlue"
       radius="xl"
       size="lg"
+      aria-label="Alternar tema"
     >
       {isDark ? (
         <IconSun size={18} stroke={1.8} />

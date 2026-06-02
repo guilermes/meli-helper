@@ -1,6 +1,7 @@
 .card {
-  background-color: #1a1b1e; /* Tom padrão Dark unificado */
-  border: 1px solid #2c2e33;
+  backdrop-filter: blur(10px);
+  background-color: #111827; /* Tom padrão Dark unificado */
+  border: 1px solid #374151;
   transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
@@ -15,7 +16,7 @@
   align-items: center;
   gap: 8px;
   letter-spacing: 0.5px;
-  border-bottom: 1px solid #2c2e33;
+  border-bottom: 1px solid #374151;
   padding-bottom: 12px;
 }
 
@@ -23,7 +24,7 @@
 .inputField :global(.mantine-NumberInput-input) {
   font-family: 'JetBrains Mono', 'Fira Code', monospace;
   background-color: #25262b;
-  border-color: #2c2e33;
+  border-color: #374151;
   color: #fff;
   transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }

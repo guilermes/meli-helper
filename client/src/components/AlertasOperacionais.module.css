@@ -1,7 +1,8 @@
 /* Estrutura do Card de Alertas */
 .card {
-  background-color: #1a1b1e;
-  border: 1px solid #2c2e33;
+  backdrop-filter: blur(10px);
+  background-color: #111827;
+  border: 1px solid #374151;
   border-radius: 12px;
   padding: 1.25rem;
 }

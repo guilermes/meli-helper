@@ -20,25 +20,25 @@
 
 /* Cores de Acordo com a Identidade de Cada Bloco */
 .titleRed {
-  color: #ffffff;
-  border-left: 3px solid #e03131;
+  color: #f9fafb;
+  border-left: 3px solid #2563eb;
 }
 
 .titleOrange {
-  color: #ffffff;
+  color: #f9fafb;
   border-left: 3px solid #ff922b;
 }
 
 .titleGreen {
-  color: #ffffff;
+  color: #f9fafb;
   border-left: 3px solid #40c057;
 }
 
 /* Customização dos Inputs (Campos de Texto e Numéricos) */
 .input {
-  background-color: #1a1b1e !important;
+  background-color: #111827 !important;
   border: 1px solid #25262b !important;
-  color: #ffffff !important;
+  color: #f9fafb !important;
   border-radius: 6px !important;
   height: 42px !important;
   transition: border-color 0.15s ease, box-shadow 0.15s ease;
@@ -47,7 +47,7 @@
 /* Efeito de foco ativado em Vermelho ao selecionar os campos */
 .input:focus, 
 .input:focus-within {
-  border-color: #e03131 !important;
+  border-color: #2563eb !important;
   box-shadow: 0 0 0 3px rgba(224, 49, 49, 0.18) !important;
 }
 

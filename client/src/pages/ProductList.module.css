@@ -1,9 +1,9 @@
 /* Anuncios.module.css */
 
 .pageWrapper {
-  background-color: #0b0c0d;
+  background-color: #0f1115;
   min-height: 100vh;
-  color: #ffffff;
+  color: #f9fafb;
 }
 
 .loadingContainer {
@@ -11,11 +11,11 @@
   align-items: center;
   justify-content: center;
   height: 100vh;
-  background-color: #0b0c0d;
+  background-color: #0f1115;
 }
 
 .pageTitle {
-  color: #ffffff;
+  color: #f9fafb;
   font-weight: 800;
   letter-spacing: -0.5px;
 }
@@ -25,29 +25,29 @@
 }
 
 .btnNovo {
-  background-color: #e03131;
-  color: #ffffff;
+  background-color: #2563eb;
+  color: #f9fafb;
   font-weight: 600;
   border: none;
   transition: background-color 0.2s ease;
 }
 
 .btnNovo:hover {
-  background-color: #c92a2a;
+  background-color: #1d4ed8;
 }
 
 .searchInput input {
   background-color: #141517;
-  border-color: #2c2e33;
-  color: #ffffff;
+  border-color: #374151;
+  color: #f9fafb;
 }
 
 .searchInput input:focus {
-  border-color: #e03131;
+  border-color: #2563eb;
 }
 
 .searchInput input::placeholder {
-  color: #495057;
+  color: #9ca3af;
 }
 
 .searchResult {
@@ -56,12 +56,12 @@
 
 .emptyStateCard {
   background-color: #141517;
-  border-color: #2c2e33;
+  border-color: #374151;
   text-align: center;
 }
 
 .emptyStateTitle {
-  color: #ffffff;
+  color: #f9fafb;
   font-weight: 700;
   font-size: 20px;
 }
@@ -72,14 +72,14 @@
 
 .errorCard {
   background-color: #141517;
-  border-color: #e03131;
-  color: #ff6b6b;
+  border-color: #2563eb;
+  color: #60a5fa;
 }
 
 /* Estilo base para cada botão numérico e setas */
 .paginationControl {
-  background-color: #1a1b1e;
-  border: 1px solid #2c2e33;
+  background-color: #111827;
+  border: 1px solid #374151;
   color: #c1c2c5;
   font-family: 'JetBrains Mono', 'Fira Code', monospace; /* Mantém a identidade visual de dados */
   font-size: 0.85rem;
@@ -90,14 +90,14 @@
 .paginationControl:not([data-active]):hover {
   background-color: #25262b;
   border-color: #373a40;
-  color: #ffffff;
+  color: #f9fafb;
 }
 
 /* 🎯 Botão da página que está ativa no momento */
 .paginationControl[data-active] {
-  background: linear-gradient(135deg, #fa5252 0%, #e03131 100%); /* Degradê sutil com o vermelho do app */
-  border-color: #e03131;
-  color: #ffffff;
+  background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%); /* Degradê sutil com o vermelho do app */
+  border-color: #2563eb;
+  color: #f9fafb;
   font-weight: 600;
   box-shadow: 0 4px 12px rgba(224, 49, 49, 0.25); /* Sombra neon sutil */
 }

@@ -1,5 +1,6 @@
 /* src/components/MetricCard/MetricCard.module.css */
 .card {
+  backdrop-filter: blur(10px);
   background-color: #141517 !important;
   border-color: #25262b !important; /* Mesma cor de borda usada na tabela */
   flex: 1;
@@ -13,7 +14,7 @@
 
 /* 🌟 Borda superior vermelha para dar o realce de atenção no card crítico */
 .cardAlert {
-  border-top: 4px solid #e03131 !important;
+  border-top: 4px solid #2563eb !important;
 }
 
 .title {
@@ -27,14 +28,14 @@
 .value {
   font-size: 32px;
   font-weight: 800;
-  color: #ffffff;
+  color: #f9fafb;
   line-height: 1;
   letter-spacing: -0.5px;
 }
 
 /* Vermelho com excelente contraste para leitura no fundo escuro */
 .alertValue {
-  color: #ff6b6b; 
+  color: #60a5fa; 
 }
 
 .description {

@@ -1,8 +1,8 @@
 /* Hero.module.css */
 
 .wrapper {
-  background-color: #0b0c0d;
-  color: #ffffff;
+  background-color: #0f1115;
+  color: #f9fafb;
   min-height: 100vh;
 }
 
@@ -23,7 +23,7 @@
   border-radius: 100px;
   padding: 6px 16px;
   font-size: 13px;
-  color: #ff6b6b;
+  color: #60a5fa;
   margin-bottom: 32px;
   letter-spacing: 0.02em;
 }
@@ -32,7 +32,7 @@
   width: 6px;
   height: 6px;
   border-radius: 50%;
-  background-color: #e03131;
+  background-color: #2563eb;
   animation: pulse 2s infinite;
 }
 
@@ -47,11 +47,11 @@
   line-height: 1.1;
   letter-spacing: -1.5px;
   margin: 0 0 24px;
-  color: #ffffff;
+  color: #f9fafb;
 }
 
 .highlight {
-  color: #e03131;
+  color: #2563eb;
 }
 
 .heroSubtitle {
@@ -63,7 +63,7 @@
 }
 
 .heroSubtitle strong {
-  color: #ffffff;
+  color: #f9fafb;
 }
 
 .heroActions {
@@ -75,8 +75,8 @@
 }
 
 .btnPrimary {
-  background-color: #e03131;
-  color: #ffffff;
+  background-color: #2563eb;
+  color: #f9fafb;
   border: none;
   border-radius: 8px;
   padding: 14px 32px;
@@ -88,7 +88,7 @@
 }
 
 .btnPrimary:hover {
-  background-color: #c92a2a;
+  background-color: #1d4ed8;
   transform: translateY(-1px);
 }
 
@@ -99,7 +99,7 @@
 .btnSecondary {
   background-color: transparent;
   color: #c1c2c5;
-  border: 1px solid #2c2e33;
+  border: 1px solid #374151;
   border-radius: 8px;
   padding: 14px 32px;
   font-size: 15px;
@@ -109,8 +109,8 @@
 }
 
 .btnSecondary:hover {
-  border-color: #495057;
-  color: #ffffff;
+  border-color: #9ca3af;
+  color: #f9fafb;
 }
 
 /* Métricas */
@@ -118,7 +118,7 @@
   display: flex;
   gap: 0;
   justify-content: center;
-  border: 1px solid #2c2e33;
+  border: 1px solid #374151;
   border-radius: 12px;
   overflow: hidden;
 }
@@ -129,7 +129,7 @@
   flex-direction: column;
   align-items: center;
   padding: 20px 16px;
-  border-right: 1px solid #2c2e33;
+  border-right: 1px solid #374151;
 }
 
 .metricItem:last-child {
@@ -139,7 +139,7 @@
 .metricValue {
   font-size: 22px;
   font-weight: 800;
-  color: #e03131;
+  color: #2563eb;
   letter-spacing: -0.5px;
 }
 
@@ -155,7 +155,7 @@
 /* ── FÓRMULA ── */
 .formulaSection {
   padding: 60px 24px;
-  border-top: 1px solid #1c1e21;
+  border-top: 1px solid #27272a;
   text-align: center;
 }
 
@@ -163,7 +163,7 @@
   font-size: 12px;
   text-transform: uppercase;
   letter-spacing: 0.1em;
-  color: #e03131;
+  color: #2563eb;
   font-weight: 700;
   margin: 0 0 20px;
 }
@@ -180,7 +180,7 @@
 
 .formulaItem {
   background-color: #141517;
-  border: 1px solid #2c2e33;
+  border: 1px solid #374151;
   border-radius: 8px;
   padding: 10px 16px;
 }
@@ -191,7 +191,7 @@
 }
 
 .formulaResult .formulaValue {
-  color: #ff6b6b;
+  color: #60a5fa;
 }
 
 .formulaValue {
@@ -204,7 +204,7 @@
 .formulaOp {
   font-size: 18px;
   font-weight: 700;
-  color: #495057;
+  color: #9ca3af;
 }
 
 /* ── FUNCIONALIDADES ── */
@@ -213,13 +213,13 @@
   margin: 0 auto;
   padding: 80px 24px;
   text-align: center;
-  border-top: 1px solid #1c1e21;
+  border-top: 1px solid #27272a;
 }
 
 .sectionTitle {
   font-size: clamp(24px, 4vw, 36px);
   font-weight: 800;
-  color: #ffffff;
+  color: #f9fafb;
   margin: 0 0 56px;
   letter-spacing: -0.5px;
 }
@@ -233,14 +233,14 @@
 
 .featureCard {
   background-color: #141517;
-  border: 1px solid #2c2e33;
+  border: 1px solid #374151;
   border-radius: 12px;
   padding: 28px;
   transition: border-color 0.2s ease, transform 0.2s ease;
 }
 
 .featureCard:hover {
-  border-color: #e03131;
+  border-color: #2563eb;
   transform: translateY(-3px);
 }
 
@@ -253,7 +253,7 @@
 .featureTitle {
   font-size: 16px;
   font-weight: 700;
-  color: #ffffff;
+  color: #f9fafb;
   margin: 0 0 10px;
 }
 
@@ -270,7 +270,7 @@
   margin: 0 auto;
   padding: 80px 24px;
   text-align: center;
-  border-top: 1px solid #1c1e21;
+  border-top: 1px solid #27272a;
 }
 
 .stepsGrid {
@@ -282,7 +282,7 @@
 
 .stepCard {
   background-color: #141517;
-  border: 1px solid #2c2e33;
+  border: 1px solid #374151;
   border-radius: 12px;
   padding: 28px;
 }
@@ -297,7 +297,7 @@
 .stepNumber {
   font-size: 28px;
   font-weight: 900;
-  color: #e03131;
+  color: #2563eb;
   letter-spacing: -1px;
   line-height: 1;
 }
@@ -305,13 +305,13 @@
 .stepLine {
   flex: 1;
   height: 1px;
-  background-color: #2c2e33;
+  background-color: #374151;
 }
 
 .stepTitle {
   font-size: 15px;
   font-weight: 700;
-  color: #ffffff;
+  color: #f9fafb;
   margin: 0 0 10px;
 }
 
@@ -326,14 +326,14 @@
 .ctaSection {
   text-align: center;
   padding: 100px 24px;
-  border-top: 1px solid #1c1e21;
+  border-top: 1px solid #27272a;
   background: radial-gradient(ellipse at 50% 0%, rgba(224, 49, 49, 0.06) 0%, transparent 70%);
 }
 
 .ctaTitle {
   font-size: clamp(24px, 4vw, 38px);
   font-weight: 800;
-  color: #ffffff;
+  color: #f9fafb;
   margin: 0 0 16px;
   letter-spacing: -0.5px;
   max-width: 600px;
@@ -357,8 +357,8 @@
 
   .metricItem {
     flex: 1 1 45%;
-    border-right: 1px solid #2c2e33;
-    border-bottom: 1px solid #2c2e33;
+    border-right: 1px solid #374151;
+    border-bottom: 1px solid #374151;
   }
 
   .formulaBox {

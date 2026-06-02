@@ -1,7 +1,7 @@
 /* Cores locais baseadas na identidade dark do projeto */
 .cardInteractive {
-  background-color: #1a1b1e;
-  border: 1px solid #2c2e33;
+  background-color: #111827;
+  border: 1px solid #374151;
   border-radius: 12px;
   padding: 1.25rem;
   cursor: pointer;
@@ -30,7 +30,7 @@
   font-family: 'JetBrains Mono', 'Fira Code', monospace;
   font-size: 1.8rem;
   font-weight: 700;
-  color: #ffffff;
+  color: #f9fafb;
   line-height: 1.2;
   letter-spacing: -0.5px;
 }

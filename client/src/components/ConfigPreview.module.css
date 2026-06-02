@@ -1,6 +1,7 @@
 .card {
-  background-color: #1a1b1e; /* Cinza profundo padrão do Mantine Dark */
-  border: 1px solid #2c2e33;
+  backdrop-filter: blur(10px);
+  background-color: #111827; /* Cinza profundo padrão do Mantine Dark */
+  border: 1px solid #374151;
   transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
@@ -12,7 +13,7 @@
 
 .title {
   letter-spacing: 0.5px;
-  border-bottom: 1px solid #2c2e33;
+  border-bottom: 1px solid #374151;
   padding-bottom: 12px;
 }
 
@@ -24,7 +25,7 @@
 
 /* Cria a divisão entre as linhas de forma elegante */
 .row:not(:last-child) {
-  border-bottom: 1px solid #2c2e33;
+  border-bottom: 1px solid #374151;
 }
 
 .row:hover {

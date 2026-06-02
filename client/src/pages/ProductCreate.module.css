@@ -1,5 +1,5 @@
 .pageWrapper {
-  background-color: #0b0c0d; /* Fundo preto padrão */
+  background-color: #0f1115; /* Fundo preto padrão */
   min-height: 100vh;
   display: flex;
   align-items: center;
@@ -10,8 +10,9 @@
 }
 
 .card {
+  backdrop-filter: blur(10px);
   background-color: #141517; /* Card cinza escuro */
-  border-color: #2c2e33;
+  border-color: #374151;
 }
 
 .header {
@@ -20,7 +21,7 @@
 }
 
 .title {
-  color: #ffffff;
+  color: #f9fafb;
   font-weight: 800;
 }
 
@@ -29,19 +30,19 @@
 }
 
 .divider {
-  border-color: #2c2e33 !important;
+  border-color: #374151 !important;
 }
 
 /* Botão Vermelho de Ação */
 .buttonSubmit {
-  background-color: #e03131;
-  color: #ffffff;
+  background-color: #2563eb;
+  color: #f9fafb;
   font-weight: 600;
   transition: background-color 0.2s ease, transform 0.1s ease;
 }
 
 .buttonSubmit:hover {
-  background-color: #c92a2a;
+  background-color: #1d4ed8;
   transform: translateY(-1px);
 }
 
