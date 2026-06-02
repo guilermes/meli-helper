@@ -1,0 +1,31 @@
+/* Estrutura do Card de Insights */
+.card {
+  background-color: #1a1b1e;
+  border: 1px solid #2c2e33;
+  border-radius: 12px;
+  padding: 1.25rem;
+}
+
+/* Estilização para cada linha de insight da lista */
+.insightItem {
+  list-style: none;
+  padding: 0.75rem 0;
+  border-bottom: 1px solid #2c2e33;
+  color: #ced4da;
+  font-size: 0.9rem;
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  line-height: 1.4;
+}
+
+/* Remove a borda divisória do último item da lista */
+.insightItem:last-child {
+  border-bottom: none;
+}
+
+/* Destaque sutil para o marcador visual (raio) */
+.insightItem span {
+  flex-shrink: 0;
+  font-size: 0.95rem;
+}

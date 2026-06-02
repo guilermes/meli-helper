@@ -1,76 +1,196 @@
-.pageWrapper {
-  background-color: #0b0c0d;
-  min-height: 100vh;
-  color: #ffffff;
-  padding-bottom: 60px;
+/* ==========================================================================
+   VARIÁVEIS DE COR E DESIGN TOKENS (Mantendo sua paleta padrão)
+   ========================================================================== */
+:local {
+  --bg-main: #141517;
+  --bg-card: #1a1b1e;
+  --bg-input: #25262b;
+  --border-color: #2c2e33;
+  --text-primary: #ffffff;
+  --text-muted: #909296;
+  
+  /* Cores de Destaque / Status */
+  --brand-blue: #228be6;
+  --brand-blue-glow: rgba(34, 139, 230, 0.15);
+  --status-success: #40c057;
+  --status-success-bg: rgba(64, 192, 87, 0.1);
+  --status-danger: #fa5252;
+  --status-danger-bg: rgba(250, 82, 82, 0.1);
+  --status-warning: #fcc419;
+  --status-warning-bg: rgba(252, 196, 25, 0.1);
 }
 
-.loadingContainer {
-  background-color: #0b0c0d;
-  min-height: 100vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.errorCard {
-  background-color: #141517;
-  border-color: #e03131;
-  color: #ff8787;
-}
-
-.pageTitle {
-  font-weight: 800;
-  color: #ffffff;
+/* ==========================================================================
+   FONTES E TIPOGRAFIA
+   ========================================================================== */
+.monoFont {
+  font-family: 'JetBrains Mono', 'Fira Code', monospace;
   letter-spacing: -0.5px;
 }
 
-.pageSubtitle {
-  color: #909296;
+/* ==========================================================================
+   CARDS DA DASHBOARD
+   ========================================================================== */
+.card {
+  background-color: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: 12px; /* Cantos um pouco mais suaves/modernos */
+  padding: 1.25rem;
+  transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
-.sectionTitle {
-  font-weight: 700;
-  font-size: 22px;
-  color: #ffffff;
-  margin-bottom: 16px;
-  border-left: 4px solid #e03131; /* Detalhe em vermelho na lateral do título da tabela */
-  padding-left: 10px;
+/* Efeito sutil de elevação ao passar o mouse em cards interativos */
+.cardInteractive {
+  composes: card;
+  cursor: pointer;
 }
 
-/* Botão Vermelho Customizado */
-.btnCriarAnuncio {
-  background-color: #e03131 !important;
-  color: #ffffff !important;
+.cardInteractive:hover {
+  transform: translateY(-2px);
+  border-color: #373a40;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+}
+
+/* ==========================================================================
+   ESTRUTURA DE KPIs (Cards de Métricas)
+   ========================================================================== */
+.kpiTitle {
+  font-size: 0.85rem;
   font-weight: 600;
-  transition: background-color 0.2s ease, transform 0.1s ease;
-  border: none;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 0.5rem;
 }
 
-.btnCriarAnuncio:hover {
-  background-color: #ff4d4d !important;
-}
-
-.btnCriarAnuncio:active {
-  transform: scale(0.97);
-}
-
-/* Estado Vazio */
-.emptyStateCard {
-  background-color: #141517 !important;
-  border-color: #25262b !important;
-  padding: 60px 24px !important;
-  border-top: 4px solid #e03131 !important; /* Detalhe em vermelho no topo do card vazio */
-}
-
-.emptyStateTitle {
-  font-size: 24px;
+.kpiValue {
+  composes: monoFont;
+  font-size: 1.8rem;
   font-weight: 700;
-  color: #ffffff;
+  color: var(--text-primary);
+  line-height: 1.2;
 }
 
-.emptyStateText {
-  color: #a6a7ab;
-  max-width: 520px;
-  line-height: 1.6;
+.kpiSubtext {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  margin-top: 0.5rem;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+/* ==========================================================================
+   INPUTS (Ajustes refinados para os componentes Mantine)
+   ========================================================================== */
+.calcInput :global(.mantine-NumberInput-input) {
+  background-color: var(--bg-input);
+  border-color: var(--border-color);
+  color: var(--text-primary);
+  border-radius: 8px;
+  height: 42px;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.calcInput :global(.mantine-NumberInput-input:focus) {
+  border-color: var(--brand-blue);
+  box-shadow: 0 0 0 3px var(--brand-blue-glow);
+}
+
+/* ==========================================================================
+   TABELAS DE RANKING (Visual Minimalista Dark)
+   ========================================================================== */
+.rankingTable {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.rankingTable th {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid var(--border-color);
+  font-weight: 600;
+  text-align: left;
+}
+
+.rankingTable td {
+  padding: 0.85rem 1rem;
+  border-bottom: 1px solid dashed var(--border-color);
+  color: #e4e5e7;
+  font-size: 0.9rem;
+}
+
+.rankingTable tr:last-child td {
+  border-bottom: none;
+}
+
+.rankingTable tr:hover td {
+  background-color: rgba(255, 255, 255, 0.02);
+  color: var(--text-primary);
+}
+
+/* ==========================================================================
+   ALERTAS E INSIGHTS INTELIGENTES
+   ========================================================================== */
+.alertBox {
+  display: flex;
+  gap: 12px;
+  padding: 1rem;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  line-height: 1.4;
+  margin-bottom: 0.75rem;
+  border: 1px solid transparent;
+}
+
+.alertWarning {
+  composes: alertBox;
+  background-color: var(--status-warning-bg);
+  border-color: rgba(252, 196, 25, 0.2);
+  color: #ffe066;
+}
+
+.alertInfo {
+  composes: alertBox;
+  background-color: rgba(34, 139, 230, 0.08);
+  border-color: rgba(34, 139, 230, 0.2);
+  color: #a5d8ff;
+}
+
+.insightItem {
+  list-style: none;
+  padding: 0.75rem 0;
+  border-bottom: 1px solid var(--border-color);
+  color: #ced4da;
+  font-size: 0.9rem;
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+}
+
+.insightItem:last-child {
+  border-bottom: none;
+}
+
+/* Badges de variação de margem (Verde para bom, Vermelho para ruim) */
+.badgeSuccess {
+  composes: monoFont;
+  background-color: var(--status-success-bg);
+  color: var(--status-success);
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+.badgeDanger {
+  composes: monoFont;
+  background-color: var(--status-danger-bg);
+  color: var(--status-danger);
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-size: 0.8rem;
+  font-weight: 600;
 }

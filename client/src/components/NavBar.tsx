@@ -1,7 +1,8 @@
 // src/components/NavBar.tsx
 import { Menu, Avatar, UnstyledButton } from '@mantine/core';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/authContext';
+import { ThemeToggle } from './ThemeToggler';
 import classes from './NavBar.module.css';
 
 const LINKS_DESLOGADO = [
@@ -31,32 +32,54 @@ export default function NavBar() {
   return (
     <nav className={classes.navBar}>
       <div className={classes.logo}>
-        <a href="/" className={classes.logoLink}>
+        <Link to="/" className={classes.logoLink}>
           Meli<span className={classes.logoSpan}>Helper</span>
-        </a>
+        </Link>
       </div>
 
-      <div className={classes.navLinks}>
-        {isLogado ? (
-          <>
-            {LINKS_LOGADO.map(({ href, label }) => (
-              <a
-                key={href}
-                href={href}
-                className={`${classes.link} ${isActive(href) ? classes.activeLink : ''}`}
-              >
-                {label}
-              </a>
-            ))}
+      <div className={classes.navContent}>
+        <div className={classes.navLinks}>
+          {isLogado ? (
+            <>
+              {LINKS_LOGADO.map(({ href, label }) => (
+                <Link
+                  key={href}
+                  to={href}
+                  className={`${classes.link} ${isActive(href) ? classes.activeLink : ''
+                    }`}
+                >
+                  {label}
+                </Link>
+              ))}
+            </>
+          ) : (
+            <>
+              {LINKS_DESLOGADO.map(({ href, label }) => (
+                <Link
+                  key={href}
+                  to={href}
+                  className={`${classes.link} ${isActive(href) ? classes.activeLink : ''
+                    }`}
+                >
+                  {label}
+                </Link>
+              ))}
+            </>
+          )}
+        </div>
 
-            <Menu shadow="md" width={200} position="bottom-end">
+        <div className={classes.actions}>
+          <ThemeToggle />
+
+          {isLogado && (
+            <Menu shadow="md" width={220} position="bottom-end">
               <Menu.Target>
                 <UnstyledButton className={classes.userButton}>
                   <Avatar
                     src={user?.avatar || null}
                     radius="xl"
                     size="sm"
-                    color="red"
+                    color="brandBlue"
                     className={classes.avatar}
                   >
                     {iniciais}
@@ -68,13 +91,16 @@ export default function NavBar() {
                 <Menu.Label className={classes.menuLabel}>
                   {user?.nome || 'Minha Conta'}
                 </Menu.Label>
+
                 <Menu.Item
                   className={classes.menuItem}
                   onClick={() => navigate('/perfil')}
                 >
                   Meu Perfil
                 </Menu.Item>
+
                 <Menu.Divider />
+
                 <Menu.Item
                   color="red"
                   className={classes.menuItemRed}
@@ -84,20 +110,8 @@ export default function NavBar() {
                 </Menu.Item>
               </Menu.Dropdown>
             </Menu>
-          </>
-        ) : (
-          <>
-            {LINKS_DESLOGADO.map(({ href, label }) => (
-              <a
-                key={href}
-                href={href}
-                className={`${classes.link} ${isActive(href) ? classes.activeLink : ''}`}
-              >
-                {label}
-              </a>
-            ))}
-          </>
-        )}
+          )}
+        </div>
       </div>
     </nav>
   );

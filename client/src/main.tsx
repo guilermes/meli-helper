@@ -1,52 +1,115 @@
 // src/main.tsx
+
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import { createTheme, MantineProvider } from '@mantine/core';
-import '@mantine/core/styles.css'; 
-import './globals.css'; 
+
+import {
+  createTheme,
+  MantineProvider,
+  MantineColorsTuple,
+} from '@mantine/core';
+
+import '@mantine/core/styles.css';
+import './globals.css';
 
 import App from './App';
 
+const brandBlue: MantineColorsTuple = [
+  '#eff6ff',
+  '#dbeafe',
+  '#bfdbfe',
+  '#93c5fd',
+  '#60a5fa',
+  '#3b82f6',
+  '#2563eb',
+  '#1d4ed8',
+  '#1e40af',
+  '#1e3a8a',
+];
+
 const theme = createTheme({
-  // Define a fonte padrão (Inter, que você já usava)
-  fontFamily: 'Inter, system-ui, -apple-system, sans-serif',
+  fontFamily: 'Inter, system-ui, sans-serif',
 
-  // Define a cor primária dos botões e destaques (Apontando para a paleta vermelha)
-  primaryColor: 'brandRed',
+  primaryColor: 'brandBlue',
 
-  // Customização da escala de cores
   colors: {
-    // Criamos uma paleta de vermelhos minimalistas (do mais claro ao mais escuro)
-    brandRed: [
-      '#fff5f5', // 0
-      '#ffe3e3', // 1
-      '#ffc9c9', // 2
-      '#ffa8a8', // 3
-      '#ff8787', // 4
-      '#ff6b6b', // 5
-      '#fa5252', // 6
-      '#e03131', // 7 - Cor padrão de destaque (Vermelho elegante, não muito vivo)
-      '#c92a2a', // 8 - Hover do botão
-      '#b01e1e', // 9
-    ],
-    // Sobrescrevemos ou usamos os cinzas do Mantine que já são excelentes
+    brandBlue,
   },
 
-  // Ajustes de componentes globais para o estilo minimalista
+  defaultRadius: 'md',
+
+  black: '#0f1115',
+
+  white: '#ffffff',
+
+  shadows: {
+    xs: '0 1px 2px rgba(0,0,0,0.05)',
+    sm: '0 2px 4px rgba(0,0,0,0.08)',
+    md: '0 4px 12px rgba(0,0,0,0.12)',
+    lg: '0 8px 24px rgba(0,0,0,0.16)',
+  },
+
   components: {
     Button: {
       defaultProps: {
-        radius: 'md', // Bordas ligeiramente arredondadas, mas limpas
+        radius: 'md',
+        size: 'md',
+      },
+
+      styles: {
+        root: {
+          fontWeight: 600,
+          transition: 'all 0.2s ease',
+        },
       },
     },
+
+    Paper: {
+      defaultProps: {
+        radius: 'lg',
+        shadow: 'sm',
+        p: 'md',
+      },
+    },
+
+    Card: {
+      defaultProps: {
+        radius: 'lg',
+        shadow: 'sm',
+      },
+    },
+
     Input: {
       defaultProps: {
         radius: 'md',
+        size: 'md',
       },
     },
-    Paper: {
+
+    TextInput: {
       defaultProps: {
         radius: 'md',
+      },
+    },
+
+    PasswordInput: {
+      defaultProps: {
+        radius: 'md',
+      },
+    },
+
+    Modal: {
+      defaultProps: {
+        radius: 'lg',
+        centered: true,
+      },
+    },
+
+    AppShell: {
+      styles: {
+        main: {
+          backgroundColor: '#0f1115',
+        },
       },
     },
   },
@@ -54,7 +117,10 @@ const theme = createTheme({
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
-    <MantineProvider theme={theme}>
+    <MantineProvider
+      theme={theme}
+      defaultColorScheme="dark"
+    >
       <App />
     </MantineProvider>
   </React.StrictMode>

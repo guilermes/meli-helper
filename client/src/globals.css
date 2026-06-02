@@ -1,48 +1,43 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
-
-/* 
-  Nota: Certifique-se de que o @mantine/core/styles.css 
-  esteja importado ANTES deste arquivo no seu projeto.
-*/
-
-html {
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  scroll-behavior: smooth;
+html,
+body,
+#root {
+  margin: 0;
+  padding: 0;
+  min-height: 100%;
 }
 
 body {
-  /* O Mantine gerencia o background e a cor do texto automaticamente, 
-     mas garantimos a altura mínima e o comportamento de flex para o Footer colar embaixo */
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
+  font-family: Inter, system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+
+  transition:
+    background-color 0.2s ease,
+    color 0.2s ease;
 }
 
-/* Garante que a estrutura do seu app ocupe o espaço correto para o Footer */
-#root, __next {
-  display: flex;
-  flex-direction: column;
-  flex: 1;
-}
+/* Scrollbar minimalista */
 
-/* CUSTOMIZAÇÃO DA SCROLLBAR MINIMALISTA */
 ::-webkit-scrollbar {
-  width: 6px;
-  height: 6px;
+  width: 10px;
 }
 
 ::-webkit-scrollbar-track {
-  background: var(--mantine-color-body); /* Usa a cor de fundo do Mantine */
+  background: #111827;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: var(--mantine-color-gray-3); /* Usa o cinza do Mantine */
-  border-radius: 10px;
+  background: #374151;
+  border-radius: 999px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: var(--mantine-color-gray-5);
+  background: #4b5563;
+}
+
+/* Seleção */
+
+::selection {
+  background: #2563eb;
+  color: white;
 }

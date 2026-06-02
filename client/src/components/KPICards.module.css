@@ -1,0 +1,36 @@
+/* Cores locais baseadas na identidade dark do projeto */
+.cardInteractive {
+  background-color: #1a1b1e;
+  border: 1px solid #2c2e33;
+  border-radius: 12px;
+  padding: 1.25rem;
+  cursor: pointer;
+  transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+/* Efeito moderno de elevação e profundidade no hover */
+.cardInteractive:hover {
+  transform: translateY(-2px);
+  border-color: #373a40;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+}
+
+/* Título sutil, com caixa alta e cor reduzida para não competir com o dado */
+.kpiTitle {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #909296;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 0.25rem;
+}
+
+/* O dado principal em destaque usando sua fonte monoespaçada */
+.kpiValue {
+  font-family: 'JetBrains Mono', 'Fira Code', monospace;
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: #ffffff;
+  line-height: 1.2;
+  letter-spacing: -0.5px;
+}

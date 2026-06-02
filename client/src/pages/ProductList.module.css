@@ -75,3 +75,35 @@
   border-color: #e03131;
   color: #ff6b6b;
 }
+
+/* Estilo base para cada botão numérico e setas */
+.paginationControl {
+  background-color: #1a1b1e;
+  border: 1px solid #2c2e33;
+  color: #c1c2c5;
+  font-family: 'JetBrains Mono', 'Fira Code', monospace; /* Mantém a identidade visual de dados */
+  font-size: 0.85rem;
+  transition: all 0.2s ease;
+}
+
+/* Efeito de hover nos botões inativos */
+.paginationControl:not([data-active]):hover {
+  background-color: #25262b;
+  border-color: #373a40;
+  color: #ffffff;
+}
+
+/* 🎯 Botão da página que está ativa no momento */
+.paginationControl[data-active] {
+  background: linear-gradient(135deg, #fa5252 0%, #e03131 100%); /* Degradê sutil com o vermelho do app */
+  border-color: #e03131;
+  color: #ffffff;
+  font-weight: 600;
+  box-shadow: 0 4px 12px rgba(224, 49, 49, 0.25); /* Sombra neon sutil */
+}
+
+/* Estilização das reticências (...) quando há muitas páginas */
+.paginationDots {
+  color: #909296;
+  letter-spacing: 2px;
+}

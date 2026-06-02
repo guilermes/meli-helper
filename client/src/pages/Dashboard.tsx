@@ -1,252 +1,137 @@
-// src/pages/Dashboard.tsx
-import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { Container, Title, SimpleGrid, Space, Loader, Center, Text, Paper, Button, Stack, Group } from '@mantine/core';
-import api from '../services/api';
-import { RankingCard } from '../components/RankingCard';
-import { InsightCard } from '../components/InsightCard';
-import { MetricCard } from '../components/MetricCard';
-import ProductTable, { Product } from '../components/ProductTable';
+import { useState, useEffect } from 'react';
+import {
+  Container,
+  Grid,
+  SimpleGrid,
+  Card,
+  Text,
+  Title,
+  Group,
+  Stack,
+  Loader,
+  Button,
+  NumberInput,
+  Table,
+  ThemeIcon,
+} from '@mantine/core';
 import classes from './Dashboard.module.css';
+import KpiCards from '../components/KPICards';
+import AlertasOperacionais from '../components/AlertasOperacionais';
+import RankingMargem from '../components/RankingMargem';
+import InsightsOperacionais from '../components/InsightsOperacionais';
+import api from '../services/api';
 
-interface MetricasDashboard {
-  margemMedia: number;
-  cubagemGeral: number;
-  anunciosCriticos: number;
-  ticketMedio: number;
-  produtoMaisPesado: { nome: string; peso: number } | null;
-  melhorMargem: { nome: string; margem: number } | null;
-  rankingMargem: { nome: string; margem: number }[];
+// 📝 Estrutura exata entregue pelo Back-end
+interface DashboardData {
+  kpis: {
+    totalProdutos: number;
+    mediaClassico: number;
+    mediaPremium: number;
+    ruinsPremium: number;
+    bonsPremium: number;
+    freteMedio: number;
+  };
+  alertas: Array<{ id: number; tipo: 'error' | 'warning' | 'info'; mensagem: string }>;
+  rankingMargem: Array<{ id: string | number; nome: string; margem: number }>;
+  insights: string[];
 }
 
 export default function Dashboard() {
-  const navigate = useNavigate();
-  const [loading, setLoading] = useState(true);
-  const [erro, setErro] = useState<string | null>(null);
-  const [produtos, setProdutos] = useState<Product[]>([]);
-  const [metricas, setMetricas] = useState<MetricasDashboard>({
-    margemMedia: 0,
-    cubagemGeral: 0,
-    anunciosCriticos: 0,
-    ticketMedio: 0,
-    produtoMaisPesado: null,
-    melhorMargem: null,
-    rankingMargem: [],
-  });
-
-  const handleProductUpdated = (updatedProduct: Product) => {
-    setProdutos((prevProducts) =>
-      prevProducts.map((item) => (item.id === updatedProduct.id ? updatedProduct : item))
-    );
-  };
-
-  const handleExcluirProduto = (id: string) => {
-    console.log('Disparar modal de exclusão para o ID:', id);
-  };
+  const [dados, setDados] = useState<DashboardData | null>(null);
+  const [carregando, setCarregando] = useState<boolean>(true);
 
   useEffect(() => {
-    const buscarEProcessarDados = async () => {
+    const buscarDadosDashboard = async () => {
       try {
-        const token = localStorage.getItem('token');
-
-        const response = await api.get('/anuncios', {
-          withCredentials: true,
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
-
-        let listaProdutos: Product[] = [];
-        if (Array.isArray(response.data)) {
-          listaProdutos = response.data;
-        } else if (response.data && Array.isArray(response.data.anuncios)) {
-          listaProdutos = response.data.anuncios;
-        } else if (response.data && Array.isArray(response.data.data)) {
-          listaProdutos = response.data.data;
-        }
-
-        setProdutos(listaProdutos);
-
-        if (listaProdutos?.length > 0) {
-          const cubagemTotal = listaProdutos.reduce((acc, prod) => {
-            const volumeItem = (prod.largura * prod.altura * prod.comprimento) / 1000000;
-            return acc + volumeItem;
-          }, 0);
-
-          const criticos = listaProdutos.filter((prod) => (prod.margemPorcentagem ?? 0) < 15).length;
-
-          const somaMargens = listaProdutos.reduce((acc, prod) => acc + (prod.margemPorcentagem ?? 0), 0);
-          const mediaMargem = somaMargens / listaProdutos.length;
-
-          // ✅ CORREÇÃO: trocado prod.preco por prod.precoVenda
-          const ticketMedio = listaProdutos.reduce((acc, prod) => acc + prod.precoVenda, 0) / listaProdutos.length;
-
-          const produtoMaisPesado = listaProdutos.reduce<{ nome: string; peso: number } | null>(
-            (maisPesado, prod) =>
-              !maisPesado || prod.peso > maisPesado.peso
-                ? { nome: prod.nome, peso: prod.peso }
-                : maisPesado,
-            null
-          );
-
-          const melhorMargem = listaProdutos.reduce<{ nome: string; margem: number } | null>(
-            (melhor, prod) =>
-              !melhor || (prod.margemPorcentagem ?? 0) > melhor.margem
-                ? { nome: prod.nome, margem: prod.margemPorcentagem ?? 0 }
-                : melhor,
-            null
-          );
-
-          const rankingMargem = [...listaProdutos]
-            .sort((a, b) => (b.margemPorcentagem ?? 0) - (a.margemPorcentagem ?? 0))
-            .slice(0, 5)
-            .map((prod) => ({ nome: prod.nome, margem: prod.margemPorcentagem ?? 0 }));
-
-          setMetricas({
-            margemMedia: mediaMargem,
-            cubagemGeral: cubagemTotal,
-            anunciosCriticos: criticos,
-            ticketMedio,
-            produtoMaisPesado,
-            melhorMargem,
-            rankingMargem,
-          });
-        }
-
-      } catch (err: any) {
-        console.error('Erro ao carregar dados da dashboard:', err);
-        setErro('Não foi possível carregar os dados do painel.');
+        setCarregando(true);
+        const response = await api.get('/dashboard');
+        setDados(response.data);
+      } catch (error) {
+        console.error('Erro ao buscar dados da dashboard:', error);
       } finally {
-        setLoading(false);
+        setCarregando(false);
       }
     };
+    buscarDadosDashboard();
+  }, []);
 
-    buscarEProcessarDados();
-  }, [navigate]);
-
-  if (loading) {
+  if (carregando || !dados) {
     return (
-      <div className={classes.loadingContainer}>
-        <Loader color="red" size="xl" type="bars" />
-      </div>
-    );
-  }
-
-  if (erro) {
-    return (
-      <div className={classes.pageWrapper}>
-        <Center>
-          <Paper p="md" withBorder className={classes.errorCard}>
-            <Text fw={500}>{erro}</Text>
-          </Paper>
-        </Center>
-      </div>
+      <Group justify="center" align="center" style={{ height: '70vh' }}>
+        <Loader color="blue" size="lg" type="dots" />
+      </Group>
     );
   }
 
   return (
-    <div className={classes.pageWrapper}>
-      <Container size="lg" pt="xl">
+    <Container size="xl" py="xl">
+      <Stack gap={2} mb="xl">
+        <Title order={2} fw={600}>Dashboard Inteligente</Title>
+        <Text size="sm" c="dimmed">Monitoramento completo da operação Mercado Livre</Text>
+      </Stack>
 
-        <Group justify="space-between" align="flex-start" wrap="wrap" mb="xl">
-          <Stack gap={4}>
-            <Title order={1} className={classes.pageTitle}>
-              Painel de Controle
-            </Title>
-            <Text className={classes.pageSubtitle} size="sm">
-              Visão geral da cubagem e lucratividade da sua conta do Mercado Livre.
-            </Text>
-          </Stack>
-          <Group gap="sm">
-            <Button
-              variant="light"
-              color="gray"
-              onClick={() => navigate('/config')}
-            >
-              Configurações
-            </Button>
-            {produtos?.length > 0 && (
-              <Button
-                className={classes.btnCriarAnuncio}
-                onClick={() => navigate('/anuncios/novo')}
-              >
-                Novo Anúncio
-              </Button>
-            )}
-          </Group>
-        </Group>
+      {/* Grid de Cards Operacionais */}
+      <KpiCards kpis={dados.kpis} />
 
-        {produtos?.length === 0 ? (
-          <Paper withBorder p="xl" radius="md" className={classes.emptyStateCard} mt="xl">
-            <Stack align="center" gap="md">
-              <Text className={classes.emptyStateTitle}>Nenhum anúncio encontrado</Text>
-              <Text className={classes.emptyStateText} size="sm" ta="center">
-                Sua conta ainda não possui anúncios cadastrados no sistema. Comece a publicar seus
-                produtos para monitorar os custos de frete, cubagem e margens de lucro em tempo real!
-              </Text>
-              <Button
-                size="md"
-                className={classes.btnCriarAnuncio}
-                onClick={() => navigate('/anuncios/novo')}
-              >
-                Criar Meu Primeiro Anúncio
-              </Button>
-            </Stack>
-          </Paper>
-        ) : (
-          <>
-            <SimpleGrid cols={{ base: 1, sm: 3 }} gap="md">
-              <MetricCard
-                title="Margem Média Geral"
-                value={`${metricas.margemMedia.toFixed(1)}%`}
-                description="Lucro líquido médio estimado"
-              />
-              <MetricCard
-                title="Cubagem Total Alocada"
-                value={`${metricas.cubagemGeral.toFixed(2)} m³`}
-                description="Volume total de estoque em metros cúbicos"
-              />
-              <MetricCard
-                title="Anúncios Críticos"
-                value={metricas.anunciosCriticos}
-                description="Produtos com margem abaixo de 15%"
-                isAlert={metricas.anunciosCriticos > 0}
-              />
-            </SimpleGrid>
+      {/* Bloco do Meio: Alertas + Calculadora */}
+      <Grid gutter="lg" mb="lg" mt="md">
+        <Grid.Col span={{ base: 12, lg: 6 }}>
+          <AlertasOperacionais alertas={dados.alertas} />
+        </Grid.Col>
+        <Grid.Col span={{ base: 12, lg: 6 }}>
+          <InsightsOperacionais insights={dados.insights} />
+          
+        </Grid.Col>
+      </Grid>
 
-            <Space h="xl" />
-            <Space h="md" />
+      {/* Bloco de Baixo: Ranking + Insights */}
+      <Grid gutter="lg">
+        <Grid.Col span={{ base: 12, lg: 6 }}>
+          <RankingMargem ranking={dados.rankingMargem} />
+        </Grid.Col>
+        <Grid.Col span={{ base: 12, lg: 6 }}>
+          <CalculadoraFrete />
+        </Grid.Col>
+      </Grid>
+    </Container>
+  );
+}
 
-            <Title order={2} className={classes.sectionTitle}>
-              Análise de Cubagem por Anúncio
-            </Title>
+function CalculadoraFrete() {
+  const [preco, setPreco] = useState<number | string>('');
+  const [peso, setPeso] = useState<number | string>('');
+  const [largura, setLargura] = useState<number | string>('');
+  const [altura, setAltura] = useState<number | string>('');
+  const [comprimento, setComprimento] = useState<number | string>('');
+  const [resultado, setResultado] = useState<string>('Informe os dados para calcular.');
 
-            {!erro && produtos?.length > 0 ? (
-              <ProductTable
-                prod={produtos}
-                onRefresh={setProdutos}
-                onProductUpdated={handleProductUpdated}
-                onProductDelete={handleExcluirProduto}
-              />
-            ) : (
-              <Center style={{ height: '20vh', flexDirection: 'column' }}>
-                <Text c="dimmed" mb="sm">Nenhum anúncio encontrado no banco de dados.</Text>
-              </Center>
-            )}
+  const calcular = () => {
+    if (!preco || !peso) {
+      setResultado('Preço de Venda e Peso são obrigatórios.');
+      return;
+    }
+    const contaFicticia = Number(peso) * 4.5 + 18.90;
+    setResultado(`Frete Estimado: R$ ${contaFicticia.toFixed(2)} (Prazo: 2 a 4 dias úteis)`);
+  };
 
-            <Space h="xl" />
-
-            <SimpleGrid cols={{ base: 1, sm: 2 }} gap="md">
-              <RankingCard ranking={metricas.rankingMargem} />
-              <InsightCard
-                ticketMedio={metricas.ticketMedio}
-                produtoMaisPesado={metricas.produtoMaisPesado}
-                melhorMargem={metricas.melhorMargem}
-              />
-            </SimpleGrid>
-          </>
-        )}
-      </Container>
-    </div>
+  return (
+    <Card className={classes.card}>
+      <Group mb="md"><Text fw={600} size="md">📟 Calculadora Rápida de Frete</Text></Group>
+      <Grid gutter="xs">
+        {/* 💎 Todos os inputs agora herdam o focus azul brilhante e background do CSS Module */}
+        <Grid.Col span={6}><NumberInput label="Preço Venda" prefix="R$ " decimalScale={2} placeholder="0.00" value={preco} onChange={setPreco} className={classes.calcInput} /></Grid.Col>
+        <Grid.Col span={6}><NumberInput label="Peso" suffix=" kg" placeholder="0" value={peso} onChange={setPeso} className={classes.calcInput} /></Grid.Col>
+        <Grid.Col span={4}><NumberInput label="Largura" suffix=" cm" placeholder="cm" value={largura} onChange={setLargura} className={classes.calcInput} /></Grid.Col>
+        <Grid.Col span={4}><NumberInput label="Altura" suffix=" cm" placeholder="cm" value={altura} onChange={setAltura} className={classes.calcInput} /></Grid.Col>
+        <Grid.Col span={4}><NumberInput label="Comprimento" suffix=" cm" placeholder="cm" value={comprimento} onChange={setComprimento} className={classes.calcInput} /></Grid.Col>
+        <Grid.Col span={12} mt="xs"><Button fullWidth color="blue" onClick={calcular}>Calcular Frete</Button></Grid.Col>
+        <Grid.Col span={12}>
+          {/* 💎 Bloco de resultado utilizando a identidade dark e fonte monoFont */}
+          <div className={classes.alertInfo} style={{ marginTop: '4px' }}>
+            <span className={classes.monoFont} style={{ fontSize: '0.85rem' }}>{resultado}</span>
+          </div>
+        </Grid.Col>
+      </Grid>
+    </Card>
   );
 }

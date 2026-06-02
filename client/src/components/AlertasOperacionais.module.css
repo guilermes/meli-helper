@@ -1,0 +1,35 @@
+/* Estrutura do Card de Alertas */
+.card {
+  background-color: #1a1b1e;
+  border: 1px solid #2c2e33;
+  border-radius: 12px;
+  padding: 1.25rem;
+}
+
+/* Base estrutural para as caixas de alertas */
+.alertBox {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 1rem;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  line-height: 1.4;
+  border: 1px solid transparent;
+}
+
+/* Alerta de Atenção / Erro (Tom amarelado/laranja sutil) */
+.alertWarning {
+  composes: alertBox;
+  background-color: rgba(252, 196, 25, 0.1);
+  border-color: rgba(252, 196, 25, 0.2);
+  color: #ffe066;
+}
+
+/* Alerta Informativo (Tom azulado sutil) */
+.alertInfo {
+  composes: alertBox;
+  background-color: rgba(34, 139, 230, 0.08);
+  border-color: rgba(34, 139, 230, 0.2);
+  color: #a5d8ff;
+}

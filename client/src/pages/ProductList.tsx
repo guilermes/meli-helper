@@ -1,10 +1,10 @@
-// src/pages/Anuncios.tsx
-import { useEffect, useState, useMemo } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
   Container, Title, Text, SimpleGrid, Space, Loader, Center,
-  Paper, Button, Group, Stack, TextInput,
+  Paper, Button, Group, Stack, TextInput, Pagination,
 } from '@mantine/core';
+import { useDebouncedValue } from '@mantine/hooks'; // 💎 Hook essencial para busca server-side
 import api from '../services/api';
 import { MetricCard } from '../components/MetricCard';
 import ProductTable, { Product } from '../components/ProductTable';
@@ -23,7 +23,12 @@ export default function Anuncios() {
   const [loading, setLoading] = useState(true);
   const [erro, setErro] = useState<string | null>(null);
   const [produtos, setProdutos] = useState<Product[]>([]);
+
+  // ── ESTADOS DE PAGINAÇÃO E BUSCA ──
   const [busca, setBusca] = useState('');
+  const [buscaDebounced] = useDebouncedValue(busca, 400); // Aguarda 400ms após digitar para buscar
+  const [paginaAtiva, setPaginaAtiva] = useState<number>(1);
+  const [totalPaginas, setTotalPaginas] = useState<number>(1);
 
   const [resumo, setResumo] = useState<ResumoAnuncios>({
     total: 0,
@@ -43,31 +48,58 @@ export default function Anuncios() {
     setProdutos((prev) => prev.filter((item) => item.id !== id));
   };
 
+  // 💎 Reseta para a primeira página sempre que o usuário iniciar uma nova busca
+  useEffect(() => {
+    setPaginaAtiva(1);
+  }, [buscaDebounced]);
+
+  // 💎 Effect principal: dispara quando a página muda OU quando a busca consolidada muda
   useEffect(() => {
     const buscarProdutos = async () => {
       try {
+        setLoading(true);
+
+        // Envia os parâmetros exatos que o seu anuncioController.js espera
         const response = await api.get('/anuncios', {
           withCredentials: true,
+          params: {
+            page: paginaAtiva,
+            limit: 10,
+            search: buscaDebounced
+          }
         });
 
-        let lista: Product[] = [];
-        if (Array.isArray(response.data)) {
-          lista = response.data;
-        } else if (response.data && Array.isArray(response.data.data)) {
-          lista = response.data.data;
-        } else if (response.data && Array.isArray(response.data.anuncios)) {
-          lista = response.data.anuncios;
-        }
+        // Mapeia a estrutura vinda do res.json({ data: ..., pagination: ... })
+        const lista: Product[] = response.data?.data || [];
+        const paginacao = response.data?.pagination;
 
         setProdutos(lista);
+        if (paginacao) {
+          setTotalPaginas(paginacao.totalPages || 1);
+        }
 
+        // 📊 Cálculos do Resumo baseados na página/busca atual
         if (lista.length > 0) {
           const ruins = lista.filter((p) => (p.margemPorcentagem ?? 0) < 15).length;
           const lucroMedio = lista.reduce((acc, p) => acc + (p.lucro ?? 0), 0) / lista.length;
           const margemMedia = lista.reduce((acc, p) => acc + (p.margemPorcentagem ?? 0), 0) / lista.length;
           const melhorLucro = Math.max(...lista.map((p) => p.lucro ?? 0));
 
-          setResumo({ total: lista.length, ruins, lucroMedio, margemMedia, melhorLucro });
+          setResumo({
+            total: paginacao ? paginacao.total : lista.length, // Total absoluto do banco
+            ruins,
+            lucroMedio,
+            margemMedia,
+            melhorLucro
+          });
+        } else {
+          setResumo({
+            total: paginacao ? paginacao.total : 0,
+            ruins: 0,
+            lucroMedio: 0,
+            margemMedia: 0,
+            melhorLucro: 0
+          });
         }
       } catch (err: any) {
         console.error('Erro ao carregar anúncios:', err);
@@ -78,18 +110,9 @@ export default function Anuncios() {
     };
 
     buscarProdutos();
-  }, []);
+  }, [paginaAtiva, buscaDebounced]); // Re-executa ao mudar de página ou digitação consolidada
 
-  // 🔍 Filtro por ID do Mercado Livre (client-side)
-  const produtosFiltrados = useMemo(() => {
-    if (!busca.trim()) return produtos;
-    const termo = busca.trim().toLowerCase();
-    return produtos.filter((p) =>
-      (p.idMercadoLivre ?? '').toLowerCase().includes(termo)
-    );
-  }, [produtos, busca]);
-
-  if (loading) {
+  if (loading && produtos.length === 0) {
     return (
       <div className={classes.loadingContainer}>
         <Loader color="red" size="xl" type="bars" />
@@ -129,7 +152,8 @@ export default function Anuncios() {
           </Button>
         </Group>
 
-        {produtos.length === 0 ? (
+        {/* 💡 Mudamos para verificar o total absoluto vindo do resumo da paginação */}
+        {resumo.total === 0 && !busca.trim() ? (
           <Paper withBorder p="xl" radius="md" className={classes.emptyStateCard} mt="xl">
             <Stack align="center" gap="md">
               <Text className={classes.emptyStateTitle}>Nenhum anúncio cadastrado</Text>
@@ -143,83 +167,111 @@ export default function Anuncios() {
           </Paper>
         ) : (
           <>
-            {/* ── CARDS DE RESUMO ── */}
-            <SimpleGrid cols={{ base: 1, sm: 2, md: 5 }} gap="md">
-              <MetricCard
-                title="Total de Anúncios"
-                value={resumo.total}
-                description="Anúncios cadastrados"
-              />
-              <MetricCard
-                title="Anúncios Ruins"
-                value={resumo.ruins}
-                description="Margem abaixo de 15%"
-                isAlert={resumo.ruins > 0}
-              />
-              <MetricCard
-                title="Lucro Médio"
-                value={`R$ ${resumo.lucroMedio.toFixed(2)}`}
-                description="Média de lucro por anúncio"
-                isAlert={resumo.lucroMedio < 0}
-              />
-              <MetricCard
-                title="Margem Média"
-                value={`${resumo.margemMedia.toFixed(1)}%`}
-                description="Margem líquida média"
-                isAlert={resumo.margemMedia < 15}
-              />
-              <MetricCard
-                title="Melhor Lucro"
-                value={`R$ ${resumo.melhorLucro.toFixed(2)}`}
-                description="Produto mais lucrativo"
-              />
-            </SimpleGrid>
+            <div
+              style={{
+                opacity: loading ? 0.6 : 1,
+                transition: 'opacity 0.2s ease',
+                pointerEvents: loading ? 'none' : 'all' // Impede cliques duplos enquanto carrega
+              }}
+            >
+              {/* ── CARDS DE RESUMO ── */}
+              <SimpleGrid cols={{ base: 1, sm: 2, md: 5 }} gap="md">
+                <MetricCard
+                  title="Total de Anúncios"
+                  value={resumo.total}
+                  description="Total na base de dados"
+                />
+                <MetricCard
+                  title="Anúncios Ruins"
+                  value={resumo.ruins}
+                  description="Margem < 15% na página"
+                  isAlert={resumo.ruins > 0}
+                />
+                <MetricCard
+                  title="Lucro Médio"
+                  value={`R$ ${resumo.lucroMedio.toFixed(2)}`}
+                  description="Média da página atual"
+                  isAlert={resumo.lucroMedio < 0}
+                />
+                <MetricCard
+                  title="Margem Média"
+                  value={`${resumo.margemMedia.toFixed(1)}%`}
+                  description="Média da página atual"
+                  isAlert={resumo.margemMedia < 15}
+                />
+                <MetricCard
+                  title="Melhor Lucro"
+                  value={`R$ ${resumo.melhorLucro.toFixed(2)}`}
+                  description="Melhor da página atual"
+                />
+              </SimpleGrid>
 
-            <Space h="xl" />
+              <Space h="xl" />
 
-            {/* ── BUSCA ── */}
-            <TextInput
-              placeholder="Pesquisar por ID do Mercado Livre..."
-              value={busca}
-              onChange={(e) => setBusca(e.currentTarget.value)}
-              className={classes.searchInput}
-              size="md"
-              radius="md"
-              leftSection={<span style={{ fontSize: 16 }}>🔍</span>}
-            />
-
-            <Space h="md" />
-
-            {/* ── RESULTADO DA BUSCA ── */}
-            {busca.trim() && (
-              <Text size="sm" className={classes.searchResult} mb="sm">
-                {produtosFiltrados.length === 0
-                  ? 'Nenhum anúncio encontrado para esse ID.'
-                  : `${produtosFiltrados.length} anúncio(s) encontrado(s)`}
-              </Text>
-            )}
-
-            {/* ── TABELA ── */}
-            {produtosFiltrados.length > 0 ? (
-              <ProductTable
-                prod={produtosFiltrados}
-                onRefresh={(lista) => {
-                  if (typeof lista === 'function') {
-                    setProdutos(lista);
-                  } else {
-                    setProdutos(lista);
-                  }
-                }}
-                onProductUpdated={handleProductUpdated}
-                onProductDelete={handleExcluirProduto}
+              {/* ── BUSCA (Agora integrada ao Back-end) ── */}
+              <TextInput
+                placeholder="Pesquisar por Título, Marca ou ID do Mercado Livre..."
+                value={busca}
+                onChange={(e) => setBusca(e.currentTarget.value)}
+                className={classes.searchInput}
+                size="md"
+                radius="md"
+                leftSection={<span style={{ fontSize: 16 }}>🔍</span>}
               />
-            ) : (
-              busca.trim() && (
-                <Center style={{ height: '20vh' }}>
-                  <Text c="dimmed">Nenhum anúncio encontrado para "{busca}".</Text>
-                </Center>
-              )
-            )}
+
+              <Space h="md" />
+
+              {/* ── RESULTADO DA BUSCA ── */}
+              {busca.trim() && (
+                <Text size="sm" className={classes.searchResult} mb="sm">
+                  {produtos.length === 0
+                    ? 'Nenhum anúncio encontrado para os termos digitados.'
+                    : `Exibindo resultados encontrados no sistema`}
+                </Text>
+              )}
+
+              {/* ── TABELA ── */}
+              {produtos.length > 0 ? (
+                <Stack gap="md">
+                  <ProductTable
+                    prod={produtos} // Passa diretamente a lista vinda do back
+                    onRefresh={(lista) => {
+                      if (typeof lista === 'function') {
+                        setProdutos(lista);
+                      } else {
+                        setProdutos(lista);
+                      }
+                    }}
+                    onProductUpdated={handleProductUpdated}
+                    onProductDelete={handleExcluirProduto}
+                  />
+
+                  {/* ── 💎 CONTROLADOR DE PAGINAÇÃO DO MANTINE V7 ── */}
+                  {totalPaginas > 1 && (
+                    <Group justify="center" mt="xl" pt="lg" pb="xl" style={{ borderTop: '1px solid #2c2e33' }}>
+                      <Pagination
+                        value={paginaAtiva}
+                        onChange={setPaginaAtiva}
+                        total={totalPaginas}
+                        radius="md"
+                        withEdges
+                        /* 🔗 Vincula as sub-classes do CSS Module aos seletores internos do Mantine */
+                        classNames={{
+                          control: classes.paginationControl,
+                          dots: classes.paginationDots,
+                        }}
+                      />
+                    </Group>
+                  )}
+                </Stack>
+              ) : (
+                busca.trim() && (
+                  <Center style={{ height: '20vh' }}>
+                    <Text c="dimmed">Nenhum anúncio encontrado para "{busca}".</Text>
+                  </Center>
+                )
+              )}
+            </div>
           </>
         )}
       </Container>
