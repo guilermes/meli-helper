@@ -13,13 +13,14 @@ import classes from './Login.module.css';
 
 interface LoginResponse {
   user: {
-    id: number,
+    id: number;
     nome: string;
+    nomeLoja?: string;
     email: string;
     avatar?: string;
   };
 
-  token?: string;
+  mensagem?: string;
 }
 
 export default function Login() {
@@ -48,31 +49,31 @@ export default function Login() {
 
       const data = res.data;
 
-      // Caso exista token
-      if (data.token) {
-        localStorage.setItem(
-          'token',
-          data.token
-        );
-      }
+      console.log('LOGIN RESPONSE:', data);
+
+      // 🌟 Cookie HttpOnly já é salvo automaticamente pelo navegador
+      // Não usamos mais localStorage nem token manual
 
       // Salva usuário no contexto
       login(data.user);
-      api.get('/dashboard'); // Testa se token é válido
+
+      // Redireciona para dashboard
       navigate('/dashboard');
 
     } catch (error) {
       const err = error as AxiosError<{
+        erro?: string;
         message?: string;
       }>;
 
       const mensagemErro =
+        err.response?.data?.erro ||
         err.response?.data?.message ||
         'Não foi possível realizar login.';
 
       setErro(mensagemErro);
 
-      console.error(err);
+      console.error('ERRO LOGIN:', err);
 
     } finally {
       setLoading(false);

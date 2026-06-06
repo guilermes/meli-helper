@@ -6,21 +6,9 @@ const api = axios.create({
   headers: {
     'Content-Type': 'application/json',
   },
-});
 
-/* =========================
-   INTERCEPTOR JWT
-========================= */
-
-api.interceptors.request.use((config) => {
-  const token = localStorage.getItem('token');
-
-  if (token) {
-    config.headers.Authorization =
-      `Bearer ${token}`;
-  }
-
-  return config;
+  // 🌟 Permite envio e recebimento de cookies HttpOnly
+  withCredentials: true,
 });
 
 export default api;
