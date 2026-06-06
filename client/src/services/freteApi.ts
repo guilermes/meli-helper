@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 export const freteApi = axios.create({
-  baseURL: 'http://localhost:4000',
+  baseURL: 'https://frete-service.onrender.com/',
   headers: {
     'Content-Type': 'application/json',
   }
