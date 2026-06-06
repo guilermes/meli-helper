@@ -1,5 +1,5 @@
 .homeLayout {
-  background-color: #0f1115; /* Preto profundo do tema MeliHelper */
+  background-color: var(--color-bg-primary); /* Preto profundo do tema MeliHelper */
   min-height: 100vh; /* Garante que o fundo cubra a tela cheia se o conteúdo for menor */
   display: flex;
   flex-direction: column;

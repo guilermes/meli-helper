@@ -1,26 +1,26 @@
 .card {
   backdrop-filter: blur(10px);
-  background-color: #111827; /* Fundo escuro profundo idêntico ao Mantine Dark */
-  border: 1px solid #374151;
+  background-color: var(--color-bg-tertiary); /* Fundo escuro profundo idêntico ao Mantine Dark */
+  border: 1px solid var(--color-border-primary);
   transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
 .card:hover {
   transform: translateY(-2px);
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
-  border-color: #373a40;
+  border-color: var(--color-bg-light);
 }
 
 .title {
-  color: #c1c2c5;
+  color: var(--color-text-secondary);
   font-size: 1.1rem;
   letter-spacing: 0.5px;
-  border-bottom: 1px solid #374151;
+  border-bottom: 1px solid var(--color-border-primary);
   padding-bottom: 12px;
 }
 
 .metricRow {
-  background-color: #25262b;
+  background-color: var(--color-bg-input);
   padding: 10px 14px;
   border-radius: 6px;
   transition: background-color 0.15s ease;
@@ -29,16 +29,16 @@
 }
 
 .metricRow:hover {
-  background-color: #374151;
+  background-color: var(--color-border-primary);
 }
 
 .label {
-  color: #909296;
+  color: var(--color-text-muted);
   font-weight: 500;
 }
 
 .value {
-  color: #fff;
+  color: var(--color-text-primary);
   font-family: 'JetBrains Mono', 'Fira Code', monospace; /* Mono para números ficarem alinhados */
   letter-spacing: -0.2px;
 }

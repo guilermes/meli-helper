@@ -1,9 +1,9 @@
 /* Anuncios.module.css */
 
 .pageWrapper {
-  background-color: #0f1115;
+  background-color: var(--color-bg-primary);
   min-height: 100vh;
-  color: #f9fafb;
+  color: var(--color-text-primary);
 }
 
 .loadingContainer {
@@ -11,76 +11,76 @@
   align-items: center;
   justify-content: center;
   height: 100vh;
-  background-color: #0f1115;
+  background-color: var(--color-bg-primary);
 }
 
 .pageTitle {
-  color: #f9fafb;
+  color: var(--color-text-primary);
   font-weight: 800;
   letter-spacing: -0.5px;
 }
 
 .pageSubtitle {
-  color: #868e96;
+  color: var(--color-text-lighter);
 }
 
 .btnNovo {
-  background-color: #2563eb;
-  color: #f9fafb;
+  background-color: var(--color-primary);
+  color: var(--color-text-primary);
   font-weight: 600;
   border: none;
   transition: background-color 0.2s ease;
 }
 
 .btnNovo:hover {
-  background-color: #1d4ed8;
+  background-color: var(--color-primary-hover);
 }
 
 .searchInput input {
-  background-color: #141517;
-  border-color: #374151;
-  color: #f9fafb;
+  background-color: var(--color-bg-secondary);
+  border-color: var(--color-border-primary);
+  color: var(--color-text-primary);
 }
 
 .searchInput input:focus {
-  border-color: #2563eb;
+  border-color: var(--color-primary);
 }
 
 .searchInput input::placeholder {
-  color: #9ca3af;
+  color: var(--color-text-dimmed);
 }
 
 .searchResult {
-  color: #868e96;
+  color: var(--color-text-lighter);
 }
 
 .emptyStateCard {
-  background-color: #141517;
-  border-color: #374151;
+  background-color: var(--color-bg-secondary);
+  border-color: var(--color-border-primary);
   text-align: center;
 }
 
 .emptyStateTitle {
-  color: #f9fafb;
+  color: var(--color-text-primary);
   font-weight: 700;
   font-size: 20px;
 }
 
 .emptyStateText {
-  color: #868e96;
+  color: var(--color-text-lighter);
 }
 
 .errorCard {
-  background-color: #141517;
-  border-color: #2563eb;
-  color: #60a5fa;
+  background-color: var(--color-bg-secondary);
+  border-color: var(--color-primary);
+  color: var(--color-primary-lighter);
 }
 
 /* Estilo base para cada botão numérico e setas */
 .paginationControl {
-  background-color: #111827;
-  border: 1px solid #374151;
-  color: #c1c2c5;
+  background-color: var(--color-bg-tertiary);
+  border: 1px solid var(--color-border-primary);
+  color: var(--color-text-secondary);
   font-family: 'JetBrains Mono', 'Fira Code', monospace; /* Mantém a identidade visual de dados */
   font-size: 0.85rem;
   transition: all 0.2s ease;
@@ -88,22 +88,22 @@
 
 /* Efeito de hover nos botões inativos */
 .paginationControl:not([data-active]):hover {
-  background-color: #25262b;
-  border-color: #373a40;
-  color: #f9fafb;
+  background-color: var(--color-bg-input);
+  border-color: var(--color-bg-light);
+  color: var(--color-text-primary);
 }
 
 /* 🎯 Botão da página que está ativa no momento */
 .paginationControl[data-active] {
-  background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%); /* Degradê sutil com o vermelho do app */
-  border-color: #2563eb;
-  color: #f9fafb;
+  background: linear-gradient(135deg, var(--color-primary-light) 0%, var(--color-primary) 100%); /* Degradê sutil com o vermelho do app */
+  border-color: var(--color-primary);
+  color: var(--color-text-primary);
   font-weight: 600;
   box-shadow: 0 4px 12px rgba(224, 49, 49, 0.25); /* Sombra neon sutil */
 }
 
 /* Estilização das reticências (...) quando há muitas páginas */
 .paginationDots {
-  color: #909296;
+  color: var(--color-text-muted);
   letter-spacing: 2px;
 }

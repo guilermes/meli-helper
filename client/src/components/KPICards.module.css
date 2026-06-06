@@ -1,7 +1,7 @@
 /* Cores locais baseadas na identidade dark do projeto */
 .cardInteractive {
-  background-color: #111827;
-  border: 1px solid #374151;
+  background-color: var(--color-bg-tertiary);
+  border: 1px solid var(--color-border-primary);
   border-radius: 12px;
   padding: 1.25rem;
   cursor: pointer;
@@ -11,7 +11,7 @@
 /* Efeito moderno de elevação e profundidade no hover */
 .cardInteractive:hover {
   transform: translateY(-2px);
-  border-color: #373a40;
+  border-color: var(--color-bg-light);
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
 }
 
@@ -19,7 +19,7 @@
 .kpiTitle {
   font-size: 0.85rem;
   font-weight: 600;
-  color: #909296;
+  color: var(--color-text-muted);
   text-transform: uppercase;
   letter-spacing: 0.5px;
   margin-bottom: 0.25rem;
@@ -30,7 +30,7 @@
   font-family: 'JetBrains Mono', 'Fira Code', monospace;
   font-size: 1.8rem;
   font-weight: 700;
-  color: #f9fafb;
+  color: var(--color-text-primary);
   line-height: 1.2;
   letter-spacing: -0.5px;
 }

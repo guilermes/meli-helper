@@ -1,0 +1,93 @@
+/* Theme Colors - Unified color palette for the entire application */
+
+:root {
+  /* Primary Blue (MeliHelper Brand) */
+  --color-primary: #2563eb;
+  --color-primary-hover: #1d4ed8;
+  --color-primary-light: #3b82f6;
+  --color-primary-lighter: #60a5fa;
+  --color-primary-lightest: #bfdbfe;
+  --color-primary-bg: rgba(37, 99, 235, 0.15);
+  --color-primary-glow: rgba(34, 139, 230, 0.15);
+
+  /* Backgrounds */
+  --color-bg-primary: #0f1115;
+  --color-bg-secondary: #141517;
+  --color-bg-tertiary: #111827;
+  --color-bg-input: #25262b;
+  --color-bg-hover: #333333;
+  --color-bg-light: #373a40;
+
+  /* Borders */
+  --color-border-primary: #374151;
+  --color-border-secondary: #25262b;
+  --color-border-light: #373a40;
+
+  /* Text */
+  --color-text-primary: #f9fafb;
+  --color-text-secondary: #c1c2c5;
+  --color-text-muted: #909296;
+  --color-text-dimmed: #6b7280;
+  --color-text-lighter: #868e96;
+  --color-text-light: #adb5bd;
+  --color-text-extra-light: #ced4da;
+  --color-text-card: #e4e5e7;
+  --color-text-subtle: #5c5f66;
+  --color-text-muted-alt: #a6a7ab;
+
+  /* Status Colors */
+  --color-success: #40c057;
+  --color-success-bg: rgba(64, 192, 87, 0.1);
+  --color-danger: #ff8787;
+  --color-danger-bright: #3b82f6;
+  --color-danger-bg: rgba(250, 82, 82, 0.1);
+  --color-danger-light: #ffc9c9;
+  --color-danger-accent: #ff4d4d;
+  --color-warning: #fcc419;
+  --color-warning-light: #ffe066;
+  --color-warning-bg: rgba(252, 196, 25, 0.1);
+  --color-info: #a5d8ff;
+  --color-info-bg: rgba(34, 139, 230, 0.08);
+
+  /* Accent Colors */
+  --color-accent-teal: #20c997;
+  --color-accent-orange: #ff922b;
+  --color-accent-navy: #005688;
+  --color-accent-gold: #ca9c1b;
+
+  /* Special */
+  --color-overlay: rgba(0, 0, 0, 0.3);
+  --color-overlay-dark: rgba(0, 0, 0, 0.4);
+  --color-error-red: #ff8787;
+
+  /* Slate/Slate Alternative (for EditModal) */
+  --color-slate-dark: #0f172a;
+  --color-slate-medium: #1e293b;
+  --color-slate-light: #334155;
+}
+
+@media (prefers-color-scheme: light) {
+  :root {
+    --color-bg-primary: #ffffff;
+    --color-bg-secondary: #f5f5f5;
+    --color-bg-tertiary: #eeeeee;
+    --color-bg-input: #f9fafb;
+    --color-bg-hover: #e8e8e8;
+    --color-bg-light: #e0e0e0;
+
+    --color-text-primary: #111827;
+    --color-text-secondary: #4b5563;
+    --color-text-muted: #6b7280;
+    --color-text-dimmed: #9ca3af;
+    --color-text-lighter: #d0d5dd;
+    --color-text-light: #d9d9d9;
+    --color-text-extra-light: #d9d9d9;
+    --color-text-card: #6b7280;
+    --color-text-subtle: #9ca3af;
+    --color-text-muted-alt: #6b7280;
+
+    --color-border-primary: #e5e7eb;
+    --color-border-secondary: #d1d5db;
+    --color-border-light: #f3f4f6;
+  }
+}

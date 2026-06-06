@@ -1,68 +1,68 @@
 .card {
   backdrop-filter: blur(10px);
-  background-color: #141517; /* Cinza bem escuro para destacar do fundo da página */
-  border-color: #374151; /* Borda cinza suave */
+  background-color: var(--color-bg-secondary);
+  border-color: var(--color-border-primary);
   max-width: 420px;
   width: 100%;
   margin: 0 auto;
 }
 
 .title {
-  color: #f9fafb;
+  color: var(--color-text-primary);
   font-weight: 800;
   letter-spacing: -0.5px;
 }
 
 .highlight {
-  color: #2563eb; /* Vermelho característico */
+  color: var(--color-primary);
 }
 
 .subtitle {
-  color: #909296; /* Cinza médio para descrição */
+  color: var(--color-text-muted);
   text-align: center;
 }
 
 /* Caixa de Erro em harmonia com o tema */
 .errorBox {
-  background-color: rgba(224, 49, 49, 0.1);
+  background-color: var(--color-danger-bg);
   border: 1px solid rgba(224, 49, 49, 0.4);
-  color: #ff8787;
+  color: var(--color-danger);
 }
 
 /* Customização dos Inputs (Mantine v7) */
 .inputLabel {
-  color: #c1c2c5; /* Cinza claro para o título do campo */
+  color: var(--color-text-secondary);
   margin-bottom: 4px;
   font-weight: 500;
 }
 
 .input {
-  background-color: #25262b; /* Fundo do input mais escuro */
-  border-color: #373a40;
-  color: #f9fafb;
+  background-color: var(--color-bg-input);
+  border-color: var(--color-border-light);
+  color: var(--color-text-primary);
   transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
 /* Garante que o texto digitado no PasswordInput também fique branco */
 .innerInput {
-  color: #f9fafb !important;
+  color: var(--color-text-primary) !important;
 }
 
 .input:focus,
 .input:focus-within {
-  border-color: #2563eb !important; /* Borda vermelha no foco */
+  border-color: var(--color-primary) !important;
 }
 
-/* Botão de Submit Vermelho */
+/* Botão de Submit */
 .buttonSubmit {
-  background-color: #2563eb;
-  color: #f9fafb;
+  background-color: var(--color-primary);
+  color: var(--color-text-primary);
   font-weight: 600;
   transition: background-color 0.2s ease, transform 0.1s ease;
 }
 
 .buttonSubmit:hover {
-  background-color: #1d4ed8; /* Tom vermelho levemente mais escuro */
+  background-color: var(--color-primary-hover);
   transform: translateY(-1px);
 }
 
