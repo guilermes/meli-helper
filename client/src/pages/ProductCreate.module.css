@@ -1,5 +1,5 @@
 .pageWrapper {
-  background-color: #0f1115; /* Fundo preto padrão */
+  background-color: var(--color-bg-primary); /* Fundo preto padrão */
   min-height: 100vh;
   display: flex;
   align-items: center;
@@ -11,8 +11,8 @@
 
 .card {
   backdrop-filter: blur(10px);
-  background-color: #141517; /* Card cinza escuro */
-  border-color: #374151;
+  background-color: var(--color-bg-secondary); /* Card cinza escuro */
+  border-color: var(--color-border-primary);
 }
 
 .header {
@@ -21,28 +21,28 @@
 }
 
 .title {
-  color: #f9fafb;
+  color: var(--color-text-primary);
   font-weight: 800;
 }
 
 .subtitle {
-  color: #909296; /* Cinza médio para descrições secundárias */
+  color: var(--color-text-muted); /* Cinza médio para descrições secundárias */
 }
 
 .divider {
-  border-color: #374151 !important;
+  border-color: var(--color-border-primary) !important;
 }
 
 /* Botão Vermelho de Ação */
 .buttonSubmit {
-  background-color: #2563eb;
-  color: #f9fafb;
+  background-color: var(--color-primary);
+  color: var(--color-text-primary);
   font-weight: 600;
   transition: background-color 0.2s ease, transform 0.1s ease;
 }
 
 .buttonSubmit:hover {
-  background-color: #1d4ed8;
+  background-color: var(--color-primary-hover);
   transform: translateY(-1px);
 }
 
@@ -52,7 +52,7 @@
 
 /* Texto de Feedback de Sucesso */
 .feedbackText {
-  color: #40c057; /* Verde suave do Mantine para indicar sucesso no Dark Mode */
+  color: var(--color-success); /* Verde suave do Mantine para indicar sucesso no Dark Mode */
   animation: pulse 2s infinite ease-in-out;
 }
 

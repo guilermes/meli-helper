@@ -1,14 +1,14 @@
 .card {
   backdrop-filter: blur(10px);
-  background-color: #111827; /* Tom padrão Dark unificado */
-  border: 1px solid #374151;
+  background-color: var(--color-bg-tertiary); /* Tom padrão Dark unificado */
+  border: 1px solid var(--color-border-primary);
   transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
 .card:hover {
   transform: translateY(-2px);
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
-  border-color: #373a40;
+  border-color: var(--color-bg-light);
 }
 
 .title {
@@ -16,26 +16,26 @@
   align-items: center;
   gap: 8px;
   letter-spacing: 0.5px;
-  border-bottom: 1px solid #374151;
+  border-bottom: 1px solid var(--color-border-primary);
   padding-bottom: 12px;
 }
 
 /* Customização para os inputs de número do Mantine */
 .inputField :global(.mantine-NumberInput-input) {
   font-family: 'JetBrains Mono', 'Fira Code', monospace;
-  background-color: #25262b;
-  border-color: #374151;
-  color: #fff;
+  background-color: var(--color-bg-input);
+  border-color: var(--color-border-primary);
+  color: var(--color-text-primary);
   transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
 .inputField :global(.mantine-NumberInput-input:focus) {
-  border-color: #20c997; /* Cor teal correspondente ao tema */
+  border-color: var(--color-accent-teal); /* Cor teal correspondente ao tema */
   box-shadow: 0 0 0 2px rgba(32, 201, 151, 0.15);
 }
 
 .inputField :global(.mantine-NumberInput-label) {
-  color: #c1c2c5;
+  color: var(--color-text-secondary);
   font-weight: 500;
   margin-bottom: 6px;
 }

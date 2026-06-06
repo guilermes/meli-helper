@@ -1,14 +1,14 @@
 body {
-  background-color: #121214 !important; /* Fundo escuro sólido para toda a página */
-  color: #e0e0e0 !important; /* Texto claro para contraste */
+  background-color: var(--color-bg-secondary) !important; /* Fundo escuro sólido para toda a página */
+  color: var(--color-text-secondary) !important; /* Texto claro para contraste */
 }
 
 .integrationCard {
   transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
-  background-color: #111827 !important; /* Fundo escuro sólido do Card */
-  border: 1px solid #374151 !important;  /* Borda grafite sutil */
+  background-color: var(--color-bg-tertiary) !important; /* Fundo escuro sólido do Card */
+  border: 1px solid var(--color-border-primary) !important;  /* Borda grafite sutil */
   border-radius: var(--mantine-radius-md);
-  color: #e0e0e0 !important; /* Texto claro para contraste */
+  color: var(--color-text-secondary) !important; /* Texto claro para contraste */
 }
 
 .avatarContainer {
@@ -18,31 +18,31 @@ body {
   justify-content: center;
   padding: var(--mantine-spacing-xl);
   text-align: center;
-  background-color: #111827 !important; /* Fundo idêntico aos outros cards */
-  border: 1px solid #374151 !important;
+  background-color: var(--color-bg-tertiary) !important; /* Fundo idêntico aos outros cards */
+  border: 1px solid var(--color-border-primary) !important;
   border-radius: var(--mantine-radius-md);
   transition: border-color 0.2s ease, box-shadow 0.2s ease;
-  color: #e0e0e0 !important; /* Texto claro para contraste */
+  color: var(--color-text-secondary) !important; /* Texto claro para contraste */
 }
 
 
 .marketplaceRow {
   padding: var(--mantine-spacing-md);
-  border: 1px solid #374151 !important;
+  border: 1px solid var(--color-border-primary) !important;
   border-radius: var(--mantine-radius-md);
-  background-color: #25262b !important; /* 🌙 Tom mais claro para dar profundidade sobre o card */
+  background-color: var(--color-bg-input) !important; /* 🌙 Tom mais claro para dar profundidade sobre o card */
   transition: border-color 0.2s ease, background-color 0.2s ease;
-  color: #e0e0e0 !important; /* Texto claro para contraste */
+  color: var(--color-text-secondary) !important; /* Texto claro para contraste */
 }
 
 .marketplaceRow:hover {
-  border-color: #4a4c52 !important; /* Realce sutil na borda ao passar o mouse */
-  background-color: #374151 !important; /* Fundo um pouco mais escuro para feedback visual */
+  border-color: var(--color-border-light) !important; /* Realce sutil na borda ao passar o mouse */
+  background-color: var(--color-border-primary) !important; /* Fundo um pouco mais escuro para feedback visual */
 }
 
 .avatarContainer ~ div .mantine-Card-root,
 form id, 
 :global(.mantine-Card-root) {
-  background-color: #111827 !important;
-  border-color: #374151 !important;
+  background-color: var(--color-bg-tertiary) !important;
+  border-color: var(--color-border-primary) !important;
 }

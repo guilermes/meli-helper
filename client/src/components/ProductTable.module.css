@@ -1,23 +1,23 @@
 /* src/components/ProductTable.module.css */
 .paperContainer {
-  background-color: #141517 !important;
-  border-color: #25262b !important;
+  background-color: var(--color-bg-secondary) !important;
+  border-color: var(--color-bg-input) !important;
   overflow: hidden;
 }
 
 .table {
-  background-color: #141517;
-  color: #f9fafb;
+  background-color: var(--color-bg-secondary);
+  color: var(--color-text-primary);
 }
 
 .thead {
-  background-color: #111827;
+  background-color: var(--color-bg-tertiary);
 }
 
 .th {
-  color: #c1c2c5 !important;
+  color: var(--color-text-secondary) !important;
   font-weight: 600;
-  border-bottom: 2px solid #25262b !important;
+  border-bottom: 2px solid var(--color-bg-input) !important;
   text-transform: uppercase;
   font-size: 11px;
   letter-spacing: 0.5px;
@@ -28,61 +28,61 @@
 }
 
 .row {
-  border-bottom: 1px solid #25262b;
+  border-bottom: 1px solid var(--color-bg-input);
   transition: background-color 0.15s ease;
 }
 
 .row:hover {
-  background-color: #333333;
+  background-color: var(--color-bg-hover);
 }
 
 .textId {
   font-family: monospace;
-  color: #909296;
+  color: var(--color-text-muted);
   font-size: 12px;
 }
 
 .badgeClassic {
   background-color: transparent !important;
-  color: #005688 !important;
-  border: 1px solid #373a40 !important;
+  color: var(--color-accent-navy) !important;
+  border: 1px solid var(--color-bg-light) !important;
 }
 
 .badgePremium {
   background-color: transparent !important;
-  color: #ca9c1b !important;
-  border: 1px solid #373a40 !important;
+  color: var(--color-accent-gold) !important;
+  border: 1px solid var(--color-bg-light) !important;
 }
 
 .textName {
   font-weight: 500;
-  color: #f9fafb;
+  color: var(--color-text-primary);
 }
 
 .textMain {
-  color: #e4e5e7;
+  color: var(--color-text-card);
 }
 
 .textDimmed {
-  color: #909296;
+  color: var(--color-text-muted);
 }
 
 /* Lucro saudável destacado em verde */
 .textLucro {
-  color: #40c057;
+  color: var(--color-success);
   font-weight: 600;
 }
 
 /* Badges de Margem Baseadas na Identidade do App */
 .badgeNormal {
   background-color: transparent !important;
-  color: #c1c2c5 !important;
-  border: 1px solid #373a40 !important;
+  color: var(--color-text-secondary) !important;
+  border: 1px solid var(--color-bg-light) !important;
 }
 
 .badgeAlert {
-  background-color: #2563eb !important;
-  color: #f9fafb !important;
+  background-color: var(--color-primary) !important;
+  color: var(--color-text-primary) !important;
   border: none !important;
   font-weight: 700;
   animation: pulse 2.5s infinite ease-in-out;
@@ -90,26 +90,26 @@
 
 /* Botões de Ação Personalizados */
 .btnEditar {
-  color: #c1c2c5 !important;
+  color: var(--color-text-secondary) !important;
 }
 
 .btnEditar:hover {
   background-color: rgba(255, 255, 255, 0.05) !important;
-  color: #f9fafb !important;
+  color: var(--color-text-primary) !important;
 }
 
 .btnExcluir {
-  color: #ff8787 !important;
+  color: var(--color-danger) !important;
 }
 
 .btnExcluir:hover {
   background-color: rgba(224, 49, 49, 0.15) !important;
-  color: #ffc9c9 !important;
+  color: var(--color-danger-light) !important;
 }
 
 .emptyText {
   text-align: center;
-  color: #909296;
+  color: var(--color-text-muted);
   padding: 32px 0;
   font-style: italic;
 }
@@ -118,10 +118,10 @@
 @keyframes pulse {
   0%, 100% {
     transform: scale(1);
-    background-color: #2563eb;
+    background-color: var(--color-primary);
   }
   50% {
     transform: scale(1.03);
-    background-color: #ff4d4d;
+    background-color: var(--color-danger-accent);
   }
 }

@@ -1,20 +1,20 @@
 
 :root {
-  --bg-main: #141517;
-  --bg-card: #111827;
-  --bg-input: #25262b;
-  --border-color: #374151;
-  --text-primary: #f9fafb;
-  --text-muted: #909296;
+  --bg-main: var(--color-bg-secondary);
+  --bg-card: var(--color-bg-tertiary);
+  --bg-input: var(--color-bg-input);
+  --border-color: var(--color-border-primary);
+  --text-primary: var(--color-text-primary);
+  --text-muted: var(--color-text-muted);
   
   /* Cores de Destaque / Status */
-  --brand-blue: #228be6;
+  --brand-blue: var(--color-primary);
   --brand-blue-glow: rgba(34, 139, 230, 0.15);
-  --status-success: #40c057;
+  --status-success: var(--color-success);
   --status-success-bg: rgba(64, 192, 87, 0.1);
-  --status-danger: #3b82f6;
+  --status-danger: var(--color-primary-light);
   --status-danger-bg: rgba(250, 82, 82, 0.1);
-  --status-warning: #fcc419;
+  --status-warning: var(--color-warning);
   --status-warning-bg: rgba(252, 196, 25, 0.1);
 }
 
@@ -46,7 +46,7 @@
 
 .cardInteractive:hover {
   transform: translateY(-2px);
-  border-color: #373a40;
+  border-color: var(--color-bg-light);
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
 }
 
@@ -117,7 +117,7 @@
 .rankingTable td {
   padding: 0.85rem 1rem;
   border-bottom: 1px solid dashed var(--border-color);
-  color: #e4e5e7;
+  color: var(--color-text-card);
   font-size: 0.9rem;
 }
 
@@ -148,21 +148,21 @@
   composes: alertBox;
   background-color: var(--status-warning-bg);
   border-color: rgba(252, 196, 25, 0.2);
-  color: #ffe066;
+  color: var(--color-warning-light);
 }
 
 .alertInfo {
   composes: alertBox;
   background-color: rgba(34, 139, 230, 0.08);
   border-color: rgba(34, 139, 230, 0.2);
-  color: #a5d8ff;
+  color: var(--color-info);
 }
 
 .insightItem {
   list-style: none;
   padding: 0.75rem 0;
   border-bottom: 1px solid var(--border-color);
-  color: #ced4da;
+  color: var(--color-text-extra-light);
   font-size: 0.9rem;
   display: flex;
   align-items: flex-start;
