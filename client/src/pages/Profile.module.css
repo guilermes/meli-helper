@@ -1,15 +1,9 @@
-<<<<<<< HEAD
 :global(body) {
   background:
     radial-gradient(circle at top, rgba(238, 190, 34, 0.06), transparent 30%),
     linear-gradient(180deg, #0b0c0d 0%, #111214 100%);
 
   color: #f3f4f6;
-=======
-body {
-  background-color: var(--color-bg-secondary) !important; /* Fundo escuro sólido para toda a página */
-  color: var(--color-text-secondary) !important; /* Texto claro para contraste */
->>>>>>> refs/remotes/origin/main
 }
 
 /* =========================
@@ -17,7 +11,6 @@ body {
 ========================= */
 
 .integrationCard {
-<<<<<<< HEAD
   background: rgba(17, 24, 39, 0.92);
 
   border: 1px solid rgba(255, 255, 255, 0.06);
@@ -32,13 +25,6 @@ body {
     box-shadow 0.2s ease,
     border-color 0.2s ease,
     background-color 0.2s ease;
-=======
-  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
-  background-color: var(--color-bg-tertiary) !important; /* Fundo escuro sólido do Card */
-  border: 1px solid var(--color-border-primary) !important;  /* Borda grafite sutil */
-  border-radius: var(--mantine-radius-md);
-  color: var(--color-text-secondary) !important; /* Texto claro para contraste */
->>>>>>> refs/remotes/origin/main
 }
 
 .integrationCard:hover {
@@ -65,7 +51,6 @@ body {
   padding: var(--mantine-spacing-xl);
 
   text-align: center;
-<<<<<<< HEAD
 
   background: rgba(17, 24, 39, 0.92);
 
@@ -78,13 +63,6 @@ body {
     border-color 0.2s ease,
     box-shadow 0.2s ease,
     transform 0.2s ease;
-=======
-  background-color: var(--color-bg-tertiary) !important; /* Fundo idêntico aos outros cards */
-  border: 1px solid var(--color-border-primary) !important;
-  border-radius: var(--mantine-radius-md);
-  transition: border-color 0.2s ease, box-shadow 0.2s ease;
-  color: var(--color-text-secondary) !important; /* Texto claro para contraste */
->>>>>>> refs/remotes/origin/main
 }
 
 .avatarContainer:hover {
@@ -103,7 +81,6 @@ body {
 
 .marketplaceRow {
   padding: var(--mantine-spacing-md);
-<<<<<<< HEAD
 
   border-radius: var(--mantine-radius-md);
 
@@ -128,18 +105,6 @@ body {
 
   box-shadow:
     0 0 18px rgba(238, 190, 34, 0.06);
-=======
-  border: 1px solid var(--color-border-primary) !important;
-  border-radius: var(--mantine-radius-md);
-  background-color: var(--color-bg-input) !important; /* 🌙 Tom mais claro para dar profundidade sobre o card */
-  transition: border-color 0.2s ease, background-color 0.2s ease;
-  color: var(--color-text-secondary) !important; /* Texto claro para contraste */
-}
-
-.marketplaceRow:hover {
-  border-color: var(--color-border-light) !important; /* Realce sutil na borda ao passar o mouse */
-  background-color: var(--color-border-primary) !important; /* Fundo um pouco mais escuro para feedback visual */
->>>>>>> refs/remotes/origin/main
 }
 
 /* =========================
@@ -147,7 +112,6 @@ body {
 ========================= */
 
 :global(.mantine-Card-root) {
-<<<<<<< HEAD
   background: rgba(17, 24, 39, 0.92);
 
   border: 1px solid rgba(255, 255, 255, 0.06);
@@ -197,8 +161,4 @@ body {
 
   box-shadow:
     0 6px 18px rgba(238, 190, 34, 0.2);
-=======
-  background-color: var(--color-bg-tertiary) !important;
-  border-color: var(--color-border-primary) !important;
->>>>>>> refs/remotes/origin/main
 }
