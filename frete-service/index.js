@@ -5,7 +5,8 @@ const freteRoutes = require("./routes/freteRoutes");
 const app = express();
 
 app.use(cors({
-  origin: "http://localhost:5173"
+  origin: "https://meli-helper-gfsgpkwqm-guilermes-projects.vercel.app/",
+
 }));
 
 app.use(express.json());
