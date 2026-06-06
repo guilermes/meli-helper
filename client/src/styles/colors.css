@@ -27,13 +27,13 @@
   --color-text-primary: #f9fafb;
   --color-text-secondary: #c1c2c5;
   --color-text-muted: #909296;
-  --color-text-dimmed: #6b7280;
+  --color-text-dimmed: #9ca3af;
   --color-text-lighter: #868e96;
   --color-text-light: #adb5bd;
   --color-text-extra-light: #ced4da;
   --color-text-card: #e4e5e7;
-  --color-text-subtle: #5c5f66;
-  --color-text-muted-alt: #a6a7ab;
+  --color-text-subtle: #8a92a0;
+  --color-text-muted-alt: #bfc0c5;
 
   /* Status Colors */
   --color-success: #40c057;

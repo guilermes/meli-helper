@@ -169,6 +169,7 @@ export function SignupForm({ onSubmit, loading, erro }: SignupFormProps) {
             className={classes.buttonSubmit}
             radius="md"
             size="md"
+            color="brandBlue"
           >
             Cadastrar e Começar
           </Button>

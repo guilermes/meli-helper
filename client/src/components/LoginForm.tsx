@@ -88,6 +88,7 @@ export function LoginForm({ onSubmit, loading, erro }: LoginFormProps) {
             className={classes.buttonSubmit}
             radius="md"
             size="md"
+            color="brandBlue"
           >
             Entrar no Sistema
           </Button>
