@@ -345,7 +345,7 @@ exports.update = async (req, res) => {
 
     const atualizado = await prisma.anuncio.update({
       where: {
-        id: Number(id)
+        id: userId
       },
       data: {
         idMercadoLivre: req.body.idMercadoLivre || null,

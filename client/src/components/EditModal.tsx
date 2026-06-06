@@ -39,7 +39,7 @@ export default function ProductEditModal({ opened, onClose, product, onSave }: P
       // Envia a atualização para a rota correta usando o ID do anúncio
       await api.put(`/anuncios/${editedProduct.id}`, editedProduct, {
         withCredentials: true, // Garante que os cookies sejam enviados junto com a requisição
-        headers: { Authorization: `Bearer ${token}` },
+        
       });
 
       // Se deu certo na API, executa a função de callback para atualizar a tela

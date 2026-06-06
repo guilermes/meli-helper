@@ -7,10 +7,10 @@ import {
 } from '@mantine/core';
 
 import '@mantine/core/styles.css';
-import './globals.css';
+import './styles/globals.css';
 
 import App from './App';
-import { theme } from './styles/theme';
+import { theme } from './theme/theme.ts';
 
 const colorSchemeManager = localStorageColorSchemeManager({
   key: 'meli-helper-color-scheme',

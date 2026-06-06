@@ -66,7 +66,7 @@ router.post("/calcular-frete", auth, async (req, res) => {
 
     const response =
       await fetch(
-        process.env.FRETE_SERVICE_URL + "/calcular-frete",
+        "http://localhost:4000/calcular-frete",
         {
           method: "POST",
 

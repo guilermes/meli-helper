@@ -42,12 +42,12 @@ const steps = [
   { number: '04', title: 'Monitore seus lucros', description: 'Acompanhe margens e tome decisões com dados reais.' },
 ];
 
-const metrics = [
-  { value: '12%', label: 'Comissão Clássico' },
-  { value: '18%', label: 'Comissão Premium' },
-  { value: '28', label: 'Faixas de Peso' },
-  { value: '8', label: 'Faixas de Preço' },
-];
+// const metrics = [
+//   { value: '12%', label: 'Comissão Clássico' },
+//   { value: '18%', label: 'Comissão Premium' },
+//   { value: '28', label: 'Faixas de Peso' },
+//   { value: '8', label: 'Faixas de Preço' },
+// ];
 
 export function Hero() {
   const navigate = useNavigate();
@@ -91,14 +91,14 @@ export function Hero() {
         </div>
 
         {/* Métricas rápidas */}
-        <div className={classes.metricsRow}>
+        {/* <div className={classes.metricsRow}>
           {metrics.map((m) => (
             <div key={m.label} className={classes.metricItem}>
               <span className={classes.metricValue}>{m.value}</span>
               <span className={classes.metricLabel}>{m.label}</span>
             </div>
           ))}
-        </div>
+        </div>*/}
       </section>
 
       {/* ── FÓRMULA DE CÁLCULO ── */}
