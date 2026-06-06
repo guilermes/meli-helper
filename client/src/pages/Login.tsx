@@ -13,7 +13,7 @@ import classes from './Login.module.css';
 
 interface LoginResponse {
   user: {
-    id: string;
+    id: number,
     nome: string;
     email: string;
     avatar?: string;
