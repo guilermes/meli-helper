@@ -1,0 +1,17 @@
+.wrapper {
+  min-height: 100vh;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 2rem;
+
+  background:
+    radial-gradient(circle at top, rgba(238, 190, 34, 0.08), transparent 35%),
+    linear-gradient(180deg, #0b0c0d 0%, #111214 100%);
+}
+
+.container {
+  width: 100%;
+}

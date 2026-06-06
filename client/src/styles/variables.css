@@ -1,0 +1,73 @@
+:root {
+  /* =========================
+     BRAND
+  ========================= */
+
+  --color-primary: #eebe22;
+
+  /* =========================
+     DARK THEME
+  ========================= */
+
+  --color-bg: #0b0c0d;
+
+  --color-surface: #111827;
+
+  --color-surface-light: #1b1d23;
+
+  --color-border: rgba(255, 255, 255, 0.06);
+
+  --color-text: #f3f4f6;
+
+  --color-text-muted: #9ca3af;
+
+  /* =========================
+     LIGHT THEME
+  ========================= */
+
+  --color-bg-light: #f8f9fb;
+
+  --color-surface-lightmode: #ffffff;
+
+  --color-border-light: rgba(15, 23, 42, 0.08);
+
+  --color-text-light: #111827;
+
+  /* =========================
+     SHADOWS
+  ========================= */
+
+  --shadow-sm:
+    0 4px 12px rgba(0, 0, 0, 0.08);
+
+  --shadow-md:
+    0 8px 24px rgba(0, 0, 0, 0.12);
+
+  --shadow-lg:
+    0 16px 40px rgba(0, 0, 0, 0.18);
+
+  /* =========================
+     TRANSITIONS
+  ========================= */
+
+  --transition-default:
+    0.2s ease;
+
+  /* =========================
+     GRADIENTS
+  ========================= */
+
+  --gradient-primary:
+    linear-gradient(
+      135deg,
+      #ffd033 0%,
+      #eebe22 100%
+    );
+
+  --gradient-dark:
+    linear-gradient(
+      180deg,
+      #0b0c0d 0%,
+      #111214 100%
+    );
+}

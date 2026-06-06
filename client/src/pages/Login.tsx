@@ -17,7 +17,7 @@ export default function Login() {
     setErro(null);
 
     try {
-      const res = await fetch('https://meli-helper.onrender.com/login', {
+      const res = await fetch('http://localhost:3000/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, senha }),

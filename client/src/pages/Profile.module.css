@@ -1,48 +1,164 @@
-body {
-  background-color: #121214 !important; /* Fundo escuro sólido para toda a página */
-  color: #e0e0e0 !important; /* Texto claro para contraste */
+:global(body) {
+  background:
+    radial-gradient(circle at top, rgba(238, 190, 34, 0.06), transparent 30%),
+    linear-gradient(180deg, #0b0c0d 0%, #111214 100%);
+
+  color: #f3f4f6;
 }
 
+/* =========================
+   CARD PRINCIPAL
+========================= */
+
 .integrationCard {
-  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
-  background-color: #111827 !important; /* Fundo escuro sólido do Card */
-  border: 1px solid #374151 !important;  /* Borda grafite sutil */
+  background: rgba(17, 24, 39, 0.92);
+
+  border: 1px solid rgba(255, 255, 255, 0.06);
   border-radius: var(--mantine-radius-md);
-  color: #e0e0e0 !important; /* Texto claro para contraste */
+
+  color: #f3f4f6;
+
+  backdrop-filter: blur(12px);
+
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease,
+    border-color 0.2s ease,
+    background-color 0.2s ease;
 }
+
+.integrationCard:hover {
+  transform: translateY(-2px);
+
+  border-color: rgba(238, 190, 34, 0.45);
+
+  box-shadow:
+    0 0 0 1px rgba(238, 190, 34, 0.08),
+    0 8px 24px rgba(0, 0, 0, 0.35),
+    0 0 24px rgba(238, 190, 34, 0.08);
+}
+
+/* =========================
+   AVATAR / PERFIL
+========================= */
 
 .avatarContainer {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
+
   padding: var(--mantine-spacing-xl);
+
   text-align: center;
-  background-color: #111827 !important; /* Fundo idêntico aos outros cards */
-  border: 1px solid #374151 !important;
+
+  background: rgba(17, 24, 39, 0.92);
+
+  border: 1px solid rgba(255, 255, 255, 0.06);
   border-radius: var(--mantine-radius-md);
-  transition: border-color 0.2s ease, box-shadow 0.2s ease;
-  color: #e0e0e0 !important; /* Texto claro para contraste */
+
+  color: #f3f4f6;
+
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease,
+    transform 0.2s ease;
 }
 
+.avatarContainer:hover {
+  transform: translateY(-2px);
+
+  border-color: rgba(238, 190, 34, 0.45);
+
+  box-shadow:
+    0 0 0 1px rgba(238, 190, 34, 0.08),
+    0 8px 24px rgba(0, 0, 0, 0.35);
+}
+
+/* =========================
+   LINHAS / MARKETPLACE
+========================= */
 
 .marketplaceRow {
   padding: var(--mantine-spacing-md);
-  border: 1px solid #374151 !important;
+
   border-radius: var(--mantine-radius-md);
-  background-color: #25262b !important; /* 🌙 Tom mais claro para dar profundidade sobre o card */
-  transition: border-color 0.2s ease, background-color 0.2s ease;
-  color: #e0e0e0 !important; /* Texto claro para contraste */
+
+  background-color: #1b1d23;
+
+  border: 1px solid rgba(255, 255, 255, 0.05);
+
+  color: #e5e7eb;
+
+  transition:
+    border-color 0.2s ease,
+    background-color 0.2s ease,
+    transform 0.2s ease;
 }
 
 .marketplaceRow:hover {
-  border-color: #4a4c52 !important; /* Realce sutil na borda ao passar o mouse */
-  background-color: #374151 !important; /* Fundo um pouco mais escuro para feedback visual */
+  transform: translateY(-1px);
+
+  background-color: #23262d;
+
+  border-color: rgba(238, 190, 34, 0.35);
+
+  box-shadow:
+    0 0 18px rgba(238, 190, 34, 0.06);
 }
 
-.avatarContainer ~ div .mantine-Card-root,
-form id, 
+/* =========================
+   MANTINE CARDS GLOBAIS
+========================= */
+
 :global(.mantine-Card-root) {
-  background-color: #111827 !important;
-  border-color: #374151 !important;
+  background: rgba(17, 24, 39, 0.92);
+
+  border: 1px solid rgba(255, 255, 255, 0.06);
+
+  color: #f3f4f6;
+}
+
+/* =========================
+   INPUTS MANTINE
+========================= */
+
+:global(.mantine-Input-input),
+:global(.mantine-Select-input),
+:global(.mantine-Textarea-input) {
+  background-color: #181b20;
+
+  border: 1px solid rgba(255, 255, 255, 0.08);
+
+  color: #f3f4f6;
+
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+:global(.mantine-Input-input:focus),
+:global(.mantine-Select-input:focus),
+:global(.mantine-Textarea-input:focus) {
+  border-color: #eebe22;
+
+  box-shadow:
+    0 0 0 2px rgba(238, 190, 34, 0.15);
+}
+
+/* =========================
+   BOTÕES
+========================= */
+
+:global(.mantine-Button-root) {
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+:global(.mantine-Button-root:hover) {
+  transform: translateY(-1px);
+
+  box-shadow:
+    0 6px 18px rgba(238, 190, 34, 0.2);
 }
