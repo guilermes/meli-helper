@@ -68,8 +68,8 @@ login: async (req, res) => {
     // 🌟 CONFIGURAÇÃO DO COOKIE SEGURO
     res.cookie('token', token, {
       httpOnly: true, // Impede que códigos JS maliciosos leiam o token
-      secure: false,  // Mude para 'true' quando subir para produção (exige HTTPS)
-      sameSite: 'strict', // Protege contra ataques CSRF
+      secure: true,  // Mude para 'true' quando subir para produção (exige HTTPS)
+      sameSite: 'none', // Protege contra ataques CSRF
       maxAge: 3600000 // Expira em 1 hora (tempo exato do JWT em milissegundos)
     });
 
