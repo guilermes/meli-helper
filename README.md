@@ -355,7 +355,7 @@ model Configuracao {
 - [x] Frontend React 19 + TypeScript + Mantine + Tailwind
 - [x] CORS configurado para Vercel
 - [x] Migração para PostgreSQL (Neon)
-- [ ] Deploy em produção (Vercel + Render + Neon)
+- [x] Deploy em produção (Vercel + Render + Neon)
 - [ ] Gráficos interativos no dashboard (histórico de margem)
 - [ ] Sugestão de preço com IA
 - [ ] Integração com APIs oficiais do Mercado Livre
@@ -367,7 +367,7 @@ model Configuracao {
 
 - [Repositório GitHub](https://github.com/guilermes/meli-helper)
 ## Links do projeto
-- [Site na Vercel](https://meli-helper-g1qi6wf8a-guilermes-projects.vercel.app/)
+- [Site na Vercel](https://meli-helper-guilermes-projects.vercel.app/)
 - [Quadro Jira](https://gabrielpozza335-1775085903755.atlassian.net/jira/software/projects/MH/boards/102/backlog)
 - [Confluece documentation](https://meli-helper.atlassian.net/wiki/spaces/DDS/pages/edit-v2/229492?)
 
