@@ -58,7 +58,7 @@ export default function Login() {
 
       // Salva usuário no contexto
       login(data.user);
-
+      api.get('/dashboard'); // Testa se token é válido
       navigate('/dashboard');
 
     } catch (error) {
