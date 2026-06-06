@@ -33,9 +33,6 @@ export default function ProductEditModal({ opened, onClose, product, onSave }: P
     setSaveLoading(true);
 
     try {
-      const tokenRaw = localStorage.getItem('token');
-      const token = tokenRaw ? tokenRaw.replace(/^"(.*)"$/, '$1') : '';
-
       // Envia a atualização para a rota correta usando o ID do anúncio
       await api.put(`/anuncios/${editedProduct.id}`, editedProduct, {
         withCredentials: true, // Garante que os cookies sejam enviados junto com a requisição
