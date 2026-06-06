@@ -46,21 +46,21 @@
   letter-spacing: -0.03em;
 
   color: light-dark(
-    #111827,
-    #f9fafb
+    var(--color-bg-tertiary),
+    var(--color-text-primary)
   );
 }
 
 .logoSpan {
-  color: #3b82f6;
+  color: var(--color-primary-light);
 }
 
 .copyright {
   font-size: 13px;
 
   color: light-dark(
-    #6b7280,
-    #9ca3af
+    var(--color-text-dimmed),
+    var(--color-text-dimmed)
   );
 }
 
@@ -82,8 +82,8 @@
   font-weight: 500;
 
   color: light-dark(
-    #6b7280,
-    #9ca3af
+    var(--color-text-dimmed),
+    var(--color-text-dimmed)
   );
 
   transition:
@@ -92,7 +92,7 @@
 }
 
 .footerLink:hover {
-  color: #60a5fa;
+  color: var(--color-primary-lighter);
 
   transform: translateY(-1px);
 }
@@ -108,7 +108,7 @@
   width: 0%;
   height: 1px;
 
-  background-color: #3b82f6;
+  background-color: var(--color-primary-light);
 
   transition: width 0.2s ease;
 }

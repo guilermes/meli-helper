@@ -1,68 +1,68 @@
 .card {
   backdrop-filter: blur(10px);
-  background-color: #141517; /* Mesmo cinza escuro do LoginForm para consistência */
-  border-color: #374151;
-  max-width: 450px; /* Um pouquinho mais largo para acomodar bem os campos */
+  background-color: var(--color-bg-secondary);
+  border-color: var(--color-border-primary);
+  max-width: 450px;
   width: 100%;
   margin: 0 auto;
 }
 
 .title {
-  color: #f9fafb;
+  color: var(--color-text-primary);
   font-weight: 800;
   letter-spacing: -0.5px;
 }
 
 .highlight {
-  color: #2563eb; /* Nosso vermelho de destaque */
+  color: var(--color-primary);
 }
 
 .subtitle {
-  color: #909296;
+  color: var(--color-text-muted);
   text-align: center;
 }
 
 /* Caixa de Erro/Validação */
 .errorBox {
-  background-color: rgba(224, 49, 49, 0.1);
+  background-color: var(--color-danger-bg);
   border: 1px solid rgba(224, 49, 49, 0.4);
-  color: #ff8787;
+  color: var(--color-danger);
 }
 
 /* Customização dos Inputs do Mantine v7 */
 .inputLabel {
-  color: #c1c2c5;
+  color: var(--color-text-secondary);
   margin-bottom: 4px;
   font-weight: 500;
 }
 
 .input {
-  background-color: #25262b;
-  border-color: #373a40;
-  color: #f9fafb;
+  background-color: var(--color-bg-input);
+  border-color: var(--color-border-light);
+  color: var(--color-text-primary);
   transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
 /* Garante que o texto digitado nos PasswordInputs fique branco */
 .innerInput {
-  color: #f9fafb !important;
+  color: var(--color-text-primary) !important;
 }
 
 .input:focus,
 .input:focus-within {
-  border-color: #2563eb !important; /* Brilho/borda vermelha no foco */
+  border-color: var(--color-primary) !important;
 }
 
 /* Botão de Cadastro */
 .buttonSubmit {
-  background-color: #2563eb;
-  color: #f9fafb;
+  background-color: var(--color-primary);
+  color: var(--color-text-primary);
   font-weight: 600;
   transition: background-color 0.2s ease, transform 0.1s ease;
 }
 
 .buttonSubmit:hover {
-  background-color: #1d4ed8;
+  background-color: var(--color-primary-hover);
   transform: translateY(-1px);
 }
 

@@ -1,45 +1,45 @@
 /* src/components/MetricCard/MetricCard.module.css */
 .card {
   backdrop-filter: blur(10px);
-  background-color: #141517 !important;
-  border-color: #25262b !important; /* Mesma cor de borda usada na tabela */
+  background-color: var(--color-bg-secondary) !important;
+  border-color: var(--color-bg-input) !important; /* Mesma cor de borda usada na tabela */
   flex: 1;
   min-width: 240px;
   transition: border-color 0.15s ease, transform 0.15s ease;
 }
 
 .card:hover {
-  border-color: #373a40 !important; /* Efeito sutil de hover ao passar o mouse */
+  border-color: var(--color-bg-light) !important; /* Efeito sutil de hover ao passar o mouse */
 }
 
 /* 🌟 Borda superior vermelha para dar o realce de atenção no card crítico */
 .cardAlert {
-  border-top: 4px solid #2563eb !important;
+  border-top: 4px solid var(--color-primary) !important;
 }
 
 .title {
   text-transform: uppercase;
   font-weight: 700;
   letter-spacing: 0.7px;
-  color: #909296 !important;
+  color: var(--color-text-muted) !important;
   font-size: 11px;
 }
 
 .value {
   font-size: 32px;
   font-weight: 800;
-  color: #f9fafb;
+  color: var(--color-text-primary);
   line-height: 1;
   letter-spacing: -0.5px;
 }
 
 /* Vermelho com excelente contraste para leitura no fundo escuro */
 .alertValue {
-  color: #60a5fa; 
+  color: var(--color-primary-lighter); 
 }
 
 .description {
-  color: #a6a7ab !important;
+  color: var(--color-text-muted-alt) !important;
   font-size: 12px;
   line-height: 1.4;
 }

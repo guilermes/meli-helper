@@ -1,19 +1,19 @@
 .card {
   backdrop-filter: blur(10px);
-  background-color: #111827; /* Cinza profundo padrão do Mantine Dark */
-  border: 1px solid #374151;
+  background-color: var(--color-bg-tertiary); /* Cinza profundo padrão do Mantine Dark */
+  border: 1px solid var(--color-border-primary);
   transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
 .card:hover {
   transform: translateY(-2px);
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
-  border-color: #373a40;
+  border-color: var(--color-bg-light);
 }
 
 .title {
   letter-spacing: 0.5px;
-  border-bottom: 1px solid #374151;
+  border-bottom: 1px solid var(--color-border-primary);
   padding-bottom: 12px;
 }
 
@@ -25,15 +25,15 @@
 
 /* Cria a divisão entre as linhas de forma elegante */
 .row:not(:last-child) {
-  border-bottom: 1px solid #374151;
+  border-bottom: 1px solid var(--color-border-primary);
 }
 
 .row:hover {
-  background-color: #25262b; /* Destaque ao passar o mouse */
+  background-color: var(--color-bg-input); /* Destaque ao passar o mouse */
 }
 
 .label {
-  color: #c1c2c5;
+  color: var(--color-text-secondary);
   font-weight: 500;
   font-size: 0.95rem;
 }

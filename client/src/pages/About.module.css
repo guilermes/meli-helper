@@ -1,7 +1,7 @@
 .pageWrapper {
-  background-color: #0f1115; /* Fundo preto padrão MeliHelper */
+  background-color: var(--color-bg-primary); /* Fundo preto padrão MeliHelper */
   min-height: 100vh;
-  color: #f9fafb;
+  color: var(--color-text-primary);
 }
 
 .heroSection {
@@ -17,31 +17,31 @@
 }
 
 .highlight {
-  color: #2563eb; /* Vermelho principal */
+  color: var(--color-primary); /* Vermelho principal */
 }
 
 .leadText {
-  color: #adb5bd; /* Cinza claro para melhor leitura */
+  color: var(--color-text-light); /* Cinza claro para melhor leitura */
   line-height: 1.6;
 }
 
 .sectionTitle {
   text-align: center;
   font-weight: 800;
-  color: #f9fafb;
+  color: var(--color-text-primary);
 }
 
 /* Estilo dos Cards de Recursos */
 .card {
   backdrop-filter: blur(10px);
-  background-color: #141517; /* Cinza escuro */
-  border-color: #374151;
+  background-color: var(--color-bg-secondary); /* Cinza escuro */
+  border-color: var(--color-border-primary);
   transition: transform 0.2s ease, border-color 0.2s ease;
 }
 
 .card:hover {
   transform: translateY(-4px);
-  border-color: #2563eb; /* Borda acende em vermelho no hover */
+  border-color: var(--color-primary); /* Borda acende em vermelho no hover */
 }
 
 .cardIcon {
@@ -49,28 +49,28 @@
 }
 
 .cardTitle {
-  color: #f9fafb;
+  color: var(--color-text-primary);
 }
 
 .cardDescription {
-  color: #909296; /* Cinza médio */
+  color: var(--color-text-muted); /* Cinza médio */
   line-height: 1.5;
 }
 
 /* Seção Quem Somos */
 .aboutUsCard {
-  background-color: #141517;
-  border-color: #374151;
-  border-left: 4px solid #2563eb; /* Detalhe lateral em vermelho */
+  background-color: var(--color-bg-secondary);
+  border-color: var(--color-border-primary);
+  border-left: 4px solid var(--color-primary); /* Detalhe lateral em vermelho */
 }
 
 .aboutUsTitle {
-  color: #f9fafb;
+  color: var(--color-text-primary);
   font-weight: 700;
 }
 
 .aboutUsText {
-  color: #c1c2c5;
+  color: var(--color-text-secondary);
   line-height: 1.6;
 }
 
@@ -79,17 +79,17 @@
   text-align: center;
   margin-top: 60px;
   padding: 40px 0;
-  border-top: 1px solid #374151;
+  border-top: 1px solid var(--color-border-primary);
 }
 
 .ctaTitle {
-  color: #f9fafb;
+  color: var(--color-text-primary);
   font-weight: 700;
 }
 
 .ctaButton {
-  background-color: #2563eb;
-  color: #f9fafb;
+  background-color: var(--color-primary);
+  color: var(--color-text-primary);
   font-weight: 600;
   padding-left: 40px;
   padding-right: 40px;
@@ -97,5 +97,5 @@
 }
 
 .ctaButton:hover {
-  background-color: #1d4ed8;
+  background-color: var(--color-primary-hover);
 }
