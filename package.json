@@ -16,6 +16,6 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "setup": "cd client && npm install && cd ../meli-helper-api && npm install && cd ../frete-service && npm install"
+    "setup": "cd client && npm install && cd ../meli-helper-api && npm install && cd ../frete-service && npm install && cd ../meli-helper-mobile && npm install"
   }
 }
