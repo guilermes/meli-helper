@@ -1,189 +1,207 @@
-// src/components/Hero.tsx
-import { useNavigate } from 'react-router-dom';
-import classes from './Hero.module.css';
+import { useMemo, useState } from "react";
+import "./Hero.css";
 
-const features = [
-  {
-    icon: '📦',
-    title: 'Cadastro de Anúncios',
-    description: 'Gerencie todos os seus anúncios com tipo Clássico ou Premium, dimensões e custos em um só lugar.',
-  },
-  {
-    icon: '🚚',
-    title: 'Cálculo Automático de Frete',
-    description: 'Frete calculado em tempo real via microsserviço, considerando peso real, cubagem e faixa de preço.',
-  },
-  {
-    icon: '💰',
-    title: 'Lucro e Margem Precisos',
-    description: 'Descubra seu lucro líquido considerando comissão do ML, imposto, frete e custo operacional.',
-  },
-  {
-    icon: '⚙️',
-    title: 'Configuração Personalizada',
-    description: 'Defina seu imposto e custo operacional fixo. O sistema aplica automaticamente em todos os cálculos.',
-  },
-  {
-    icon: '📊',
-    title: 'Dashboard com KPIs',
-    description: 'Acompanhe margem média, cubagem total, anúncios críticos, ranking de margem e insights inteligentes.',
-  },
-  {
-    icon: '🔒',
-    title: 'Conta Segura',
-    description: 'Autenticação com JWT e cookies HttpOnly. Seus dados e configurações são privados e protegidos.',
-  },
+/* ---------- Dados ---------- */
+interface Feature {
+  icon: string;
+  title: string;
+  text: string;
+}
+
+const FEATURES: Feature[] = [
+  { icon: "📦", title: "Anúncios em um só lugar", text: "Crie, edite preço e estoque e pause anúncios de vários marketplaces sem trocar de aba." },
+  { icon: "📐", title: "Cubagem automática", text: "Calcule o peso cubado de cada produto e veja o frete correto antes de publicar." },
+  { icon: "📈", title: "Métricas que ajudam a decidir", text: "Acompanhe vendas, conversão e margem por anúncio, loja e período." },
+  { icon: "🔄", title: "Sincronização contínua", text: "Estoque e preços atualizados em todos os canais, evitando vendas sem produto." },
 ];
 
-const steps = [
-  { number: '01', title: 'Crie sua conta', description: 'Cadastre-se em segundos com nome, loja e e-mail.' },
-  { number: '02', title: 'Configure as taxas', description: 'Informe seu imposto e custo operacional fixo.' },
-  { number: '03', title: 'Cadastre seus produtos', description: 'Adicione anúncios com dimensões, custo e preço de venda.' },
-  { number: '04', title: 'Monitore seus lucros', description: 'Acompanhe margens e tome decisões com dados reais.' },
+const MARKETPLACES = [
+  { name: "Mercado Livre", live: true },
+  { name: "Shopee", live: false },
+  { name: "Amazon", live: false },
+  { name: "Magalu", live: false },
 ];
 
-// const metrics = [
-//   { value: '12%', label: 'Comissão Clássico' },
-//   { value: '18%', label: 'Comissão Premium' },
-//   { value: '28', label: 'Faixas de Peso' },
-//   { value: '8', label: 'Faixas de Preço' },
-// ];
+const BARS = [38, 55, 46, 72, 63, 88, 80];
 
-export function Hero() {
-  const navigate = useNavigate();
+const KPIS = [
+  { value: "R$ 48,2 mil", label: "Vendas no mês" },
+  { value: "3,4%", label: "Conversão média" },
+  { value: "27%", label: "Margem líquida" },
+];
+
+/* ---------- Calculadora de cubagem ---------- */
+// Fator de cubagem em cm³/kg. Confira o valor usado pelo marketplace/transportadora.
+const CUBAGE_FACTOR = 6000;
+
+interface Dimensions {
+  length: string;
+  width: string;
+  height: string;
+  weight: string;
+}
+
+const num = (v: string): number => {
+  const n = parseFloat(v.replace(",", "."));
+  return Number.isFinite(n) && n > 0 ? n : 0;
+};
+
+function CubageCalculator() {
+  const [d, setD] = useState<Dimensions>({ length: "30", width: "20", height: "15", weight: "1.2" });
+
+  const { cubed, charged, usesCubed } = useMemo(() => {
+    const cubed = (num(d.length) * num(d.width) * num(d.height)) / CUBAGE_FACTOR;
+    const real = num(d.weight);
+    return { cubed, charged: Math.max(cubed, real), usesCubed: cubed > real };
+  }, [d]);
+
+  const fields: { key: keyof Dimensions; label: string }[] = [
+    { key: "length", label: "Comprimento (cm)" },
+    { key: "width", label: "Largura (cm)" },
+    { key: "height", label: "Altura (cm)" },
+    { key: "weight", label: "Peso real (kg)" },
+  ];
 
   return (
-    <div className={classes.wrapper}>
+    <div className="mh-panel" aria-labelledby="cubagem-title">
+      <h3 id="cubagem-title">Calculadora de cubagem</h3>
+      <small>Teste com as medidas do seu produto.</small>
 
-      {/* ── HERO PRINCIPAL ── */}
-      <section className={classes.heroSection}>
-        <div className={classes.heroBadge}>
-          <span className={classes.badgeDot} />
-          Plataforma para Sellers do Mercado Livre
-        </div>
+      <div className="mh-fields">
+        {fields.map(({ key, label }) => (
+          <div className="mh-field" key={key}>
+            <label htmlFor={`f-${key}`}>{label}</label>
+            <input
+              id={`f-${key}`}
+              inputMode="decimal"
+              value={d[key]}
+              onChange={(e) => setD({ ...d, [key]: e.target.value })}
+            />
+          </div>
+        ))}
+      </div>
 
-        <h1 className={classes.heroTitle}>
-          Precifique com
-          <span className={classes.highlight}> precisão.</span>
+      <div className="mh-result" aria-live="polite">
+        <div>
+          <span>Peso considerado no frete</span>
           <br />
-          Venda com
-          <span className={classes.highlight}> lucro.</span>
-        </h1>
-
-        <p className={classes.heroSubtitle}>
-          O <strong>MeliHelper</strong> automatiza o cálculo de frete, comissão, imposto e custo
-          operacional para que você nunca mais perca dinheiro por erro de precificação.
-        </p>
-
-        <div className={classes.heroActions}>
-          <button
-            className={classes.btnPrimary}
-            onClick={() => navigate('/signup')}
-          >
-            Começar gratuitamente
-          </button>
-          <button
-            className={classes.btnSecondary}
-            onClick={() => navigate('/login')}
-          >
-            Já tenho uma conta
-          </button>
+          <strong>{charged.toFixed(2).replace(".", ",")} kg</strong>
         </div>
-
-        {/* Métricas rápidas */}
-        {/* <div className={classes.metricsRow}>
-          {metrics.map((m) => (
-            <div key={m.label} className={classes.metricItem}>
-              <span className={classes.metricValue}>{m.value}</span>
-              <span className={classes.metricLabel}>{m.label}</span>
-            </div>
-          ))}
-        </div>*/}
-      </section>
-
-      {/* ── FÓRMULA DE CÁLCULO ── */}
-      <section className={classes.formulaSection}>
-        <p className={classes.sectionLabel}>Como calculamos seu lucro</p>
-        <div className={classes.formulaBox}>
-          <div className={classes.formulaItem}>
-            <span className={classes.formulaValue}>Preço de Venda</span>
-          </div>
-          <span className={classes.formulaOp}>−</span>
-          <div className={classes.formulaItem}>
-            <span className={classes.formulaValue}>Custo</span>
-          </div>
-          <span className={classes.formulaOp}>−</span>
-          <div className={classes.formulaItem}>
-            <span className={classes.formulaValue}>Frete</span>
-          </div>
-          <span className={classes.formulaOp}>−</span>
-          <div className={classes.formulaItem}>
-            <span className={classes.formulaValue}>Comissão ML</span>
-          </div>
-          <span className={classes.formulaOp}>−</span>
-          <div className={classes.formulaItem}>
-            <span className={classes.formulaValue}>Imposto</span>
-          </div>
-          <span className={classes.formulaOp}>−</span>
-          <div className={classes.formulaItem}>
-            <span className={classes.formulaValue}>Custo Op.</span>
-          </div>
-          <span className={classes.formulaOp}>=</span>
-          <div className={`${classes.formulaItem} ${classes.formulaResult}`}>
-            <span className={classes.formulaValue}>Lucro Real</span>
-          </div>
+        <div className={`mh-badge ${usesCubed ? "" : "mh-badge--ok"}`}>
+          {usesCubed ? `Peso cubado: ${cubed.toFixed(2).replace(".", ",")} kg` : "Vale o peso real"}
         </div>
-      </section>
+      </div>
+    </div>
+  );
+}
 
-      {/* ── FUNCIONALIDADES ── */}
-      <section className={classes.featuresSection}>
-        <p className={classes.sectionLabel}>Funcionalidades</p>
-        <h2 className={classes.sectionTitle}>Tudo que você precisa para precificar certo</h2>
-        <div className={classes.featuresGrid}>
-          {features.map((f) => (
-            <div key={f.title} className={classes.featureCard}>
-              <span className={classes.featureIcon}>{f.icon}</span>
-              <h3 className={classes.featureTitle}>{f.title}</h3>
-              <p className={classes.featureDescription}>{f.description}</p>
-            </div>
-          ))}
-        </div>
-      </section>
+/* ---------- Página ---------- */
+export default function Hero() {
+  return (
+    <div className="mh">
+      <div className="mh-wrap">
+        <header className="mh-header">
+          <a href="#" className="mh-logo" aria-label="MeliHelper">
+            <i>◆</i> MeliHelper
+          </a>
+          <nav className="mh-nav" aria-label="Principal">
+            <a href="#recursos">Recursos</a>
+            <a href="#marketplaces">Marketplaces</a>
+            <a href="#metricas">Métricas</a>
+          </nav>
+          <a href="/login" className="mh-btn">Entrar</a>
+        </header>
 
-      {/* ── COMO FUNCIONA ── */}
-      <section className={classes.stepsSection}>
-        <p className={classes.sectionLabel}>Como funciona</p>
-        <h2 className={classes.sectionTitle}>Comece a lucrar em 4 passos</h2>
-        <div className={classes.stepsGrid}>
-          {steps.map((step, i) => (
-            <div key={step.number} className={classes.stepCard}>
-              <div className={classes.stepConnector}>
-                <span className={classes.stepNumber}>{step.number}</span>
-                {i < steps.length - 1 && <div className={classes.stepLine} />}
+        <main>
+          {/* Hero */}
+          <section className="mh-hero">
+            <div>
+              <h1>Todos os seus marketplaces, gerenciados em um só painel</h1>
+              <p className="mh-lead">
+                Controle anúncios, calcule a cubagem e acompanhe suas métricas de venda sem planilhas nem abas duplicadas.
+              </p>
+              <div className="mh-actions">
+                <a href="/cadastro" className="mh-btn mh-btn--primary">Criar conta grátis</a>
+                <a href="#recursos" className="mh-btn">Ver recursos</a>
               </div>
-              <h3 className={classes.stepTitle}>{step.title}</h3>
-              <p className={classes.stepDescription}>{step.description}</p>
             </div>
-          ))}
-        </div>
-      </section>
+            <CubageCalculator />
+          </section>
 
-      {/* ── CTA FINAL ── */}
-      <section className={classes.ctaSection}>
-        <h2 className={classes.ctaTitle}>
-          Pronto para parar de adivinhar e começar a lucrar?
-        </h2>
-        <p className={classes.ctaSubtitle}>
-          Crie sua conta gratuitamente e cadastre seu primeiro anúncio em menos de 2 minutos.
-        </p>
-        <button
-          className={classes.btnPrimary}
-          onClick={() => navigate('/signup')}
-        >
-          Criar conta agora
-        </button>
-      </section>
+          {/* Recursos */}
+          <section id="recursos" className="mh-section">
+            <h2>Tudo o que o vendedor precisa no dia a dia</h2>
+            <p className="mh-lead">Menos tempo operando, mais tempo vendendo.</p>
+            <div className="mh-grid mh-grid--4">
+              {FEATURES.map((f) => (
+                <article className="mh-card" key={f.title}>
+                  <div className="mh-icon" aria-hidden="true">{f.icon}</div>
+                  <h3>{f.title}</h3>
+                  <p>{f.text}</p>
+                </article>
+              ))}
+            </div>
+          </section>
 
+          {/* Marketplaces */}
+          <section id="marketplaces" className="mh-section">
+            <h2>Conecte os canais onde você vende</h2>
+            <p className="mh-lead">Comece pelo Mercado Livre. Os demais canais estão a caminho.</p>
+            <div className="mh-markets">
+              {MARKETPLACES.map((m) => (
+                <span key={m.name} className={`mh-chip ${m.live ? "" : "mh-chip--soon"}`}>
+                  {m.name}
+                  {!m.live && " (em breve)"}
+                </span>
+              ))}
+            </div>
+          </section>
+
+          {/* Métricas */}
+          <section id="metricas" className="mh-section">
+            <div className="mh-metrics">
+              <div>
+                <h2>Veja o que vende, o que rende e o que ajustar</h2>
+                <p className="mh-lead">
+                  Compare o desempenho por anúncio e por período e descubra onde a margem está escapando.
+                </p>
+              </div>
+              <div className="mh-panel">
+                <h3>Vendas dos últimos 7 dias</h3>
+                <div className="mh-bars" role="img" aria-label="Gráfico de vendas dos últimos 7 dias, em alta">
+                  {BARS.map((h, i) => (
+                    <div key={i} style={{ height: `${h}%` }} />
+                  ))}
+                </div>
+                <div className="mh-kpis">
+                  {KPIS.map((k) => (
+                    <div key={k.label}>
+                      <b>{k.value}</b>
+                      <span>{k.label}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </section>
+
+          {/* CTA */}
+          <section className="mh-section">
+            <div className="mh-panel mh-cta">
+              <h2>Comece a organizar suas vendas hoje</h2>
+              <p className="mh-lead">Crie sua conta e conecte seu primeiro marketplace em poucos minutos.</p>
+              <div className="mh-actions">
+                <a href="/cadastro" className="mh-btn mh-btn--primary">Criar conta grátis</a>
+              </div>
+            </div>
+          </section>
+        </main>
+
+        <footer className="mh-footer">
+          <span>© {new Date().getFullYear()} MeliHelper</span>
+          <span>Termos de uso · Privacidade · Contato</span>
+        </footer>
+      </div>
     </div>
   );
 }

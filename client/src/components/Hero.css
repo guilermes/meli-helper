@@ -1,0 +1,108 @@
+@import url("https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;700;800&family=DM+Sans:wght@400;500;600&display=swap");
+.mh {
+  --bg: #e5e9f1;
+  --light: #ffffff;
+  --dark: #c1c9d8;
+  --ink: #1d2740;
+  --muted: #5d6882;
+  --accent: #f2b705;
+  --accent-ink: #3a2c00;
+  --ok: #1f9d6b;
+  --raise: 9px 9px 20px var(--dark), -9px -9px 20px var(--light);
+  --raise-sm: 5px 5px 11px var(--dark), -5px -5px 11px var(--light);
+  --sink: inset 5px 5px 11px var(--dark), inset -5px -5px 11px var(--light);
+
+  background: var(--bg);
+  color: var(--ink);
+  font-family: "DM Sans", system-ui, sans-serif;
+  line-height: 1.6;
+  min-height: 100vh;
+}
+.mh *, .mh *::before, .mh *::after { box-sizing: border-box; }
+.mh h1, .mh h2, .mh h3 { font-family: "Plus Jakarta Sans", sans-serif; line-height: 1.15; margin: 0; }
+.mh p { margin: 0; }
+.mh a { color: inherit; text-decoration: none; }
+.mh :focus-visible { outline: 3px solid var(--ink); outline-offset: 3px; }
+
+.mh-wrap { max-width: 1120px; margin: 0 auto; padding: 0 24px; }
+.mh-section { padding: 88px 0; }
+.mh-section h2 { font-size: clamp(1.7rem, 3.4vw, 2.4rem); max-width: 22ch; }
+.mh-lead { color: var(--muted); max-width: 60ch; margin-top: 14px; }
+
+/* Header */
+.mh-header { display: flex; align-items: center; justify-content: space-between; padding: 22px 0; }
+.mh-logo { font-family: "Plus Jakarta Sans", sans-serif; font-weight: 800; font-size: 1.25rem; display: flex; align-items: center; gap: 10px; }
+.mh-logo i { width: 34px; height: 34px; border-radius: 11px; background: var(--bg); box-shadow: var(--raise-sm); display: grid; place-items: center; font-style: normal; color: var(--accent); }
+.mh-nav { display: flex; gap: 28px; font-weight: 500; color: var(--muted); }
+.mh-nav a:hover { color: var(--ink); }
+
+/* Buttons */
+.mh-btn { border: 0; cursor: pointer; font: 600 1rem "DM Sans", sans-serif; padding: 14px 26px; border-radius: 16px; background: var(--bg); color: var(--ink); box-shadow: var(--raise-sm); transition: box-shadow .15s, transform .15s; display: inline-block; }
+.mh-btn:hover { box-shadow: 3px 3px 7px var(--dark), -3px -3px 7px var(--light); }
+.mh-btn:active { box-shadow: var(--sink); transform: translateY(1px); }
+.mh-btn--primary { background: var(--accent); color: var(--accent-ink); box-shadow: 6px 6px 14px var(--dark), -6px -6px 14px var(--light); }
+
+/* Hero */
+.mh-hero { display: grid; grid-template-columns: 1.05fr 1fr; gap: 56px; align-items: center; padding: 56px 0 96px; }
+.mh-hero h1 { font-size: clamp(2.2rem, 5vw, 3.5rem); font-weight: 800; letter-spacing: -0.02em; }
+.mh-hero .mh-lead { font-size: 1.1rem; margin-top: 20px; }
+.mh-actions { display: flex; flex-wrap: wrap; gap: 18px; margin-top: 32px; }
+
+/* Calculadora */
+.mh-panel { background: var(--bg); border-radius: 28px; box-shadow: var(--raise); padding: 30px; }
+.mh-panel h3 { font-size: 1.15rem; }
+.mh-panel small { color: var(--muted); display: block; margin-top: 4px; }
+.mh-fields { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 22px; }
+.mh-field label { display: block; font-size: .85rem; font-weight: 600; color: var(--muted); margin-bottom: 6px; }
+.mh-field input { width: 100%; border: 0; background: var(--bg); box-shadow: var(--sink); border-radius: 14px; padding: 12px 14px; font: 600 1rem "DM Sans", sans-serif; color: var(--ink); }
+.mh-result { margin-top: 22px; border-radius: 20px; box-shadow: var(--sink); padding: 18px 20px; display: flex; justify-content: space-between; align-items: end; gap: 12px; flex-wrap: wrap; }
+.mh-result strong { font: 800 2rem "Plus Jakarta Sans", sans-serif; }
+.mh-result span { color: var(--muted); font-size: .9rem; }
+.mh-badge { font-weight: 600; font-size: .85rem; padding: 6px 12px; border-radius: 12px; box-shadow: var(--raise-sm); }
+.mh-badge--ok { color: var(--ok); }
+
+/* Grids */
+.mh-grid { display: grid; gap: 28px; margin-top: 44px; }
+.mh-grid--4 { grid-template-columns: repeat(4, 1fr); }
+.mh-grid--3 { grid-template-columns: repeat(3, 1fr); }
+.mh-card { background: var(--bg); border-radius: 24px; box-shadow: var(--raise); padding: 28px; }
+.mh-card h3 { font-size: 1.05rem; margin: 18px 0 8px; }
+.mh-card p { color: var(--muted); font-size: .95rem; }
+.mh-icon { width: 54px; height: 54px; border-radius: 16px; box-shadow: var(--sink); display: grid; place-items: center; font-size: 1.4rem; }
+
+/* Marketplaces */
+.mh-markets { display: flex; flex-wrap: wrap; gap: 18px; margin-top: 32px; }
+.mh-chip { padding: 12px 22px; border-radius: 16px; box-shadow: var(--raise-sm); font-weight: 600; display: flex; align-items: center; gap: 10px; }
+.mh-chip::before { content: ""; width: 9px; height: 9px; border-radius: 50%; background: var(--ok); }
+.mh-chip--soon { color: var(--muted); box-shadow: var(--sink); }
+.mh-chip--soon::before { background: var(--dark); }
+
+/* Métricas */
+.mh-metrics { display: grid; grid-template-columns: 1fr 1.2fr; gap: 56px; align-items: center; }
+.mh-bars { display: flex; align-items: end; gap: 14px; height: 190px; margin-top: 26px; padding: 18px; border-radius: 20px; box-shadow: var(--sink); }
+.mh-bars div { flex: 1; border-radius: 10px 10px 4px 4px; background: var(--accent); box-shadow: var(--raise-sm); }
+.mh-kpis { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-top: 22px; }
+.mh-kpis div { border-radius: 16px; box-shadow: var(--raise-sm); padding: 14px; }
+.mh-kpis b { display: block; font: 800 1.3rem "Plus Jakarta Sans", sans-serif; }
+.mh-kpis span { color: var(--muted); font-size: .82rem; }
+
+/* CTA + Footer */
+.mh-cta { text-align: center; padding: 64px 32px; }
+.mh-cta h2 { margin: 0 auto; }
+.mh-cta .mh-lead { margin: 14px auto 0; }
+.mh-cta .mh-actions { justify-content: center; }
+.mh-footer { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 12px; padding: 36px 0 48px; color: var(--muted); font-size: .9rem; }
+
+@media (max-width: 900px) {
+  .mh-hero, .mh-metrics { grid-template-columns: 1fr; gap: 40px; }
+  .mh-grid--4 { grid-template-columns: 1fr 1fr; }
+  .mh-grid--3 { grid-template-columns: 1fr; }
+  .mh-nav { display: none; }
+}
+@media (max-width: 560px) {
+  .mh-grid--4, .mh-fields, .mh-kpis { grid-template-columns: 1fr; }
+  .mh-section { padding: 60px 0; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .mh * { transition: none !important; }
+}
