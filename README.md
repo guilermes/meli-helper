@@ -1,5 +1,3 @@
-# isso é um teste
-
 # Meli Helper
 
 Plataforma web para auxiliar sellers do **Mercado Livre** na gestão de anúncios, com cálculo automático de frete, lucro e margem. O sistema centraliza cadastro de produtos, configuração de taxas e análise financeira em uma interface moderna e acessível.
