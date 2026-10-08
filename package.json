@@ -1,0 +1,21 @@
+{
+  "name": "meli-helper",
+  "version": "1.0.0",
+  "description": "Plataforma web para auxiliar sellers do **Mercado Livre** na gestão de anúncios, com cálculo automático de frete, lucro e margem. O sistema centraliza cadastro de produtos, configuração de taxas e análise financeira em uma interface moderna e acessível.",
+  "homepage": "https://github.com/guilermes/meli-helper#readme",
+  "bugs": {
+    "url": "https://github.com/guilermes/meli-helper/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/guilermes/meli-helper.git"
+  },
+  "license": "ISC",
+  "author": "",
+  "type": "commonjs",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "setup": "cd client && npm install && cd ../meli-helper-api && npm install && cd ../frete-service && npm install"
+  }
+}

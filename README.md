@@ -345,6 +345,7 @@ model Configuracao {
 |------|-------|
 | Daniel Fernando | Fullstack Developer & DB Specialist |
 | Guilherme Nobrega | Fullstack Developer & Software Architect |
+| Lucas Silva Peres | Fullstack Developer & Intruder |
 
 ---
 
